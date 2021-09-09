@@ -1,4 +1,5 @@
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using GActivityDiary.ViewModels;
@@ -15,6 +16,7 @@ namespace GActivityDiary
 
         public override void OnFrameworkInitializationCompleted()
         {
+            var dataGridType = typeof(DataGrid); // HACK
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
                 desktop.MainWindow = new MainWindow

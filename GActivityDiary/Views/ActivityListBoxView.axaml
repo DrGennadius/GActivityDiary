@@ -1,0 +1,51 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:GActivityDiary.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="GActivityDiary.Views.ActivityListBoxView">
+
+    <Control.DataContext>
+        <vm:ActivityListBoxViewModel/>
+    </Control.DataContext>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+
+        <ListBox Items="{Binding Activities}"
+                 SelectedItem="{Binding SelectedActivity}"
+                 Selection="{Binding Selection}"
+                 SelectionMode="Single">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid Background="Transparent">
+                        <TextBlock Text="{Binding Name}"/>
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Button Content="Create new activity"
+                    Command="{Binding CreateActivityCmd}"
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Center"
+                    Margin="5"
+                    IsVisible="{Binding IsShowCreateActivityButton}"/>
+            <UserControl Grid.Row="1"
+                         Content="{Binding SingleActivityContent}"
+                         MaxWidth="800"
+                         MinWidth="700"/>
+        </Grid>
+        
+    </Grid>
+
+</UserControl>

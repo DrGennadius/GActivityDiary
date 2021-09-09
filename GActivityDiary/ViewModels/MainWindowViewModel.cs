@@ -2,6 +2,6 @@ namespace GActivityDiary.ViewModels
 {
     public class MainWindowViewModel : ViewModelBase
     {
-        public string Greeting => "Welcome to Avalonia!";
+        public ActivityListBoxViewModel ActivityListBoxViewModel { get; set; } = new ActivityListBoxViewModel();
     }
 }

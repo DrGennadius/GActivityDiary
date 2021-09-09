@@ -3,6 +3,7 @@ using FluentNHibernate.Cfg.Db;
 using GActivityDiary.Core.Models;
 using NHibernate;
 using NHibernate.Tool.hbm2ddl;
+using System.IO;
 
 namespace GActivityDiary.Core.DataBase
 {
@@ -25,13 +26,14 @@ namespace GActivityDiary.Core.DataBase
 
         public void Initialization()
         {
+            bool dbExists = File.Exists(_dataBaseFilePath);
             _sessionFactory = Fluently.Configure()
                 .Database(
                     SQLiteConfiguration.Standard
                     .UsingFile(_dataBaseFilePath)
                 )
                 .Mappings(m => m.FluentMappings.AddFromAssemblyOf<Activity>())
-                .ExposeConfiguration(cfg => new SchemaExport(cfg).Create(false, true))
+                .ExposeConfiguration(cfg => new SchemaExport(cfg).Create(false, !dbExists))
                 .BuildSessionFactory();
         }
 

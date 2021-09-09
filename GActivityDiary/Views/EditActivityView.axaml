@@ -1,0 +1,96 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="GActivityDiary.Views.EditActivityView">
+    
+    <DockPanel>
+        <Grid DockPanel.Dock="Bottom">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Button Content="Save"
+                    Command="{Binding SaveActivityCmd}"
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Center"
+                    Margin="5"/>
+            <Button Content="Delete"
+                    Command="{Binding DeleteActivityCmd}"
+                    Grid.Column="1"
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Center"
+                    Margin="5"/>
+            <Button Content="Cancel"
+                    Grid.Column="2"
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Center"
+                    Margin="5"/>
+        </Grid>
+        <Grid Margin="5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Label Content="Name:"
+                       Grid.Row="0"
+                       Margin="5"/>
+                <TextBox Grid.Row="0"
+                         Grid.Column="1"
+                         Margin="5"
+                         Text="{Binding Name}"
+                         Watermark="Enter name"/>
+            </Grid>
+            <Label Content="Description:"
+                   Grid.Row="1"
+                   Margin="5"/>
+            <TextBox Grid.Row="2"
+                     Grid.Column="1"
+                     Margin="5"
+                     AcceptsReturn="True"
+                     Text="{Binding Description}"
+                     Watermark="Enter description"/>
+            <Grid Grid.Row="4"
+                  Margin="5">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Label Content="Start At:"
+                       Margin="5"/>
+                <Label Content="End At:"
+                       Grid.Column="1"
+                       Margin="5"/>
+                <DatePicker Grid.Row="1"
+                            Margin="5"
+                            SelectedDate="{Binding StartAtDate}"/>
+                <DatePicker Grid.Row="1"
+                            Grid.Column="1"
+                            Margin="5"
+                            SelectedDate="{Binding EndAtDate}"/>
+                <TimePicker Grid.Row="2"
+                            Margin="5"
+                            SelectedTime="{Binding StartAtTime}"/>
+                <TimePicker Grid.Row="2"
+                            Grid.Column="1"
+                            Margin="5"
+                            SelectedTime="{Binding EndAtTime}"/>
+            </Grid>
+        </Grid>
+    </DockPanel>
+    
+</UserControl>
