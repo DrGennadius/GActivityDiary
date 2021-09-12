@@ -1,6 +1,7 @@
 ﻿using GActivityDiary.Core.Models;
 using NHibernate;
 using System;
+using System.Threading.Tasks;
 
 namespace GActivityDiary.Core.DataBase
 {
@@ -23,7 +24,6 @@ namespace GActivityDiary.Core.DataBase
             Session = helper.OpenSession();
             Activities = new EntityRepository<Activity>(Session);
             Tags = new EntityRepository<Tag>(Session);
-            //_repositories = new Dictionary<string, IRepository>();
         }
 
         public DbContext()
@@ -31,36 +31,7 @@ namespace GActivityDiary.Core.DataBase
             NHibernateHelper helper = new(_dataBaseFilePath);
             Session = helper.OpenSession();
             Activities = new EntityRepository<Activity>(Session);
-            //_repositories = new Dictionary<string, IRepository>();
         }
-
-        //public void AutoRegisterRepositories()
-        //{
-        //    Type genericType = typeof(EntityRepository<>);
-        //    Type type = typeof(IEntity);
-        //    var types = AppDomain.CurrentDomain.GetAssemblies()
-        //        .SelectMany(s => s.GetTypes())
-        //        .Where(p => type.IsAssignableFrom(p) && p.IsClass);
-        //    foreach (var item in types)
-        //    {
-        //        IRepository repository = (IRepository)Activator.CreateInstance(genericType.MakeGenericType(item), _session);
-        //        Register(repository);
-        //    }
-        //}
-
-        //public void Register(IRepository repository)
-        //{
-        //    _repositories.Add(repository.GetType().Name, repository);
-        //}
-
-        //public void Unregister(IRepository repository)
-        //{
-        //    string key = repository.GetType().Name;
-        //    if (_repositories.ContainsKey(key))
-        //    {
-        //        _repositories.Remove(key);
-        //    }
-        //}
 
         public ITransaction BeginTransaction()
         {
@@ -73,6 +44,15 @@ namespace GActivityDiary.Core.DataBase
             if (transaction != null && transaction.IsActive)
             {
                 transaction.Commit();
+            }
+        }
+
+        public async Task CommitAsync()
+        {
+            var transaction = Session.GetCurrentTransaction();
+            if (transaction != null && transaction.IsActive)
+            {
+                await transaction.CommitAsync();
             }
         }
 
@@ -89,6 +69,15 @@ namespace GActivityDiary.Core.DataBase
             if (transaction != null && transaction.IsActive)
             {
                 transaction.Rollback();
+            }
+        }
+
+        public async Task RollbackAsync()
+        {
+            var transaction = Session.GetCurrentTransaction();
+            if (transaction != null && transaction.IsActive)
+            {
+                await transaction.RollbackAsync();
             }
         }
 

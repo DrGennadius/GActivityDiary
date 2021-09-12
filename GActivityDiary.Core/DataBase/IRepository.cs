@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace GActivityDiary.Core.DataBase
 {
@@ -17,14 +18,24 @@ namespace GActivityDiary.Core.DataBase
     {
         void Save(T item);
 
+        Task SaveAsync(T item);
+
         T GetById(Guid id);
 
+        Task<T> GetByIdAsync(Guid id);
+
         IList<T> GetAll();
+
+        Task<IList<T>> GetAllAsync();
 
         IQueryable<T> Query();
 
         IList<T> Find(Expression<Func<T, bool>> predicate);
 
+        Task<IList<T>> FindAsync(Expression<Func<T, bool>> predicate);
+
         void Delete(T item);
+
+        Task DeleteAsync(T item);
     }
 }

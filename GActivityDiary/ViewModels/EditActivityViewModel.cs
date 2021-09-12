@@ -64,7 +64,7 @@ namespace GActivityDiary.ViewModels
                 _activity.StartAt = startAt;
                 _activity.EndAt = endAt;
                 DB.Instance.Activities.Save(_activity);
-                ActivityListBoxViewModel.Activities = new System.Collections.ObjectModel.ObservableCollection<Activity>(DB.Instance.Activities.GetAll());
+                ActivityListBoxViewModel.GetActivities();
             }
         }
 

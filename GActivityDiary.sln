@@ -7,11 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GActivityDiary.Core", "GAct
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GActivityDiary", "GActivityDiary\GActivityDiary.csproj", "{E9FA6C57-5F7F-4C19-9F86-BF52900007EA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GActivityDiary.Core.Tests", "GActivityDiary.Core.Tests\GActivityDiary.Core.Tests.csproj", "{58E3D663-CD4B-4331-93FC-3C0ED40DE9D2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GActivityDiary.Core.Tests", "Tests\GActivityDiary.Core.Tests\GActivityDiary.Core.Tests.csproj", "{58E3D663-CD4B-4331-93FC-3C0ED40DE9D2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GenerateSampleDataBase", "Tools\GenerateSampleDataBase\GenerateSampleDataBase.csproj", "{5B4884BF-3F41-45C3-AB15-4A3412560576}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GenerateSampleDataBase", "Tests\Tools\GenerateSampleDataBase\GenerateSampleDataBase.csproj", "{5B4884BF-3F41-45C3-AB15-4A3412560576}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{CE5DF584-F04F-458E-B466-35361B5ECAAF}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{CE5DF584-F04F-458E-B466-35361B5ECAAF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -40,6 +40,7 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{58E3D663-CD4B-4331-93FC-3C0ED40DE9D2} = {CE5DF584-F04F-458E-B466-35361B5ECAAF}
 		{5B4884BF-3F41-45C3-AB15-4A3412560576} = {CE5DF584-F04F-458E-B466-35361B5ECAAF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution

@@ -11,7 +11,7 @@ namespace GenerateSampleDataBase
         static void Main(string[] args)
         {
             DbContext db = new();
-            var transaction = db.BeginTransaction();
+            db.BeginTransaction();
 
             DateTime dateTime = DateTime.Now.AddMonths(-1);
 
@@ -25,21 +25,16 @@ namespace GenerateSampleDataBase
                 dateTime = dateTime.AddMinutes(1);
                 if (i % 100000 == 0)
                 {
-                    Commit(transaction).Wait();
+                    db.Commit();
                     db.ResetSession();
-                    transaction = db.BeginTransaction();
+                    db.BeginTransaction();
                 }
             }
 
-            transaction.Commit();
+            db.Commit();
             db.Dispose();
 
             Console.WriteLine("Generated!");
-        }
-
-        static async Task Commit(ITransaction transaction)
-        {
-            await transaction.CommitAsync();
         }
     }
 }

@@ -15,8 +15,12 @@ namespace GActivityDiary.Core.DataBase
 
         void Commit();
 
+        Task CommitAsync();
+
         void ResetSession();
 
         void Rollback();
+
+        Task RollbackAsync();
     }
 }

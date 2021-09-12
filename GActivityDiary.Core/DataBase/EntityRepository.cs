@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace GActivityDiary.Core.DataBase
 {
@@ -64,6 +65,41 @@ namespace GActivityDiary.Core.DataBase
             if (isNew)
             {
                 transaction = _session.BeginTransaction();
+            }
+        }
+
+        public async Task SaveAsync(T item)
+        {
+            GetCurrentTransaction(out ITransaction transaction, out bool isNew);
+            await _session.SaveAsync(item);
+            if (isNew)
+            {
+                await transaction.CommitAsync();
+            }
+        }
+
+        public async Task<T> GetByIdAsync(Guid id)
+        {
+            return await _session.GetAsync<T>(id);
+        }
+
+        public async Task<IList<T>> GetAllAsync()
+        {
+            return new List<T>(await _session.CreateCriteria(typeof(T)).ListAsync<T>());
+        }
+
+        public async Task<IList<T>> FindAsync(Expression<Func<T, bool>> predicate)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task DeleteAsync(T item)
+        {
+            GetCurrentTransaction(out ITransaction transaction, out bool isNew);
+            await _session.DeleteAsync(item);
+            if (isNew)
+            {
+                await transaction.CommitAsync();
             }
         }
     }

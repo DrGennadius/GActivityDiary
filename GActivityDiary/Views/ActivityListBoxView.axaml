@@ -6,10 +6,6 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="GActivityDiary.Views.ActivityListBoxView">
 
-    <Control.DataContext>
-        <vm:ActivityListBoxViewModel/>
-    </Control.DataContext>
-
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
