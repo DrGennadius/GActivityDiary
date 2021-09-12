@@ -335,9 +335,33 @@ namespace GActivityDiary.Core.Tests
         }
 
         [Test]
-        public void AsyncDBTest()
+        public void AsyncTest()
         {
             // Generate a sample data and check async opertations.
+
+            Assert.Pass();
+        }
+
+        [Test]
+        public void PagingTest()
+        {
+            int size = 1000;
+
+            DbContext db = DataBaseGenerator.Generate(_testDBFilePath, size);
+
+            Assert.IsNotNull(db);
+
+            int pageIndex = 0;
+            int pageSize = 10;
+            int pageCount = size / pageSize;
+
+            for (; pageIndex < pageCount; pageIndex++)
+            {
+                var activities = db.Activities.GetAll(pageIndex, pageSize);
+            }
+
+            var emptyActivities = db.Activities.GetAll(pageIndex, pageSize);
+            Assert.IsTrue(emptyActivities.Count == 0);
 
             Assert.Pass();
         }

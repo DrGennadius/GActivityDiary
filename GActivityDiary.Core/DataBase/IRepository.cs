@@ -28,6 +28,8 @@ namespace GActivityDiary.Core.DataBase
 
         Task<IList<T>> GetAllAsync();
 
+        Task<IList<T>> GetAllAsync(int pageIndex, int pageSize);
+
         IQueryable<T> Query();
 
         IList<T> Find(Expression<Func<T, bool>> predicate);

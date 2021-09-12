@@ -33,6 +33,15 @@ namespace GActivityDiary.Core.DataBase
             return new List<T>(_session.CreateCriteria(typeof(T)).List<T>());
         }
 
+        public IList<T> GetAll(int pageIndex, int pageSize)
+        {
+            return new List<T>(_session
+                .CreateCriteria(typeof(T))
+                .SetFirstResult(pageIndex * pageSize)
+                .SetMaxResults(pageSize)
+                .List<T>());
+        }
+
         public IQueryable<T> Query()
         {
             return _session.Query<T>();
@@ -101,6 +110,15 @@ namespace GActivityDiary.Core.DataBase
             {
                 await transaction.CommitAsync();
             }
+        }
+
+        public async Task<IList<T>> GetAllAsync(int pageIndex, int pageSize)
+        {
+            return new List<T>(await _session
+                .CreateCriteria(typeof(T))
+                .SetFirstResult(pageIndex * pageSize)
+                .SetMaxResults(pageSize)
+                .ListAsync<T>());
         }
     }
 }

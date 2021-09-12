@@ -28,10 +28,10 @@ namespace GActivityDiary.ViewModels
             Selection = new SelectionModel<Activity>();
             Selection.SelectionChanged += SelectionChanged;
 
-            GetActivities();
-
             this.WhenAnyValue(x => x.Activities.Count)
                 .Subscribe(x => IsCollectionEmpty = x == 0);
+
+            GetActivities();
         }
 
         public ReactiveCommand<Unit, Unit> CreateActivityCmd { get; }

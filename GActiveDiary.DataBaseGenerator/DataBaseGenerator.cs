@@ -41,7 +41,6 @@ namespace GActiveDiary.Tests.Common.DataBaseUtils
             }
 
             db.Commit();
-            db.Dispose();
 
             return db;
         }
