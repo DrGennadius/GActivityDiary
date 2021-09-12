@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\GActiveDiary.DataBaseGenerator\GActiveDiary.Tests.Common.DataBaseUtils.csproj" />
     <ProjectReference Include="..\..\..\GActivityDiary.Core\GActivityDiary.Core.csproj" />
   </ItemGroup>
 

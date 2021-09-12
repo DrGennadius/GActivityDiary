@@ -1,3 +1,4 @@
+using GActiveDiary.Tests.Common.DataBaseUtils;
 using GActivityDiary.Core.DataBase;
 using GActivityDiary.Core.Models;
 using NHibernate;
@@ -319,6 +320,24 @@ namespace GActivityDiary.Core.Tests
 
             activities = db.Activities.GetAll();
             Assert.True(activities.Count == 0, "Activity List is not empty");
+
+            Assert.Pass();
+        }
+
+        [Test]
+        public void MassiveDBTest()
+        {
+            DbContext db = DataBaseGenerator.Generate(_testDBFilePath, 1000000, 100000);
+
+            Assert.IsNotNull(db);
+
+            Assert.Pass();
+        }
+
+        [Test]
+        public void AsyncDBTest()
+        {
+            // Generate a sample data and check async opertations.
 
             Assert.Pass();
         }

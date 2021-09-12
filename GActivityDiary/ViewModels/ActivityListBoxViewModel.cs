@@ -2,21 +2,15 @@
 using GActivityDiary.Core.Models;
 using ReactiveUI;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Reactive;
-using System.Reactive.Concurrency;
 using System.Reactive.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace GActivityDiary.ViewModels
 {
     public class ActivityListBoxViewModel : ViewModelBase
     {
-        //private readonly ObservableAsPropertyHelper<List<Activity>> _activities;
-
         private ViewModelBase? _singleActivityContent = null;
 
         private ObservableCollection<Activity> _activities = new();
@@ -36,37 +30,8 @@ namespace GActivityDiary.ViewModels
 
             GetActivities();
 
-            //LoadActivities = ReactiveCommand.CreateFromTask(async () => await GetActivities());
-
-            //_activities = LoadActivities.ToProperty(this, x => x.Activities, scheduler: RxApp.MainThreadScheduler);
-
-            //this.WhenAnyValue(x => x.Activities.Count)
-            //    .Subscribe(x => IsCollectionEmpty = x == 0);
-
-            //var sdf = GetItemsSource();
-
-            //RxApp.MainThreadScheduler.ScheduleAsync(async (scheduler, token) =>
-            //{
-            //    var activities = await DB.Instance.Activities.GetAllAsync();
-            //    Activities = new ObservableCollection<Activity>(activities);
-            //});
-        }
-
-        //public ReactiveCommand<Unit, List<Activity>> LoadActivities { get; }
-
-        //public List<Activity> Activities => _activities.Value;
-
-        public IObservable<Activity> GetItemsSource()
-        {
-            return Observable.Create<Activity>(
-            async obs =>
-            {
-                var activities = await DB.Instance.Activities.GetAllAsync();
-                foreach (var acitvity in activities)
-                {
-                    obs.OnNext(acitvity);
-                }
-            });
+            this.WhenAnyValue(x => x.Activities.Count)
+                .Subscribe(x => IsCollectionEmpty = x == 0);
         }
 
         public ReactiveCommand<Unit, Unit> CreateActivityCmd { get; }
