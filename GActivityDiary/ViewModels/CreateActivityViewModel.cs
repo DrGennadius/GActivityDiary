@@ -60,7 +60,7 @@ namespace GActivityDiary.ViewModels
                 EndAt = endAt
             };
             DB.Instance.Activities.Save(activity);
-            ActivityListBoxViewModel.Activities.Add(activity);
+            ActivityListBoxViewModel.GoToLastPageForce();
         }
     }
 }

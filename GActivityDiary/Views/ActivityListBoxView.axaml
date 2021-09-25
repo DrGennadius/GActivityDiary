@@ -3,7 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:GActivityDiary.ViewModels"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             mc:Ignorable="d" d:DesignWidth="1366" d:DesignHeight="450"
              x:Class="GActivityDiary.Views.ActivityListBoxView">
 
     <Grid>
@@ -12,24 +12,92 @@
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
-        <ListBox Items="{Binding Activities}"
-                 SelectedItem="{Binding SelectedActivity}"
-                 Selection="{Binding Selection}"
-                 SelectionMode="Single">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <Grid Background="Transparent">
-                        <TextBlock Text="{Binding Name}"/>
-                    </Grid>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Text="Total items:"
+                           VerticalAlignment="Center"
+                           Margin="5"/>
+                <TextBlock Text="{Binding CollectionCount}"
+                           Grid.Column="1"
+                           VerticalAlignment="Center"
+                           Margin="5"/>
+                <TextBlock Text="Total pages:"
+                           Grid.Column="2"
+                           VerticalAlignment="Center"
+                           Margin="5"/>
+                <TextBlock Text="{Binding PageCount}"
+                           Grid.Column="3"
+                           VerticalAlignment="Center"
+                           Margin="5"/>
+                <TextBlock Text="Page size:"
+                           Grid.Column="4"
+                           VerticalAlignment="Center"
+                           Margin="5"/>
+                <DropDown Items="{Binding PageSizeOptions}"
+                          SelectedItem="{Binding PageSize}"
+                          Grid.Column="5"
+                          Margin="5"/>
+                <NumericUpDown Value="{Binding PageNumber}" 
+                               Minimum="1"
+                               Maximum="{Binding PageCount}"
+                               Grid.Column="6"
+                               Margin="5"/>
+                <Button Content="First"
+                        Command="{Binding GoToFirstPageCmd}"
+                        Grid.Column="7"
+                        Margin="5"/>
+                <Button Content="Last"
+                        Command="{Binding GoToLastPageCmd}"
+                        Grid.Column="8"
+                        Margin="0,5"/>
+                
+            </Grid>
+            
+            <ProgressBar Grid.Row="1"
+                         IsIndeterminate="{Binding IsProgressBarIndeterminate}"
+                         IsEnabled="{Binding IsProgressBarEnable}"/>
+            
+            <ListBox Items="{Binding Activities}"
+                     SelectedItem="{Binding SelectedActivity}"
+                     Selection="{Binding Selection}"
+                     SelectionMode="Single"
+                     Grid.Row="2">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Background="Transparent">
+                            <TextBlock Text="{Binding Name}"/>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            
+        </Grid>
 
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
+            
             <Button Content="Create new activity"
                     Command="{Binding CreateActivityCmd}"
                     HorizontalAlignment="Stretch"
@@ -40,6 +108,7 @@
                          Content="{Binding SingleActivityContent}"
                          MaxWidth="800"
                          MinWidth="700"/>
+            
         </Grid>
         
     </Grid>
