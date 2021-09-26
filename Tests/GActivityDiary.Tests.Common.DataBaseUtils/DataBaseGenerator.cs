@@ -1,6 +1,7 @@
 ﻿using GActivityDiary.Core.DataBase;
 using GActivityDiary.Core.Models;
 using System;
+using System.Collections.Generic;
 
 namespace GActiveDiary.Tests.Common.DataBaseUtils
 {
@@ -12,10 +13,10 @@ namespace GActiveDiary.Tests.Common.DataBaseUtils
         /// <summary>
         /// Generate sample database and return <see cref="DbContext"/>.
         /// </summary>
-        /// <param name="dbFilePath"></param>
-        /// <param name="activityCount"></param>
-        /// <param name="cleanStep"></param>
-        /// <returns></returns>
+        /// <param name="dbFilePath">Database file path.</param>
+        /// <param name="activityCount">Number of activities.</param>
+        /// <param name="cleanStep">Cleaning step.</param>
+        /// <returns><see cref="DbContext"/></returns>
         public static DbContext Generate(string dbFilePath = null, int activityCount = 1000000, int cleanStep = 100000)
         {
             DbContext db = string.IsNullOrEmpty(dbFilePath) ? new() : new(dbFilePath);
@@ -23,14 +24,20 @@ namespace GActiveDiary.Tests.Common.DataBaseUtils
 
             DateTime dateTime = DateTime.Now.AddMonths(-1);
 
-            // TODO: Create a new class to generate sample data.
+            Tag defaultTag = new("default");
+            defaultTag.Id = db.Tags.Save(defaultTag);
+
             for (int i = 1; i <= activityCount; i++)
             {
-                db.Activities.Save(new Activity()
+                Activity activity = new()
                 {
                     Name = $"Test Activity {i}",
-                    CreatedAt = dateTime
-                });
+                    CreatedAt = dateTime,
+                    StartAt = dateTime,
+                    EndAt = dateTime.AddHours(1)
+                };
+                activity.Tags.Add(defaultTag);
+                db.Activities.Save(activity);
                 dateTime = dateTime.AddMinutes(1);
                 if (i % cleanStep == 0)
                 {

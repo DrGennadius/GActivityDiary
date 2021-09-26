@@ -1,6 +1,7 @@
 ﻿using GActivityDiary.Core.Models;
 using NHibernate;
 using NHibernate.Criterion;
+using NHibernate.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -101,7 +102,7 @@ namespace GActivityDiary.Core.DataBase
 
         public async Task<IList<T>> FindAsync(Expression<Func<T, bool>> predicate)
         {
-            throw new NotImplementedException();
+            return await Query().Where(predicate).ToListAsync();
         }
 
         public async Task DeleteAsync(T item)
