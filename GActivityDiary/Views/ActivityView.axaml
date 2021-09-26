@@ -1,0 +1,71 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:GActivityDiary.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="700" d:DesignHeight="600"
+             x:Class="GActivityDiary.Views.ActivityView">
+
+    <Grid Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+            <Label Content="{Binding Name}"
+                   Margin="5"
+                   FontSize="24"
+                   FontWeight="Bold"/>
+            <Button Content="Edit"
+                    Command="{Binding EditActivityCmd}"
+                    Grid.Column="1"
+                    Margin="0,5"/>
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Label Content="Start At:"
+                   Margin="5"/>
+            <Label Content="End At:"
+                   Grid.Row="1"
+                   Margin="5"/>
+            <Label Content="{Binding StartAt}"
+                   Grid.Column="1"
+                   Margin="5"/>
+            <Label Content="{Binding EndAt}"
+                   Grid.Row="1"
+                   Grid.Column="1"
+                   Margin="5"/>
+        </Grid>
+
+        <Grid Grid.Row="2" 
+              IsVisible="{Binding IsDescriptionVisible}">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <Label Content="Description:"
+                   Margin="5"/>
+            <TextBlock Text="{Binding Description}"
+                       Grid.Row="1"
+                       Margin="5"/>
+        </Grid>        
+        
+    </Grid>
+
+</UserControl>

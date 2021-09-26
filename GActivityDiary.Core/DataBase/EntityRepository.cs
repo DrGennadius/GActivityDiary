@@ -57,14 +57,15 @@ namespace GActivityDiary.Core.DataBase
             return _session.Get<T>(id);
         }
 
-        public void Save(T item)
+        public Guid Save(T item)
         {
             GetCurrentTransaction(out ITransaction transaction, out bool isNew);
-            _session.Save(item);
+            Guid uid = (Guid)_session.Save(item);
             if (isNew)
             {
                 transaction.Commit();
             }
+            return uid;
         }
 
         public void GetCurrentTransaction(out ITransaction transaction, out bool isNew)

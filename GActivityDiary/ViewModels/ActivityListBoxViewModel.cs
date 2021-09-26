@@ -22,7 +22,7 @@ namespace GActivityDiary.ViewModels
 
         private CancellationTokenSource _tokenSource = new();
 
-        private Task _loadActivitiesTask;
+        private Task _updateTask;
 
         private readonly int[] _pageSizes = { 5, 10, 15, 30, 50, 100 };
 
@@ -39,6 +39,7 @@ namespace GActivityDiary.ViewModels
         public ActivityListBoxViewModel()
         {
             CreateActivityCmd = ReactiveCommand.Create(() => CreateActivity());
+            EditActivityCmd = ReactiveCommand.Create<Activity>(x => EditActivity(x));
             GoToFirstPageCmd = ReactiveCommand.Create(() => GoToFirstPage());
             GoToLastPageCmd = ReactiveCommand.Create(() => GoToLastPage());
 
@@ -54,6 +55,8 @@ namespace GActivityDiary.ViewModels
         }
 
         public ReactiveCommand<Unit, Unit> CreateActivityCmd { get; }
+
+        public ReactiveCommand<Activity, Unit> EditActivityCmd { get; }
 
         public ReactiveCommand<Unit, Unit> GoToFirstPageCmd { get; }
 
@@ -119,7 +122,7 @@ namespace GActivityDiary.ViewModels
             set
             {
                 this.RaiseAndSetIfChanged(ref _pageSize, value);
-                GetActivities();
+                Update();
             }
         }
 
@@ -135,27 +138,23 @@ namespace GActivityDiary.ViewModels
             set
             {
                 this.RaiseAndSetIfChanged(ref _pageNumber, value);
-                GetActivities();
+                Update();
             }
         }
 
         public List<int> PageSizeOptions => _pageSizes.ToList();
 
-        private void CreateActivity()
-        {
-            SingleActivityContent = new CreateActivityViewModel(this);
-        }
 
-        public void GetActivities()
+        public void Update(Guid? targetActivityId = null)
         {
-            // TODO: Solve this sh*t.
-            if (_loadActivitiesTask != null && !_loadActivitiesTask.IsCompleted)
+            // TODO: Solve this.
+            if (_updateTask != null && !_updateTask.IsCompleted)
             {
                 _tokenSource.Cancel();
-                _loadActivitiesTask.Wait();
+                _updateTask.Wait();
                 _tokenSource = new();
             }
-            _loadActivitiesTask = Task.Run(() => GetActivitiesAsync(PageNumber - 1, PageSize), _tokenSource.Token);
+            _updateTask = Task.Run(() => UpdateAsync(PageNumber - 1, PageSize, targetActivityId), _tokenSource.Token);
         }
 
         public void GoToLastPageForce()
@@ -183,13 +182,20 @@ namespace GActivityDiary.ViewModels
             }
         }
 
-        private async void GetActivitiesAsync(int pageIndex, int pageSize)
+        private async void UpdateAsync(int pageIndex, int pageSize, Guid? targetActivityId = null)
         {
             IsProgressBarEnable = true;
             CollectionCount = DB.Instance.Activities.Query().Count();
             PageCount = (CollectionCount + PageSize - 1) / PageSize;
             IsProgressBarIndeterminate = true;
-            Activities = new ObservableCollection<Activity>(await DB.Instance.Activities.GetAllAsync(pageIndex, pageSize));
+            Activities = null;
+            var activities = await DB.Instance.Activities.GetAllAsync(pageIndex, pageSize);
+            Activities = new ObservableCollection<Activity>(activities);
+            if (targetActivityId.HasValue)
+            {
+                var targetActivty = DB.Instance.Activities.GetById(targetActivityId.Value);
+                SelectedActivity = targetActivty;
+            }
             IsProgressBarIndeterminate = false;
             IsProgressBarEnable = false;
         }
@@ -200,8 +206,23 @@ namespace GActivityDiary.ViewModels
             var activity = selectionModel?.SelectedItem;
             if (activity != null)
             {
-                SingleActivityContent = new EditActivityViewModel(this, activity);
+                ViewActivity(activity);
             }
+        }
+
+        public void ViewActivity(Activity activity)
+        {
+            SingleActivityContent = new ActivityViewModel(this, activity);
+        }
+
+        public void EditActivity(Activity activity)
+        {
+            SingleActivityContent = new EditActivityViewModel(this, activity);
+        }
+
+        public void CreateActivity()
+        {
+            SingleActivityContent = new CreateActivityViewModel(this);
         }
     }
 }

@@ -16,6 +16,8 @@ namespace GActivityDiary.ViewModels
         {
             ActivityListBoxViewModel = activityListBoxViewModel;
             CreateActivityCmd = ReactiveCommand.Create(() => CreateActivity());
+            CancelCmd = ReactiveCommand.Create(() => Cancel());
+
             DateTime now = DateTime.Now;
             DateTime inHour = now.AddHours(1);
             StartAtDate = now.Date;
@@ -40,6 +42,8 @@ namespace GActivityDiary.ViewModels
 
         public ReactiveCommand<Unit, Unit> CreateActivityCmd { get; }
 
+        public ReactiveCommand<Unit, Unit> CancelCmd { get; }
+
         public void CreateActivity()
         {
             DateTime? startAt = StartAtDate?.Date;
@@ -59,8 +63,20 @@ namespace GActivityDiary.ViewModels
                 StartAt = startAt,
                 EndAt = endAt
             };
-            DB.Instance.Activities.Save(activity);
-            ActivityListBoxViewModel.GoToLastPageForce();
+            var uid = DB.Instance.Activities.Save(activity);
+            ActivityListBoxViewModel.Update(uid);
+        }
+
+        private void Cancel()
+        {
+            if (ActivityListBoxViewModel.SelectedActivity != null)
+            {
+                ActivityListBoxViewModel.ViewActivity(ActivityListBoxViewModel.SelectedActivity);
+            }
+            else
+            {
+                ActivityListBoxViewModel.CreateActivity();
+            }
         }
     }
 }

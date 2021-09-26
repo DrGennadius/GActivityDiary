@@ -16,7 +16,7 @@ namespace GActivityDiary.Core.DataBase
 
     public interface IRepository<T> : IRepository where T : IEntity
     {
-        void Save(T item);
+        Guid Save(T item);
 
         Task SaveAsync(T item);
 

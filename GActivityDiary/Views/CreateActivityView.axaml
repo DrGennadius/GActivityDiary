@@ -18,6 +18,7 @@
                     HorizontalContentAlignment="Center"
                     Margin="5"/>
             <Button Content="Cancel"
+                    Command="{Binding CancelCmd}"
                     Grid.Column="1"
                     HorizontalAlignment="Stretch"
                     HorizontalContentAlignment="Center"
