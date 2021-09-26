@@ -78,14 +78,15 @@ namespace GActivityDiary.Core.DataBase
             }
         }
 
-        public async Task SaveAsync(T item)
+        public async Task<Guid> SaveAsync(T item)
         {
             GetCurrentTransaction(out ITransaction transaction, out bool isNew);
-            await _session.SaveAsync(item);
+            Guid uid = (Guid) await _session.SaveAsync(item);
             if (isNew)
             {
                 await transaction.CommitAsync();
             }
+            return uid;
         }
 
         public async Task<T> GetByIdAsync(Guid id)

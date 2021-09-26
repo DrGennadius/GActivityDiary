@@ -21,6 +21,7 @@ namespace GActivityDiary.ViewModels
             Description = activity.Description;
             StartAt = activity.StartAt;
             EndAt = activity.EndAt;
+            Tags = string.Join(", ", activity.Tags.Select(x => x.Name));
 
             EditActivityCmd = ReactiveCommand.Create(() => EditActivity());
         }
@@ -28,6 +29,8 @@ namespace GActivityDiary.ViewModels
         public string Name { get; set; } = "";
 
         public string Description { get; set; }
+
+        public string Tags { get; set; }
 
         public DateTime? StartAt { get; set; }
 
@@ -38,6 +41,8 @@ namespace GActivityDiary.ViewModels
         public ReactiveCommand<Unit, Unit> EditActivityCmd { get; }
 
         public bool IsDescriptionVisible => !string.IsNullOrWhiteSpace(Description);
+
+        public bool IsTagsVisible => !string.IsNullOrWhiteSpace(Tags);
 
         public void EditActivity()
         {

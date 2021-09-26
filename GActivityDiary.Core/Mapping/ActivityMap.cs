@@ -17,7 +17,8 @@ namespace GActivityDiary.Core.Mapping
                 .Not.Nullable();
             Map(x => x.Description);
             HasManyToMany(x => x.Tags)
-                .Cascade.All();
+                .Cascade.SaveUpdate()
+                .Not.LazyLoad();
         }
     }
 }

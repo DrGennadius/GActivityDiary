@@ -1,4 +1,5 @@
 ﻿using Avalonia.Controls;
+using GActivityDiary.Core.Helpers;
 using GActivityDiary.Core.Models;
 using ReactiveUI;
 using System;
@@ -30,6 +31,8 @@ namespace GActivityDiary.ViewModels
 
         public string? Description { get; set; }
 
+        public string Tags { get; set; }
+
         public DateTimeOffset? StartAtDate { get; set; }
 
         public DateTimeOffset? EndAtDate { get; set; }
@@ -56,14 +59,17 @@ namespace GActivityDiary.ViewModels
             {
                 endAt = endAt.Value.Add(EndAtTime.Value);
             }
+            var tags = TagHelper.GetOrCreateTags(DB.Instance.Tags, Tags);
             Activity activity = new()
             {
                 Name = Name,
                 Description = Description,
                 StartAt = startAt,
-                EndAt = endAt
+                EndAt = endAt,
+                Tags = new HashSet<Tag>(tags)
             };
             var uid = DB.Instance.Activities.Save(activity);
+            DB.Instance.Commit();
             ActivityListBoxViewModel.Update(uid);
         }
 

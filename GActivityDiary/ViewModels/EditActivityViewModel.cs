@@ -1,6 +1,8 @@
-﻿using GActivityDiary.Core.Models;
+﻿using GActivityDiary.Core.Helpers;
+using GActivityDiary.Core.Models;
 using ReactiveUI;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reactive;
 
@@ -21,6 +23,7 @@ namespace GActivityDiary.ViewModels
             StartAtTime = activity.StartAt?.TimeOfDay;
             EndAtDate = activity.EndAt?.Date;
             EndAtTime = activity.EndAt?.TimeOfDay;
+            Tags = string.Join(", ", activity.Tags.Select(x => x.Name));
 
             SaveActivityCmd = ReactiveCommand.Create(() => SaveActivity());
             DeleteActivityCmd = ReactiveCommand.Create(() => DeleteActivity());
@@ -30,6 +33,8 @@ namespace GActivityDiary.ViewModels
         public string Name { get; set; } = "";
 
         public string? Description { get; set; }
+
+        public string Tags { get; set; }
 
         public DateTimeOffset? StartAtDate { get; set; }
 
@@ -63,6 +68,8 @@ namespace GActivityDiary.ViewModels
             _activity.Description = Description;
             _activity.StartAt = startAt;
             _activity.EndAt = endAt;
+            var tags = TagHelper.GetOrCreateTags(DB.Instance.Tags, Tags);
+            _activity.Tags = new HashSet<Tag>(tags);
             DB.Instance.Activities.Save(_activity);
             ActivityListBoxViewModel.Update(_activity.Id);
         }

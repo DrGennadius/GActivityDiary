@@ -31,6 +31,8 @@
                 <RowDefinition Height="auto"/>
                 <RowDefinition/>
                 <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
@@ -91,6 +93,15 @@
                             Margin="5"
                             SelectedTime="{Binding EndAtTime}"/>
             </Grid>
+            <Label Content="Tags:"
+                   Grid.Row="5"
+                   Margin="5"/>
+            <TextBox Grid.Row="6"
+                     Grid.Column="1"
+                     Margin="5"
+                     AcceptsReturn="True"
+                     Text="{Binding Tags}"
+                     Watermark="Enter tags"/>
         </Grid>
     </DockPanel>
     

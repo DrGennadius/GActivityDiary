@@ -31,6 +31,7 @@ namespace GActivityDiary.Core.DataBase
             NHibernateHelper helper = new(_dataBaseFilePath);
             Session = helper.OpenSession();
             Activities = new EntityRepository<Activity>(Session);
+            Tags = new EntityRepository<Tag>(Session);
         }
 
         public ITransaction BeginTransaction()

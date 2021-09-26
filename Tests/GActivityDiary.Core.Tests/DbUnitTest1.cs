@@ -11,7 +11,7 @@ using System.Linq;
 
 namespace GActivityDiary.Core.Tests
 {
-    public class Tests
+    public class DbUnitTest1
     {
         private const string _testDBFilePath = "test.db";
 
@@ -265,8 +265,8 @@ namespace GActivityDiary.Core.Tests
                 CreatedAt = now.AddHours(1)
             };
 
+            activity3.Tags.Add(tags.ToArray()[0]);
             activity3.Tags.Add(new Tag("test"));
-            bool d = activity2.Tags.ToArray()[0].Equals(activity2.Tags.ToArray()[1]);
 
             db.BeginTransaction();
             db.Activities.Save(activity1);
@@ -310,7 +310,18 @@ namespace GActivityDiary.Core.Tests
             Assert.True(queryActivities1.Count == 2, "Activity list 2 length is not 2");
             Assert.True(foundActivities2.Count == 2, "Activity list 3 length is not 2");
 
-            // 5. Delete
+            // 5. Tags
+
+            var foundTags = db.Tags.Query().Where(x => x.Name == tags.ToArray()[0].Name).ToList();
+            Assert.True(foundTags.Count == 1, "Tags Length is not 4");
+
+            var activitiesWithTestTag = db.Activities.Find(x => x.Tags.Any(x => x.Name == "test")).ToList();
+            Assert.True(activitiesWithTestTag.Count == 1, "Activity Length is not 1");
+
+            activitiesWithTestTag = db.Activities.Find(x => x.Tags.Any(x => x.Name == tags.ToArray()[0].Name)).ToList();
+            Assert.True(activitiesWithTestTag.Count == 2, "Activity Length is not 2");
+
+            // 6. Delete
 
             db.BeginTransaction();
             db.Activities.Delete(activities[0]);

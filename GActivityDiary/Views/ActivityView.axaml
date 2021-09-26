@@ -64,8 +64,22 @@
             <TextBlock Text="{Binding Description}"
                        Grid.Row="1"
                        Margin="5"/>
-        </Grid>        
-        
+        </Grid>
+
+        <Grid Grid.Row="3"
+              IsVisible="{Binding IsTagsVisible}"
+              VerticalAlignment="Top">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Label Content="Tags:"
+                   Margin="5"/>
+            <TextBlock Text="{Binding Tags}"
+                       Grid.Row="1"
+                       Margin="5"/>
+        </Grid>
+
     </Grid>
 
 </UserControl>

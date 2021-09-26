@@ -24,6 +24,8 @@ namespace GActivityDiary.Core.Models
 
         public virtual string Name { get; set; }
 
+        // public virtual ICollection<Activity> Activities { get; set; } = new List<Activity>();
+
         public override string ToString()
         {
             return Name;

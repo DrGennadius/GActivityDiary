@@ -18,7 +18,7 @@ namespace GActivityDiary.Core.DataBase
     {
         Guid Save(T item);
 
-        Task SaveAsync(T item);
+        Task<Guid> SaveAsync(T item);
 
         T GetById(Guid id);
 
