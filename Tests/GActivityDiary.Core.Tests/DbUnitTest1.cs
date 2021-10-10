@@ -1,5 +1,6 @@
 using GActiveDiary.Tests.Common.DataBaseUtils;
 using GActivityDiary.Core.DataBase;
+using GActivityDiary.Core.Helpers;
 using GActivityDiary.Core.Models;
 using NHibernate;
 using NUnit.Framework;

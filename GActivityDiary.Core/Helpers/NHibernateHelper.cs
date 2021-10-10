@@ -5,7 +5,7 @@ using NHibernate;
 using NHibernate.Tool.hbm2ddl;
 using System.IO;
 
-namespace GActivityDiary.Core.DataBase
+namespace GActivityDiary.Core.Helpers
 {
     public class NHibernateHelper
     {

@@ -1,13 +1,9 @@
-﻿using Avalonia.Controls;
-using GActivityDiary.Core.Helpers;
+﻿using GActivityDiary.Core.Helpers;
 using GActivityDiary.Core.Models;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reactive;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GActivityDiary.ViewModels
 {
@@ -31,7 +27,7 @@ namespace GActivityDiary.ViewModels
 
         public string? Description { get; set; }
 
-        public string Tags { get; set; }
+        public string? Tags { get; set; }
 
         public DateTimeOffset? StartAtDate { get; set; }
 

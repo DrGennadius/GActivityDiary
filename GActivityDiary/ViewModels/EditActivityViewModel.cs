@@ -77,7 +77,6 @@ namespace GActivityDiary.ViewModels
         private void DeleteActivity()
         {
             DB.Instance.Activities.Delete(_activity);
-            _activity = null;
             ActivityListBoxViewModel.Update();
             ActivityListBoxViewModel.CreateActivity();
         }

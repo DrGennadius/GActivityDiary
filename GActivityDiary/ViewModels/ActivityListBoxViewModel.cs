@@ -14,16 +14,6 @@ namespace GActivityDiary.ViewModels
 {
     public class ActivityListBoxViewModel : ViewModelBase
     {
-        private ViewModelBase? _singleActivityContent = null;
-
-        private ObservableCollection<Activity> _activities = new();
-
-        private Activity? _selectedActivity = null;
-
-        private CancellationTokenSource _tokenSource = new();
-
-        private Task _updateTask;
-
         private readonly int[] _pageSizes = { 5, 10, 15, 30, 50, 100 };
 
         private bool _isShowCreateActivityButton = false;
@@ -35,6 +25,12 @@ namespace GActivityDiary.ViewModels
         private int _pageSize;
         private int _pageCount;
         private int _pageNumber = 1;
+
+        private ViewModelBase? _singleActivityContent = null;
+        private ObservableCollection<Activity> _activities = new();
+        private Activity? _selectedActivity = null;
+        private CancellationTokenSource _tokenSource = new();
+        private Task? _updateTask = null;
 
         public ActivityListBoxViewModel()
         {
@@ -144,7 +140,6 @@ namespace GActivityDiary.ViewModels
 
         public List<int> PageSizeOptions => _pageSizes.ToList();
 
-
         public void Update(Guid? targetActivityId = null)
         {
             // TODO: Solve this.
@@ -162,6 +157,21 @@ namespace GActivityDiary.ViewModels
             CollectionCount = DB.Instance.Activities.Query().Count();
             PageCount = (CollectionCount + PageSize - 1) / PageSize;
             PageNumber = PageCount;
+        }
+
+        public void ViewActivity(Activity activity)
+        {
+            SingleActivityContent = new ActivityViewModel(this, activity);
+        }
+
+        public void EditActivity(Activity activity)
+        {
+            SingleActivityContent = new EditActivityViewModel(this, activity);
+        }
+
+        public void CreateActivity()
+        {
+            SingleActivityContent = new CreateActivityViewModel(this);
         }
 
         private void GoToFirstPage()
@@ -188,7 +198,7 @@ namespace GActivityDiary.ViewModels
             CollectionCount = DB.Instance.Activities.Query().Count();
             PageCount = (CollectionCount + PageSize - 1) / PageSize;
             IsProgressBarIndeterminate = true;
-            Activities = null;
+            Activities.Clear();
             var activities = await DB.Instance.Activities.GetAllAsync(pageIndex, pageSize);
             Activities = new ObservableCollection<Activity>(activities);
             if (targetActivityId.HasValue)
@@ -208,21 +218,6 @@ namespace GActivityDiary.ViewModels
             {
                 ViewActivity(activity);
             }
-        }
-
-        public void ViewActivity(Activity activity)
-        {
-            SingleActivityContent = new ActivityViewModel(this, activity);
-        }
-
-        public void EditActivity(Activity activity)
-        {
-            SingleActivityContent = new EditActivityViewModel(this, activity);
-        }
-
-        public void CreateActivity()
-        {
-            SingleActivityContent = new CreateActivityViewModel(this);
-        }
+        }        
     }
 }

@@ -1,12 +1,12 @@
 ﻿using NHibernate;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace GActivityDiary.Core.DataBase
 {
+    /// <summary>
+    /// Database Context (UoW)
+    /// </summary>
     public interface IDbContext : IDisposable
     {
         ISession Session { get; }

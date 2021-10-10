@@ -1,10 +1,13 @@
-﻿using GActivityDiary.Core.Models;
+﻿using GActivityDiary.Core.Helpers;
+using GActivityDiary.Core.Models;
 using NHibernate;
-using System;
 using System.Threading.Tasks;
 
 namespace GActivityDiary.Core.DataBase
 {
+    /// <summary>
+    /// Database Context (UoW)
+    /// </summary>
     public class DbContext : IDbContext
     {
         private string _dataBaseFilePath = "ActivityDiary.db";

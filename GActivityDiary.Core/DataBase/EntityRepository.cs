@@ -1,6 +1,5 @@
 ﻿using GActivityDiary.Core.Models;
 using NHibernate;
-using NHibernate.Criterion;
 using NHibernate.Linq;
 using System;
 using System.Collections.Generic;
@@ -10,6 +9,10 @@ using System.Threading.Tasks;
 
 namespace GActivityDiary.Core.DataBase
 {
+    /// <summary>
+    /// Repository of <see cref="IEntity"/>.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class EntityRepository<T> : IRepository<T> where T : IEntity
     {
         private ISession _session;

@@ -1,6 +1,5 @@
 ﻿using GActivityDiary.Core.Models;
 using NHibernate;
-using NHibernate.Criterion;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +8,18 @@ using System.Threading.Tasks;
 
 namespace GActivityDiary.Core.DataBase
 {
+    /// <summary>
+    /// Repository.
+    /// </summary>
     public interface IRepository
     {
         void GetCurrentTransaction(out ITransaction transaction, out bool isNew);
     }
 
+    /// <summary>
+    /// Repository of <see cref="IEntity"/>.
+    /// </summary>
+    /// <typeparam name="T">Entity</typeparam>
     public interface IRepository<T> : IRepository where T : IEntity
     {
         Guid Save(T item);
