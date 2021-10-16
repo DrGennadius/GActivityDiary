@@ -13,4 +13,9 @@
     <PackageReference Include="System.Data.SQLite" Version="1.0.114.4" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Reports\Excel\" />
+    <Folder Include="Reports\Text\" />
+  </ItemGroup>
+
 </Project>

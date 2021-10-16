@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace GActivityDiary.Core.Tests
 {
-    public class DbUnitTest1
+    public class DbUnitTests
     {
         private const string _testDBFilePath = "test.db";
 
