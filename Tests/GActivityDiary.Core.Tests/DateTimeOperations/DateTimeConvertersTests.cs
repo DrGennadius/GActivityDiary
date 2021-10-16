@@ -1,5 +1,6 @@
 ﻿using GActivityDiary.Core.Common;
 using GActivityDiary.Core.Converters.Text;
+using GActivityDiary.Core.Converters.Time;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GActivityDiary.Core.Tests
+namespace GActivityDiary.Core.Tests.DateTimeOperations
 {
     public class DateTimeConvertersTests
     {
@@ -46,6 +47,17 @@ namespace GActivityDiary.Core.Tests
                 TimeSpan timeSpan = converter.FromText(item.Value);
                 Assert.AreEqual(timeSpan, item.Key);
             }
+
+            Assert.Pass();
+        }
+
+        [Test]
+        public void TimeConverterTest()
+        {
+            Assert.AreEqual(TimeConverter.GetHours(1, 30), 1.5);
+            Assert.AreEqual(TimeConverter.GetMinutes(1, 30), 90);
+            Assert.AreEqual(TimeConverter.GetHoursAndMinutesFromHours(1.5), (1, 30));
+            Assert.AreEqual(TimeConverter.GetHoursAndMinutes(90), (1, 30));
 
             Assert.Pass();
         }
