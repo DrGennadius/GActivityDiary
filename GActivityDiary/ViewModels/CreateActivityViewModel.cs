@@ -9,13 +9,13 @@ namespace GActivityDiary.ViewModels
 {
     public class CreateActivityViewModel : ViewModelBase
     {
-        public CreateActivityViewModel(ActivityListBoxViewModel activityListBoxViewModel)
+        public CreateActivityViewModel(ActivityListBoxViewModelBase activityListBoxViewModel)
         {
             ActivityListBoxViewModel = activityListBoxViewModel;
             CreateActivityCmd = ReactiveCommand.Create(() => CreateActivity());
             CancelCmd = ReactiveCommand.Create(() => Cancel());
 
-            DateTime now = DateTime.Now;
+            DateTime now = TimeRounderHelper.Floor(DateTime.Now);
             DateTime inHour = now.AddHours(1);
             StartAtDate = now.Date;
             StartAtTime = now.TimeOfDay;
@@ -37,7 +37,7 @@ namespace GActivityDiary.ViewModels
 
         public TimeSpan? EndAtTime { get; set; }
 
-        public ActivityListBoxViewModel ActivityListBoxViewModel { get; }
+        public ActivityListBoxViewModelBase ActivityListBoxViewModel { get; }
 
         public ReactiveCommand<Unit, Unit> CreateActivityCmd { get; }
 

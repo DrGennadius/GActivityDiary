@@ -12,12 +12,10 @@ using System.Threading.Tasks;
 
 namespace GActivityDiary.ViewModels
 {
-    public class ActivityListBoxViewModel : ViewModelBase
+    public class ActivityListBoxViewModel : ActivityListBoxViewModelBase
     {
         private readonly int[] _pageSizes = { 5, 10, 15, 30, 50, 100 };
 
-        private bool _isShowCreateActivityButton = false;
-        private bool _isCollectionEmpty = false;
         private bool _isProgressBarIndeterminate;
         private bool _isProgressBarEnable;
 
@@ -26,73 +24,19 @@ namespace GActivityDiary.ViewModels
         private int _pageCount;
         private int _pageNumber = 1;
 
-        private ViewModelBase? _singleActivityContent = null;
-        private ObservableCollection<Activity> _activities = new();
-        private Activity? _selectedActivity = null;
-        private CancellationTokenSource _tokenSource = new();
-        private Task? _updateTask = null;
-
         public ActivityListBoxViewModel()
+            : base()
         {
-            CreateActivityCmd = ReactiveCommand.Create(() => CreateActivity());
-            EditActivityCmd = ReactiveCommand.Create<Activity>(x => EditActivity(x));
             GoToFirstPageCmd = ReactiveCommand.Create(() => GoToFirstPage());
             GoToLastPageCmd = ReactiveCommand.Create(() => GoToLastPage());
-
-            SingleActivityContent = new CreateActivityViewModel(this);
-            Selection = new SelectionModel<Activity>();
-            Selection.SelectionChanged += SelectionChanged;
-
-            this.WhenAnyValue(x => x.Activities.Count)
-                .Subscribe(x => IsCollectionEmpty = x == 0);
 
             _pageSize = 15;
             GoToLastPageForce();
         }
 
-        public ReactiveCommand<Unit, Unit> CreateActivityCmd { get; }
-
-        public ReactiveCommand<Activity, Unit> EditActivityCmd { get; }
-
         public ReactiveCommand<Unit, Unit> GoToFirstPageCmd { get; }
 
         public ReactiveCommand<Unit, Unit> GoToLastPageCmd { get; }
-
-        public SelectionModel<Activity> Selection { get; }
-
-        public ViewModelBase? SingleActivityContent
-        {
-            get => _singleActivityContent;
-            set
-            {
-                IsShowCreateActivityButton = !(value is CreateActivityViewModel);
-                this.RaiseAndSetIfChanged(ref _singleActivityContent, value);
-            }
-        }
-
-        public ObservableCollection<Activity> Activities
-        {
-            get => _activities;
-            set => this.RaiseAndSetIfChanged(ref _activities, value);
-        }
-
-        public Activity? SelectedActivity
-        {
-            get => _selectedActivity;
-            set => this.RaiseAndSetIfChanged(ref _selectedActivity, value);
-        }
-
-        public bool IsShowCreateActivityButton 
-        { 
-            get => _isShowCreateActivityButton; 
-            set => this.RaiseAndSetIfChanged(ref _isShowCreateActivityButton, value); 
-        }
-
-        public bool IsCollectionEmpty
-        {
-            get => _isCollectionEmpty;
-            set => this.RaiseAndSetIfChanged(ref _isCollectionEmpty, value);
-        }
 
         public bool IsProgressBarIndeterminate
         {
@@ -117,8 +61,8 @@ namespace GActivityDiary.ViewModels
             get => _pageSize;
             set
             {
-                this.RaiseAndSetIfChanged(ref _pageSize, value);
                 Update();
+                this.RaiseAndSetIfChanged(ref _pageSize, value);
             }
         }
 
@@ -140,15 +84,9 @@ namespace GActivityDiary.ViewModels
 
         public List<int> PageSizeOptions => _pageSizes.ToList();
 
-        public void Update(Guid? targetActivityId = null)
+        public override void Update(Guid? targetActivityId = null)
         {
-            // TODO: Solve this.
-            if (_updateTask != null && !_updateTask.IsCompleted)
-            {
-                _tokenSource.Cancel();
-                _updateTask.Wait();
-                _tokenSource = new();
-            }
+            _tokenSource = new();
             _updateTask = Task.Run(() => UpdateAsync(PageNumber - 1, PageSize, targetActivityId), _tokenSource.Token);
         }
 
@@ -157,21 +95,6 @@ namespace GActivityDiary.ViewModels
             CollectionCount = DB.Instance.Activities.Query().Count();
             PageCount = (CollectionCount + PageSize - 1) / PageSize;
             PageNumber = PageCount;
-        }
-
-        public void ViewActivity(Activity activity)
-        {
-            SingleActivityContent = new ActivityViewModel(this, activity);
-        }
-
-        public void EditActivity(Activity activity)
-        {
-            SingleActivityContent = new EditActivityViewModel(this, activity);
-        }
-
-        public void CreateActivity()
-        {
-            SingleActivityContent = new CreateActivityViewModel(this);
         }
 
         private void GoToFirstPage()
@@ -218,6 +141,6 @@ namespace GActivityDiary.ViewModels
             {
                 ViewActivity(activity);
             }
-        }        
+        }
     }
 }

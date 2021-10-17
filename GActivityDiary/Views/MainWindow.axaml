@@ -2,6 +2,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:views="clr-namespace:GActivityDiary.Views"
         xmlns:vm="using:GActivityDiary.ViewModels"
+        xmlns:converters="clr-namespace:GActivityDiary.Converters;assembly=GActivityDiary"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="450" d:DesignHeight="640"
@@ -13,7 +14,40 @@
         <vm:MainWindowViewModel/>
     </Design.DataContext>
 
-    <!--<views:ActivityListBoxView/>-->
-    <UserControl Content="{Binding ActivityListBoxViewModel}"/>
+    <Window.Resources>
+        <converters:StringRadioButtonConverter x:Key="StringRadioButtonConverter"/>
+    </Window.Resources>
+
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="_View">
+                <MenuItem Header="_Day">
+                    <MenuItem.Icon>
+                        <RadioButton BorderThickness="0"
+                                     Height="30"
+                                     Width="30"
+                                     IsChecked="{Binding SelectedViewMode, Converter={StaticResource StringRadioButtonConverter}, ConverterParameter=Day}"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="_All">
+                    <MenuItem.Icon>
+                        <RadioButton BorderThickness="0"
+                                     Height="30"
+                                     Width="30"
+                                     IsChecked="{Binding SelectedViewMode, Converter={StaticResource StringRadioButtonConverter}, ConverterParameter=All}"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+            </MenuItem>
+            <MenuItem Header="_Tools">
+                <MenuItem Header="TimeConverter"/>
+            </MenuItem>
+        </Menu>
+
+        <!--<views:ActivityListBoxView/>-->
+        <UserControl Content="{Binding ActivityListBoxViewModel}"/>
+        
+    </DockPanel>
+    
+    
 
 </Window>

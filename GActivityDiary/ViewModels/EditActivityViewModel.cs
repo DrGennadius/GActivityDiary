@@ -12,7 +12,7 @@ namespace GActivityDiary.ViewModels
     {
         private Activity _activity;
 
-        public EditActivityViewModel(ActivityListBoxViewModel activityListBoxViewModel, Activity activity)
+        public EditActivityViewModel(ActivityListBoxViewModelBase activityListBoxViewModel, Activity activity)
         {
             ActivityListBoxViewModel = activityListBoxViewModel;
 
@@ -44,7 +44,7 @@ namespace GActivityDiary.ViewModels
 
         public TimeSpan? EndAtTime { get; set; }
 
-        public ActivityListBoxViewModel ActivityListBoxViewModel { get; }
+        public ActivityListBoxViewModelBase ActivityListBoxViewModel { get; }
 
         public ReactiveCommand<Unit, Unit> SaveActivityCmd { get; }
 
