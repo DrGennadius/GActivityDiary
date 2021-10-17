@@ -9,4 +9,20 @@
     <Application.Styles>
         <FluentTheme Mode="Light"/>
     </Application.Styles>
+    
+    <TrayIcon.Icons>
+        <TrayIcons>
+            <TrayIcon Icon="/Assets/avalonia-logo.ico" 
+                      ToolTipText="Avalonia Tray Icon ToolTip"
+                      >
+                <TrayIcon.Menu>
+                    <NativeMenu>
+                        <NativeMenuItem Header="Show" Command="{Binding ShowCommand}"/>
+                        <NativeMenuItem Header="Exit" Command="{Binding ExitCommand}" />
+                    </NativeMenu>
+                </TrayIcon.Menu>
+            </TrayIcon>
+        </TrayIcons>
+    </TrayIcon.Icons>
+    
 </Application>

@@ -4,11 +4,17 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using GActivityDiary.ViewModels;
 using GActivityDiary.Views;
+using System.Runtime.InteropServices;
 
 namespace GActivityDiary
 {
     public class App : Application
     {
+        public App()
+        {
+            DataContext = new ApplicationViewModel();
+        }
+
         public override void Initialize()
         {
             AvaloniaXamlLoader.Load(this);
@@ -23,9 +29,18 @@ namespace GActivityDiary
                 {
                     DataContext = new MainWindowViewModel(),
                 };
+                desktop.MainWindow.Closing += MainWindow_Closing;
             }
 
             base.OnFrameworkInitializationCompleted();
+        }
+
+        private void MainWindow_Closing(object? sender, System.ComponentModel.CancelEventArgs e)
+        {
+            var window = sender as MainWindow;
+            window!.WindowState = WindowState.Minimized;
+            window!.ShowInTaskbar = false;
+            e.Cancel = true;
         }
     }
 }
