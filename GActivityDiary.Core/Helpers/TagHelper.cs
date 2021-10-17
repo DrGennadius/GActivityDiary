@@ -22,7 +22,7 @@ namespace GActivityDiary.Core.Helpers
             var tagStrings = Regex.Split(tagsString.ToLower(), @"\W+");
             var existsTags = repository.Find(x => tagStrings.Contains(x.Name)).ToList();
 
-            repository.GetCurrentTransaction(out ITransaction transaction, out bool isNew);
+            var result = repository.DbContext.GetCurrentTransactionOrCreateNew();
             foreach (var tagString in tagStrings)
             {
                 if (string.IsNullOrEmpty(tagString))
@@ -37,9 +37,9 @@ namespace GActivityDiary.Core.Helpers
                 }
                 tags.Add(tag);
             }
-            if (isNew)
+            if (result.Item2)
             {
-                transaction.Commit();
+                result.Item1.Commit();
             }
 
             return tags;

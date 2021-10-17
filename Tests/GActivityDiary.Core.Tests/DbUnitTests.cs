@@ -15,8 +15,6 @@ namespace GActivityDiary.Core.Tests
     {
         private const string _testDBFilePath = "test.db";
 
-        private NHibernateHelper _nHibernateHelper;
-
         [SetUp]
         public void Setup()
         {
@@ -24,7 +22,6 @@ namespace GActivityDiary.Core.Tests
             {
                 File.Delete(_testDBFilePath);
             }
-            _nHibernateHelper = new(_testDBFilePath);
         }
 
         [TearDown]
@@ -39,13 +36,13 @@ namespace GActivityDiary.Core.Tests
         [Test]
         public void BasicCRUDTest()
         {
-            ISession session = _nHibernateHelper.OpenSession();
-
-            EntityRepository<Activity> _activityRepository = new EntityRepository<Activity>(session);
+            DbContext dbContext = new(_testDBFilePath);
+            var session = dbContext.Session;
+            var activityRepository = dbContext.Activities;
 
             // 1. Read all
 
-            var activities = _activityRepository.GetAll();
+            var activities = activityRepository.GetAll();
             Assert.AreEqual(activities.Count, 0);
 
             // 2. Create / Insert
@@ -57,10 +54,10 @@ namespace GActivityDiary.Core.Tests
             };
 
             ITransaction transaction = session.BeginTransaction();
-            _activityRepository.Save(activity1);
+            activityRepository.Save(activity1);
             transaction.Commit();
 
-            activities = _activityRepository.GetAll();
+            activities = activityRepository.GetAll();
             Assert.AreEqual(activities.Count, 1);
 
             var firstActivity = activities[0];
@@ -70,23 +67,23 @@ namespace GActivityDiary.Core.Tests
             firstActivity.Description = "Test 1";
 
             transaction = session.BeginTransaction();
-            _activityRepository.Save(firstActivity);
+            activityRepository.Save(firstActivity);
             transaction.Commit();
 
-            activities = _activityRepository.GetAll();
+            activities = activityRepository.GetAll();
             Assert.AreEqual(activities.Count, 1);
 
-            firstActivity = _activityRepository.GetById(firstActivity.Id);
+            firstActivity = activityRepository.GetById(firstActivity.Id);
             Assert.IsNotNull(firstActivity);
             Assert.AreSame(firstActivity.Description, "Test 1");
 
             // 4. Delete
 
             transaction = session.BeginTransaction();
-            _activityRepository.Delete(firstActivity);
+            activityRepository.Delete(firstActivity);
             transaction.Commit();
 
-            activities = _activityRepository.GetAll();
+            activities = activityRepository.GetAll();
             Assert.AreEqual(activities.Count, 0);
 
             session.Close();

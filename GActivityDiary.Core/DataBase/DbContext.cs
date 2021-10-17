@@ -11,7 +11,7 @@ namespace GActivityDiary.Core.DataBase
     /// </summary>
     public class DbContext : IDbContext
     {
-        private string _dataBaseFilePath = "ActivityDiary.db";
+        private readonly string _dataBaseFilePath = "ActivityDiary.db";
 
         public ISession Session { get; private set; }
 
@@ -26,30 +26,34 @@ namespace GActivityDiary.Core.DataBase
             _dataBaseFilePath = dataBaseFilePath;
             NHibernateHelper helper = new(_dataBaseFilePath);
             Session = helper.OpenSession();
-            Activities = new EntityRepository<Activity>(Session);
-            Tags = new EntityRepository<Tag>(Session);
+            Activities = new EntityRepository<Activity>(this);
+            Tags = new EntityRepository<Tag>(this);
         }
 
         public DbContext()
         {
             NHibernateHelper helper = new(_dataBaseFilePath);
             Session = helper.OpenSession();
-            Activities = new EntityRepository<Activity>(Session);
-            Tags = new EntityRepository<Tag>(Session);
+            Activities = new EntityRepository<Activity>(this);
+            Tags = new EntityRepository<Tag>(this);
         }
 
-        /// <summary>
-        /// Begin session transaction.
-        /// </summary>
-        /// <returns></returns>
         public ITransaction BeginTransaction()
         {
             return Session.BeginTransaction();
         }
 
-        /// <summary>
-        /// Commit current session transaction.
-        /// </summary>
+        public (ITransaction, bool) GetCurrentTransactionOrCreateNew()
+        {
+            ITransaction transaction = Session.GetCurrentTransaction();
+            bool isNew = transaction == null || !transaction.IsActive;
+            if (isNew)
+            {
+                transaction = Session.BeginTransaction();
+            }
+            return (transaction, isNew);
+        }
+
         public void Commit()
         {
             var transaction = Session.GetCurrentTransaction();
@@ -59,10 +63,6 @@ namespace GActivityDiary.Core.DataBase
             }
         }
 
-        /// <summary>
-        /// Async commit current session transaction.
-        /// </summary>
-        /// <returns></returns>
         public async Task CommitAsync()
         {
             var transaction = Session.GetCurrentTransaction();
@@ -72,9 +72,6 @@ namespace GActivityDiary.Core.DataBase
             }
         }
 
-        /// <summary>
-        /// Reset current session.
-        /// </summary>
         public void ResetSession()
         {
             Session.Disconnect();
@@ -82,9 +79,6 @@ namespace GActivityDiary.Core.DataBase
             Session.Reconnect();
         }
 
-        /// <summary>
-        /// Rollback changes for current transaction.
-        /// </summary>
         public void Rollback()
         {
             var transaction = Session.GetCurrentTransaction();
@@ -94,10 +88,6 @@ namespace GActivityDiary.Core.DataBase
             }
         }
 
-        /// <summary>
-        /// Async rollback changes for current transaction.
-        /// </summary>
-        /// <returns></returns>
         public async Task RollbackAsync()
         {
             var transaction = Session.GetCurrentTransaction();

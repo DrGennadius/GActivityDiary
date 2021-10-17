@@ -15,17 +15,20 @@ namespace GActivityDiary.Core.DataBase
     /// <typeparam name="T"></typeparam>
     public class EntityRepository<T> : IRepository<T> where T : IEntity
     {
-        private ISession _session;
-
-        public EntityRepository(ISession session)
+        public EntityRepository(IDbContext dbContext)
         {
-            _session = session;
+            DbContext = dbContext;
         }
+
+        /// <summary>
+        /// Database context.
+        /// </summary>
+        public IDbContext DbContext { get; private set; }
 
         public void Delete(T item)
         {
-            GetCurrentTransaction(out ITransaction transaction, out bool isNew);
-            _session.Delete(item);
+            var (transaction, isNew) = DbContext.GetCurrentTransactionOrCreateNew();
+            DbContext.Session.Delete(item);
             if (isNew)
             {
                 transaction.Commit();
@@ -34,8 +37,8 @@ namespace GActivityDiary.Core.DataBase
 
         public async Task DeleteAsync(T item)
         {
-            GetCurrentTransaction(out ITransaction transaction, out bool isNew);
-            await _session.DeleteAsync(item);
+            var (transaction, isNew) = DbContext.GetCurrentTransactionOrCreateNew();
+            await DbContext.Session.DeleteAsync(item);
             if (isNew)
             {
                 await transaction.CommitAsync();
@@ -54,12 +57,12 @@ namespace GActivityDiary.Core.DataBase
 
         public IList<T> GetAll()
         {
-            return new List<T>(_session.CreateCriteria(typeof(T)).List<T>());
+            return new List<T>(DbContext.Session.CreateCriteria(typeof(T)).List<T>());
         }
 
         public IList<T> GetAll(int pageIndex, int pageSize)
         {
-            return new List<T>(_session
+            return new List<T>(DbContext.Session
                 .CreateCriteria(typeof(T))
                 .SetFirstResult(pageIndex * pageSize)
                 .SetMaxResults(pageSize)
@@ -68,12 +71,12 @@ namespace GActivityDiary.Core.DataBase
 
         public async Task<IList<T>> GetAllAsync()
         {
-            return new List<T>(await _session.CreateCriteria(typeof(T)).ListAsync<T>());
+            return new List<T>(await DbContext.Session.CreateCriteria(typeof(T)).ListAsync<T>());
         }
 
         public async Task<IList<T>> GetAllAsync(int pageIndex, int pageSize)
         {
-            return new List<T>(await _session
+            return new List<T>(await DbContext.Session
                 .CreateCriteria(typeof(T))
                 .SetFirstResult(pageIndex * pageSize)
                 .SetMaxResults(pageSize)
@@ -82,33 +85,23 @@ namespace GActivityDiary.Core.DataBase
 
         public T GetById(Guid id)
         {
-            return _session.Get<T>(id);
+            return DbContext.Session.Get<T>(id);
         }
 
         public async Task<T> GetByIdAsync(Guid id)
         {
-            return await _session.GetAsync<T>(id);
-        }
-
-        public void GetCurrentTransaction(out ITransaction transaction, out bool isNew)
-        {
-            transaction = _session.GetCurrentTransaction();
-            isNew = transaction == null || !transaction.IsActive;
-            if (isNew)
-            {
-                transaction = _session.BeginTransaction();
-            }
+            return await DbContext.Session.GetAsync<T>(id);
         }
 
         public IQueryable<T> Query()
         {
-            return _session.Query<T>();
+            return DbContext.Session.Query<T>();
         }
 
         public Guid Save(T item)
         {
-            GetCurrentTransaction(out ITransaction transaction, out bool isNew);
-            Guid uid = (Guid)_session.Save(item);
+            var (transaction, isNew) = DbContext.GetCurrentTransactionOrCreateNew();
+            Guid uid = (Guid)DbContext.Session.Save(item);
             if (isNew)
             {
                 transaction.Commit();
@@ -118,8 +111,8 @@ namespace GActivityDiary.Core.DataBase
 
         public async Task<Guid> SaveAsync(T item)
         {
-            GetCurrentTransaction(out ITransaction transaction, out bool isNew);
-            Guid uid = (Guid)await _session.SaveAsync(item);
+            var (transaction, isNew) = DbContext.GetCurrentTransactionOrCreateNew();
+            Guid uid = (Guid)await DbContext.Session.SaveAsync(item);
             if (isNew)
             {
                 await transaction.CommitAsync();
