@@ -1,6 +1,7 @@
 ﻿using GActivityDiary.Core.Helpers;
 using GActivityDiary.Core.Models;
 using NHibernate;
+using System;
 using System.Threading.Tasks;
 
 namespace GActivityDiary.Core.DataBase
@@ -37,11 +38,18 @@ namespace GActivityDiary.Core.DataBase
             Tags = new EntityRepository<Tag>(Session);
         }
 
+        /// <summary>
+        /// Begin session transaction.
+        /// </summary>
+        /// <returns></returns>
         public ITransaction BeginTransaction()
         {
             return Session.BeginTransaction();
         }
 
+        /// <summary>
+        /// Commit current session transaction.
+        /// </summary>
         public void Commit()
         {
             var transaction = Session.GetCurrentTransaction();
@@ -51,6 +59,10 @@ namespace GActivityDiary.Core.DataBase
             }
         }
 
+        /// <summary>
+        /// Async commit current session transaction.
+        /// </summary>
+        /// <returns></returns>
         public async Task CommitAsync()
         {
             var transaction = Session.GetCurrentTransaction();
@@ -60,6 +72,9 @@ namespace GActivityDiary.Core.DataBase
             }
         }
 
+        /// <summary>
+        /// Reset current session.
+        /// </summary>
         public void ResetSession()
         {
             Session.Disconnect();
@@ -67,6 +82,9 @@ namespace GActivityDiary.Core.DataBase
             Session.Reconnect();
         }
 
+        /// <summary>
+        /// Rollback changes for current transaction.
+        /// </summary>
         public void Rollback()
         {
             var transaction = Session.GetCurrentTransaction();
@@ -76,6 +94,10 @@ namespace GActivityDiary.Core.DataBase
             }
         }
 
+        /// <summary>
+        /// Async rollback changes for current transaction.
+        /// </summary>
+        /// <returns></returns>
         public async Task RollbackAsync()
         {
             var transaction = Session.GetCurrentTransaction();
@@ -88,6 +110,7 @@ namespace GActivityDiary.Core.DataBase
         public void Dispose()
         {
             Session.Dispose();
+            GC.SuppressFinalize(this);
         }
     }
 }

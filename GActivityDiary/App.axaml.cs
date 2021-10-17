@@ -4,7 +4,6 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using GActivityDiary.ViewModels;
 using GActivityDiary.Views;
-using System.Runtime.InteropServices;
 
 namespace GActivityDiary
 {

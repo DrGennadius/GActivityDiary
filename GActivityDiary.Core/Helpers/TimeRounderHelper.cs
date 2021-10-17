@@ -1,9 +1,5 @@
 ﻿using GActivityDiary.Core.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GActivityDiary.Core.Helpers
 {
@@ -55,11 +51,11 @@ namespace GActivityDiary.Core.Helpers
         {
             TimeSpan roundedTimeSpan = Round(dateTime.TimeOfDay);
             return new DateTime(
-                dateTime.Year, 
-                dateTime.Month, 
-                dateTime.Day, 
-                roundedTimeSpan.Hours, 
-                roundedTimeSpan.Minutes, 
+                dateTime.Year,
+                dateTime.Month,
+                dateTime.Day,
+                roundedTimeSpan.Hours,
+                roundedTimeSpan.Minutes,
                 0);
         }
 

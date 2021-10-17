@@ -2,11 +2,8 @@
 using GActivityDiary.Core.Models;
 using ReactiveUI;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Reactive;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -38,7 +35,7 @@ namespace GActivityDiary.ViewModels
         }
 
         public ReactiveCommand<Unit, Unit> CreateActivityCmd { get; }
-        
+
         public ReactiveCommand<Activity, Unit> EditActivityCmd { get; }
 
         public ViewModelBase? SingleActivityContent

@@ -32,6 +32,8 @@ namespace GActivityDiary.Core.DataBase
 
         IList<T> GetAll();
 
+        IList<T> GetAll(int pageIndex, int pageSize);
+
         Task<IList<T>> GetAllAsync();
 
         Task<IList<T>> GetAllAsync(int pageIndex, int pageSize);

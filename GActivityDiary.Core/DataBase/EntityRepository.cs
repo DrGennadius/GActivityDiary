@@ -32,6 +32,26 @@ namespace GActivityDiary.Core.DataBase
             }
         }
 
+        public async Task DeleteAsync(T item)
+        {
+            GetCurrentTransaction(out ITransaction transaction, out bool isNew);
+            await _session.DeleteAsync(item);
+            if (isNew)
+            {
+                await transaction.CommitAsync();
+            }
+        }
+
+        public IList<T> Find(Expression<Func<T, bool>> predicate)
+        {
+            return Query().Where(predicate).ToList();
+        }
+
+        public async Task<IList<T>> FindAsync(Expression<Func<T, bool>> predicate)
+        {
+            return await Query().Where(predicate).ToListAsync();
+        }
+
         public IList<T> GetAll()
         {
             return new List<T>(_session.CreateCriteria(typeof(T)).List<T>());
@@ -46,19 +66,43 @@ namespace GActivityDiary.Core.DataBase
                 .List<T>());
         }
 
-        public IQueryable<T> Query()
+        public async Task<IList<T>> GetAllAsync()
         {
-            return _session.Query<T>();
+            return new List<T>(await _session.CreateCriteria(typeof(T)).ListAsync<T>());
         }
 
-        public IList<T> Find(Expression<Func<T, bool>> predicate)
+        public async Task<IList<T>> GetAllAsync(int pageIndex, int pageSize)
         {
-            return Query().Where(predicate).ToList();
+            return new List<T>(await _session
+                .CreateCriteria(typeof(T))
+                .SetFirstResult(pageIndex * pageSize)
+                .SetMaxResults(pageSize)
+                .ListAsync<T>());
         }
 
         public T GetById(Guid id)
         {
             return _session.Get<T>(id);
+        }
+
+        public async Task<T> GetByIdAsync(Guid id)
+        {
+            return await _session.GetAsync<T>(id);
+        }
+
+        public void GetCurrentTransaction(out ITransaction transaction, out bool isNew)
+        {
+            transaction = _session.GetCurrentTransaction();
+            isNew = transaction == null || !transaction.IsActive;
+            if (isNew)
+            {
+                transaction = _session.BeginTransaction();
+            }
+        }
+
+        public IQueryable<T> Query()
+        {
+            return _session.Query<T>();
         }
 
         public Guid Save(T item)
@@ -72,59 +116,15 @@ namespace GActivityDiary.Core.DataBase
             return uid;
         }
 
-        public void GetCurrentTransaction(out ITransaction transaction, out bool isNew)
-        {
-            transaction = _session.GetCurrentTransaction();
-            isNew = transaction == null || !transaction.IsActive;
-            if (isNew)
-            {
-                transaction = _session.BeginTransaction();
-            }
-        }
-
         public async Task<Guid> SaveAsync(T item)
         {
             GetCurrentTransaction(out ITransaction transaction, out bool isNew);
-            Guid uid = (Guid) await _session.SaveAsync(item);
+            Guid uid = (Guid)await _session.SaveAsync(item);
             if (isNew)
             {
                 await transaction.CommitAsync();
             }
             return uid;
-        }
-
-        public async Task<T> GetByIdAsync(Guid id)
-        {
-            return await _session.GetAsync<T>(id);
-        }
-
-        public async Task<IList<T>> GetAllAsync()
-        {
-            return new List<T>(await _session.CreateCriteria(typeof(T)).ListAsync<T>());
-        }
-
-        public async Task<IList<T>> FindAsync(Expression<Func<T, bool>> predicate)
-        {
-            return await Query().Where(predicate).ToListAsync();
-        }
-
-        public async Task DeleteAsync(T item)
-        {
-            GetCurrentTransaction(out ITransaction transaction, out bool isNew);
-            await _session.DeleteAsync(item);
-            if (isNew)
-            {
-                await transaction.CommitAsync();
-            }
-        }
-
-        public async Task<IList<T>> GetAllAsync(int pageIndex, int pageSize)
-        {
-            return new List<T>(await _session
-                .CreateCriteria(typeof(T))
-                .SetFirstResult(pageIndex * pageSize)
-                .SetMaxResults(pageSize)
-                .ListAsync<T>());
         }
     }
 }

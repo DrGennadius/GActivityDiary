@@ -46,9 +46,9 @@ namespace GActivityDiary.ViewModels
             }
         }
 
-        public ActivityListBoxViewModelBase? ActivityListBoxViewModel 
-        { 
-            get => _activityListBoxViewModel; 
+        public ActivityListBoxViewModelBase? ActivityListBoxViewModel
+        {
+            get => _activityListBoxViewModel;
             set => this.RaiseAndSetIfChanged(ref _activityListBoxViewModel, value);
         }
 

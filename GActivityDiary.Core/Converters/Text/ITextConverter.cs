@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace GActivityDiary.Core.Converters.Text
+﻿namespace GActivityDiary.Core.Converters.Text
 {
     /// <summary>
     /// Interface for 'text' converters.

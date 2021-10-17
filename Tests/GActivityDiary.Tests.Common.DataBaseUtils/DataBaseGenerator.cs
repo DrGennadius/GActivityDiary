@@ -1,7 +1,6 @@
 ﻿using GActivityDiary.Core.DataBase;
 using GActivityDiary.Core.Models;
 using System;
-using System.Collections.Generic;
 
 namespace GActiveDiary.Tests.Common.DataBaseUtils
 {

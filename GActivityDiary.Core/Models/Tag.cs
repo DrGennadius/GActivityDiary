@@ -8,7 +8,7 @@ namespace GActivityDiary.Core.Models
     public class Tag : IEntity
     {
         public Tag()
-        { 
+        {
         }
 
         public Tag(string name)
