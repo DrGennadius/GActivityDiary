@@ -1,6 +1,6 @@
 ﻿using GActivityDiary.Core.DataBase;
 
-namespace GActivityDiary
+namespace GActivityDiary.GUI.Avalonia
 {
     public class DB
     {

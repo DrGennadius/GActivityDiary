@@ -1,9 +1,9 @@
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
-using GActivityDiary.ViewModels;
+using GActivityDiary.GUI.Avalonia.ViewModels;
 using System;
 
-namespace GActivityDiary
+namespace GActivityDiary.GUI.Avalonia
 {
     public class ViewLocator : IDataTemplate
     {

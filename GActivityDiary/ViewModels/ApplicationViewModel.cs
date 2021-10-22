@@ -1,9 +1,10 @@
 ﻿using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using ReactiveUI;
 using System.Reactive;
 
-namespace GActivityDiary.ViewModels
+namespace GActivityDiary.GUI.Avalonia.ViewModels
 {
     public class ApplicationViewModel : ViewModelBase
     {
@@ -25,7 +26,7 @@ namespace GActivityDiary.ViewModels
             {
                 if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime lifetime)
                 {
-                    lifetime.MainWindow.WindowState = Avalonia.Controls.WindowState.Normal;
+                    lifetime.MainWindow.WindowState = WindowState.Normal;
                     lifetime.MainWindow.ShowInTaskbar = true;
                 }
             });

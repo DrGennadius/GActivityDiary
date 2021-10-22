@@ -1,14 +1,14 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:views="clr-namespace:GActivityDiary.Views"
-        xmlns:vm="using:GActivityDiary.ViewModels"
-        xmlns:converters="clr-namespace:GActivityDiary.Converters;assembly=GActivityDiary"
+        xmlns:views="clr-namespace:GActivityDiary.GUI.Avalonia.Views"
+        xmlns:vm="using:GActivityDiary.GUI.Avalonia.ViewModels"
+        xmlns:converters="clr-namespace:GActivityDiary.GUI.Avalonia.Converters;assembly=GActivityDiary.GUI.Avalonia"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="450" d:DesignHeight="640"
-        x:Class="GActivityDiary.Views.MainWindow"
-        Icon="/Assets/gactivitydiary.ico"
-        Title="GActivityDiary">
+        x:Class="GActivityDiary.GUI.Avalonia.Views.MainWindow"
+        Icon="/Assets/GActivityDiary.GUI.Avalonia.ico"
+        Title="GActivityDiary.GUI.Avalonia">
 
     <Design.DataContext>
         <vm:MainWindowViewModel/>

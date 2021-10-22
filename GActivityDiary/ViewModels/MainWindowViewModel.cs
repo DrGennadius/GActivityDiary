@@ -1,7 +1,7 @@
 using ReactiveUI;
 using System.Reactive;
 
-namespace GActivityDiary.ViewModels
+namespace GActivityDiary.GUI.Avalonia.ViewModels
 {
     public class MainWindowViewModel : ViewModelBase
     {

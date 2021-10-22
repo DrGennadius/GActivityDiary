@@ -1,7 +1,7 @@
 using Avalonia;
 using Avalonia.ReactiveUI;
 
-namespace GActivityDiary
+namespace GActivityDiary.GUI.Avalonia
 {
     class Program
     {

@@ -7,7 +7,7 @@ using System.Reactive;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace GActivityDiary.ViewModels
+namespace GActivityDiary.GUI.Avalonia.ViewModels
 {
     public abstract class ActivityListBoxViewModelBase : ViewModelBase
     {

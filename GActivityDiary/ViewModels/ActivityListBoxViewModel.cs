@@ -9,7 +9,7 @@ using System.Reactive;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 
-namespace GActivityDiary.ViewModels
+namespace GActivityDiary.GUI.Avalonia.ViewModels
 {
     public class ActivityListBoxViewModel : ActivityListBoxViewModelBase
     {

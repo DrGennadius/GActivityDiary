@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "GActivityDiary": {
+    "GActivityDiary.GUI.Avalonia": {
       "commandName": "Project"
     },
     "WSL 2": {

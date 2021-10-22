@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reactive;
 
-namespace GActivityDiary.ViewModels
+namespace GActivityDiary.GUI.Avalonia.ViewModels
 {
     public class EditActivityViewModel : ViewModelBase
     {

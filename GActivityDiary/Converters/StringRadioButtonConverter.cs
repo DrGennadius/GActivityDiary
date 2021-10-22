@@ -3,7 +3,7 @@ using Avalonia.Data.Converters;
 using System;
 using System.Globalization;
 
-namespace GActivityDiary.Converters
+namespace GActivityDiary.GUI.Avalonia.Converters
 {
     public class StringRadioButtonConverter : IValueConverter
     {

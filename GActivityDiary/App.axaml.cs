@@ -2,10 +2,10 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using GActivityDiary.ViewModels;
-using GActivityDiary.Views;
+using GActivityDiary.GUI.Avalonia.ViewModels;
+using GActivityDiary.GUI.Avalonia.Views;
 
-namespace GActivityDiary
+namespace GActivityDiary.GUI.Avalonia
 {
     public class App : Application
     {

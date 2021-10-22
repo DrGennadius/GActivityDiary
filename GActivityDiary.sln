@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.31424.327
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GActivityDiary.Core", "GActivityDiary.Core\GActivityDiary.Core.csproj", "{5F7836AF-0B7A-4279-976D-73660CA71CB0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GActivityDiary", "GActivityDiary\GActivityDiary.csproj", "{E9FA6C57-5F7F-4C19-9F86-BF52900007EA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GActivityDiary.GUI.Avalonia", "GActivityDiary\GActivityDiary.GUI.Avalonia.csproj", "{E9FA6C57-5F7F-4C19-9F86-BF52900007EA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GActivityDiary.Core.Tests", "Tests\GActivityDiary.Core.Tests\GActivityDiary.Core.Tests.csproj", "{58E3D663-CD4B-4331-93FC-3C0ED40DE9D2}"
 EndProject

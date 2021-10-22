@@ -1,7 +1,7 @@
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 
-namespace GActivityDiary.Views
+namespace GActivityDiary.GUI.Avalonia.Views
 {
     public partial class ActivityView : UserControl
     {

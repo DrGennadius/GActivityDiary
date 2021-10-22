@@ -1,6 +1,6 @@
 using ReactiveUI;
 
-namespace GActivityDiary.ViewModels
+namespace GActivityDiary.GUI.Avalonia.ViewModels
 {
     public class ViewModelBase : ReactiveObject
     {
