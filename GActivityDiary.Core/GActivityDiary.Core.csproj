@@ -15,7 +15,6 @@
 
   <ItemGroup>
     <Folder Include="Reports\Excel\" />
-    <Folder Include="Reports\Text\" />
   </ItemGroup>
 
 </Project>

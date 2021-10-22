@@ -53,12 +53,15 @@ namespace GActivityDiary.Core.Converters.Time
         /// <summary>
         /// Get hours and minutes from total hours.
         /// </summary>
-        /// <param name="hours"></param>
+        /// <param name="totalHours"></param>
         /// <returns></returns>
-        public static (double, double) GetHoursAndMinutesFromHours(double hours)
+        public static (double, double) GetHoursAndMinutesFromHours(double totalHours)
         {
-            double truncatedHours = Math.Truncate(hours);
-            return (truncatedHours, (hours - truncatedHours) * 60);
+            var res = (hours: 0.0, minutes: 0.0);
+            double truncatedHours = Math.Truncate(totalHours);
+            res.hours = truncatedHours;
+            res.minutes = (totalHours - truncatedHours) * 60;
+            return res;
         }
     }
 }
