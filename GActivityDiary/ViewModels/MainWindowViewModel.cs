@@ -1,3 +1,4 @@
+using GActivityDiary.GUI.Avalonia.Views;
 using ReactiveUI;
 using System.Reactive;
 
@@ -17,11 +18,14 @@ namespace GActivityDiary.GUI.Avalonia.ViewModels
             };
 
             ToogleViewModeCmd = ReactiveCommand.Create<string>((param) => ToogleViewMode(param));
+            OpenTimeConverterWindowCmd = ReactiveCommand.Create(() => OpenTimeConverterWindow());
 
             SelectedViewMode = ViewModes[0];
         }
 
         public ReactiveCommand<string, Unit> ToogleViewModeCmd { get; }
+
+        public ReactiveCommand<Unit, Unit> OpenTimeConverterWindowCmd { get; }
 
         public string[] ViewModes { get; }
 
@@ -55,6 +59,15 @@ namespace GActivityDiary.GUI.Avalonia.ViewModels
         private void ToogleViewMode(string viewModeName)
         {
             SelectedViewMode = viewModeName;
+        }
+
+        private void OpenTimeConverterWindow()
+        {
+            TimeConverterWindow timeConverterWindow = new()
+            {
+                DataContext = new TimeConverterWindowViewModel()
+            };
+            timeConverterWindow.Show();
         }
     }
 }

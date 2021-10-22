@@ -7,7 +7,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="450" d:DesignHeight="640"
         x:Class="GActivityDiary.GUI.Avalonia.Views.MainWindow"
-        Icon="/Assets/GActivityDiary.GUI.Avalonia.ico"
+        Icon="/Assets/gactivitydiary.ico"
         Title="GActivityDiary.GUI.Avalonia">
 
     <Design.DataContext>
@@ -39,7 +39,8 @@
                 </MenuItem>
             </MenuItem>
             <MenuItem Header="_Tools">
-                <MenuItem Header="TimeConverter"/>
+                <MenuItem Header="Time converter"
+                          Command="{Binding OpenTimeConverterWindowCmd}"/>
             </MenuItem>
         </Menu>
 

@@ -12,7 +12,7 @@
     
     <TrayIcon.Icons>
         <TrayIcons>
-            <TrayIcon Icon="/Assets/GActivityDiary.GUI.Avalonia.ico" 
+            <TrayIcon Icon="/Assets/gactivitydiary.ico" 
                       ToolTipText="Avalonia Tray Icon ToolTip"
                       >
                 <TrayIcon.Menu>

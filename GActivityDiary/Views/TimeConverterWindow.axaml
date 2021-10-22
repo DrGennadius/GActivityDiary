@@ -1,0 +1,71 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="500"
+        x:Class="GActivityDiary.GUI.Avalonia.Views.TimeConverterWindow"
+        Icon="/Assets/gactivitydiary.ico"
+        Title="Time Converter">
+
+    <Grid VerticalAlignment="Top">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <!--Hours + Minutes to total Hours and total Minutes-->
+        <TextBlock Text="Hours + Minutes to total Hours and total Minutes"
+                   TextWrapping="Wrap"
+                   Grid.ColumnSpan="5"
+                   FontSize="24"
+                   VerticalAlignment="Center"
+                   Margin="5"/>
+        <TextBlock Text="Hours:"
+                   Grid.Row="1"
+                   VerticalAlignment="Center"
+                   Margin="5"/>
+        <TextBox Text="{Binding Hours1}"
+                 Grid.Row="1"
+                 Grid.Column="1"
+                 Margin="5"/>
+        <TextBlock Text="Minutes:"
+                   Grid.Row="2"
+                   VerticalAlignment="Center"
+                   Margin="5"/>
+        <TextBox Text="{Binding Minutes1}"
+                 Grid.Row="2"
+                 Grid.Column="1"
+                 Margin="5"/>
+        <TextBlock Text="Total Hours:"
+                   Grid.Row="1"
+                   Grid.Column="3"
+                   VerticalAlignment="Center"
+                   Margin="5"/>
+        <TextBox Text="{Binding TotalHours1}"
+                 Grid.Row="1"
+                 Grid.Column="4"
+                 Margin="5"
+                 IsReadOnly="True"/>
+        <TextBlock Text="Total Minutes:"
+                   Grid.Row="2"
+                   Grid.Column="3"
+                   VerticalAlignment="Center"
+                   Margin="5"/>
+        <TextBox Text="{Binding TotalMinutes1}"
+                 Grid.Row="2"
+                 Grid.Column="4"
+                 Margin="5"
+                 IsReadOnly="True"/>
+
+    </Grid>
+    
+</Window>
