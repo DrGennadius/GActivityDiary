@@ -3,17 +3,18 @@ using GActivityDiary.Core.Models;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Reactive;
 
 namespace GActivityDiary.GUI.Avalonia.ViewModels
 {
     public class CreateActivityViewModel : ViewModelBase
     {
+        private string _name = "";
+
         public CreateActivityViewModel(ActivityListBoxViewModelBase activityListBoxViewModel)
         {
             ActivityListBoxViewModel = activityListBoxViewModel;
-            CreateActivityCmd = ReactiveCommand.Create(() => CreateActivity());
-            CancelCmd = ReactiveCommand.Create(() => Cancel());
 
             DateTime now = TimeRounderHelper.Floor(DateTime.Now);
             DateTime inHour = now.AddHours(1);
@@ -21,9 +22,21 @@ namespace GActivityDiary.GUI.Avalonia.ViewModels
             StartAtTime = now.TimeOfDay;
             EndAtDate = inHour.Date;
             EndAtTime = inHour.TimeOfDay;
+
+            var canExecute = this.WhenAnyValue(
+                x => x.Name,
+                (name) => !string.IsNullOrWhiteSpace(name));
+
+            CreateActivityCmd = ReactiveCommand.Create(() => CreateActivity(), canExecute);
+            CancelCmd = ReactiveCommand.Create(() => Cancel());
         }
 
-        public string Name { get; set; } = "";
+        [Required]
+        public string Name 
+        { 
+            get => _name; 
+            set => this.RaiseAndSetIfChanged(ref _name, value);
+        }
 
         public string? Description { get; set; }
 
