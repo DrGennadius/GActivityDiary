@@ -9,7 +9,7 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
-            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
         <Grid>
@@ -19,58 +19,53 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-
-                <TextBlock Text="Total items:"
-                           VerticalAlignment="Center"
-                           Margin="5"/>
-                <TextBlock Text="{Binding CollectionCount}"
-                           Grid.Column="1"
-                           VerticalAlignment="Center"
-                           Margin="5"/>
-                <TextBlock Text="Total pages:"
-                           Grid.Column="2"
-                           VerticalAlignment="Center"
-                           Margin="5"/>
-                <TextBlock Text="{Binding PageCount}"
-                           Grid.Column="3"
-                           VerticalAlignment="Center"
-                           Margin="5"/>
-                <TextBlock Text="Page size:"
-                           Grid.Column="4"
-                           VerticalAlignment="Center"
-                           Margin="5"/>
-                <DropDown Items="{Binding PageSizeOptions}"
-                          SelectedItem="{Binding PageSize}"
-                          Grid.Column="5"
-                          Margin="5"/>
-                <NumericUpDown Value="{Binding PageNumber}" 
-                               Minimum="1"
-                               Maximum="{Binding PageCount}"
-                               Grid.Column="6"
+            <WrapPanel>
+                <DockPanel>
+                    <TextBlock Text="Total items:"
+                               VerticalAlignment="Center"
                                Margin="5"/>
-                <Button Content="First"
-                        Command="{Binding GoToFirstPageCmd}"
-                        Grid.Column="7"
-                        Margin="5"/>
-                <Button Content="Last"
-                        Command="{Binding GoToLastPageCmd}"
-                        Grid.Column="8"
-                        Margin="0,5"/>
-                
-            </Grid>
+                    <TextBlock Text="{Binding CollectionCount}"
+                               Grid.Column="1"
+                               VerticalAlignment="Center"
+                               Margin="5"/>
+                </DockPanel>
+                <DockPanel>
+                    <TextBlock Text="Total pages:"
+                               VerticalAlignment="Center"
+                               Margin="5"/>
+                    <TextBlock Text="{Binding PageCount}"
+                               VerticalAlignment="Center"
+                               Margin="5"/>
+                </DockPanel>
+                <DockPanel>
+                    <TextBlock Text="Page size:"
+                               VerticalAlignment="Center"
+                               Margin="5"/>
+                    <DropDown Items="{Binding PageSizeOptions}"
+                              SelectedItem="{Binding PageSize}"
+                              Margin="5"/>
+                </DockPanel>
+                <DockPanel>
+                    <TextBlock Text="Page:"
+                               VerticalAlignment="Center"
+                               Margin="5"/>
+                    <NumericUpDown Value="{Binding PageNumber}"
+                                   Minimum="1"
+                                   Maximum="{Binding PageCount}"
+                                   Grid.Column="6"
+                                   Margin="5"/>
+                </DockPanel>
+                <DockPanel>
+                    <Button Content="First"
+                                            Command="{Binding GoToFirstPageCmd}"
+                                            Grid.Column="7"
+                                            Margin="5"/>
+                    <Button Content="Last"
+                            Command="{Binding GoToLastPageCmd}"
+                            Grid.Column="8"
+                            Margin="0,5"/>
+                </DockPanel>
+            </WrapPanel>
             
             <ProgressBar Grid.Row="1"
                          IsIndeterminate="{Binding IsProgressBarIndeterminate}"
@@ -104,10 +99,8 @@
                     HorizontalContentAlignment="Center"
                     Margin="5"
                     IsVisible="{Binding IsShowCreateActivityButton}"/>
-            <UserControl Grid.Row="1"
-                         Content="{Binding SingleActivityContent}"
-                         MaxWidth="800"
-                         MinWidth="700"/>
+            <UserControl Content="{Binding SingleActivityContent}"
+                         Grid.Row="1"/>
             
         </Grid>
         

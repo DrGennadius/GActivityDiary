@@ -8,7 +8,7 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
-            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
         <Grid>
@@ -18,20 +18,14 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-
+            <WrapPanel>
                 <TextBlock Text="Selected date:"
                            VerticalAlignment="Center"
                            Margin="5"/>
                 <DatePicker SelectedDate="{Binding SelectedDate}"
-                            Grid.Column="1"
                             Margin="5"/>
-                
-            </Grid>
+
+            </WrapPanel>
 
             <ListBox Items="{Binding Activities}"
                      SelectedItem="{Binding SelectedActivity}"
@@ -61,10 +55,8 @@
                     HorizontalContentAlignment="Center"
                     Margin="5"
                     IsVisible="{Binding IsShowCreateActivityButton}"/>
-            <UserControl Grid.Row="1"
-                         Content="{Binding SingleActivityContent}"
-                         MaxWidth="800"
-                         MinWidth="700"/>
+            <UserControl Content="{Binding SingleActivityContent}"
+                         Grid.Row="1"/>
 
         </Grid>
 
