@@ -63,7 +63,7 @@ namespace GActiveDiary.Tests.Common.DataBaseUtils
         public static DbContext Generate(DateTime beginDateTime, DateTime endDateTime, string dbFilePath = null, int activitiesPerDay = 24, int cleanStep = 100000)
         {
             DbContext db = string.IsNullOrEmpty(dbFilePath) ? new() : new(dbFilePath);
-            
+
             DateTime curentDateTime = beginDateTime;
 
             TimeSpan timeSpan = endDateTime - beginDateTime;

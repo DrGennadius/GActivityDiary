@@ -1,10 +1,6 @@
 ﻿using GActivityDiary.Core.Common;
 using GActivityDiary.Core.Extensions;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GActivityDiary.Core.Helpers
 {

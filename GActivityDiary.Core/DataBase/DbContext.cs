@@ -1,5 +1,5 @@
-﻿using GActivityDiary.Core.Helpers;
-using GActivityDiary.Core.Models;
+﻿using GActivityDiary.Core.Models;
+using GActivityDiary.Core.NHibernate;
 using NHibernate;
 using System;
 using System.Threading.Tasks;
@@ -24,18 +24,12 @@ namespace GActivityDiary.Core.DataBase
         public DbContext(string dataBaseFilePath)
         {
             _dataBaseFilePath = dataBaseFilePath;
-            NHibernateHelper helper = new(_dataBaseFilePath);
-            Session = helper.OpenSession();
-            Activities = new EntityRepository<Activity>(this);
-            Tags = new EntityRepository<Tag>(this);
+            Initialize();
         }
 
         public DbContext()
         {
-            NHibernateHelper helper = new(_dataBaseFilePath);
-            Session = helper.OpenSession();
-            Activities = new EntityRepository<Activity>(this);
-            Tags = new EntityRepository<Tag>(this);
+            Initialize();
         }
 
         public ITransaction BeginTransaction()
@@ -101,6 +95,18 @@ namespace GActivityDiary.Core.DataBase
         {
             Session.Dispose();
             GC.SuppressFinalize(this);
+        }
+
+        private void Initialize()
+        {
+            NHibernateFactory nHibernateFactory = new(_dataBaseFilePath);
+            NHibernateFactoryProxy nHibernateFactoryProxy = new();
+            nHibernateFactoryProxy.Initialize(nHibernateFactory.Configuration, nHibernateFactory.SessionFactory);
+            NHibernateSession nHibernateSession = new(nHibernateFactoryProxy);
+            Session = nHibernateSession.OpenSession();
+            Session.FlushMode = FlushMode.Auto;
+            Activities = new EntityRepository<Activity>(this);
+            Tags = new EntityRepository<Tag>(this);
         }
     }
 }

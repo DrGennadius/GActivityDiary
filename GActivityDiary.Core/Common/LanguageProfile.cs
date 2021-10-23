@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace GActivityDiary.Core.Common
+﻿namespace GActivityDiary.Core.Common
 {
     /// <summary>
     /// Language profile.

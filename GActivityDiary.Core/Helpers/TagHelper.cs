@@ -1,6 +1,5 @@
 ﻿using GActivityDiary.Core.DataBase;
 using GActivityDiary.Core.Models;
-using NHibernate;
 using System;
 using System.Collections.Generic;
 using System.Linq;

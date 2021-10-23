@@ -1,15 +1,10 @@
 ﻿using GActivityDiary.Core.Common;
 using GActivityDiary.Core.DataBase;
-using GActivityDiary.Core.Models;
 using GActivityDiary.Core.Reports;
 using GActivityDiary.Core.Reports.Text;
 using ReactiveUI;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reactive;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GActivityDiary.GUI.Avalonia.ViewModels
 {
@@ -40,8 +35,8 @@ namespace GActivityDiary.GUI.Avalonia.ViewModels
             set => this.RaiseAndSetIfChanged(ref _reportGroupingType, value);
         }
 
-        public string ReportText 
-        { 
+        public string ReportText
+        {
             get => _reportText;
             set => this.RaiseAndSetIfChanged(ref _reportText, value);
         }

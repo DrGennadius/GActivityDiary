@@ -1,5 +1,4 @@
 ﻿using GActivityDiary.Core.Models;
-using NHibernate;
 using NHibernate.Linq;
 using System;
 using System.Collections.Generic;

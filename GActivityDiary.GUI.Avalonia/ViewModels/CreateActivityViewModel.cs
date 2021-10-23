@@ -38,9 +38,9 @@ namespace GActivityDiary.GUI.Avalonia.ViewModels
         public DbContext Db { get; private set; }
 
         [Required]
-        public string Name 
-        { 
-            get => _name; 
+        public string Name
+        {
+            get => _name;
             set => this.RaiseAndSetIfChanged(ref _name, value);
         }
 
