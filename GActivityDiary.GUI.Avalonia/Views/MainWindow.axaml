@@ -42,6 +42,10 @@
                 <MenuItem Header="Time converter"
                           Command="{Binding OpenTimeConverterWindowCmd}"/>
             </MenuItem>
+            <MenuItem Header="_Reports">
+                <MenuItem Header="Simple text"
+                          Command="{Binding OpenSimpleTextReporterWindowCmd}"/>
+            </MenuItem>
         </Menu>
 
         <!--<views:ActivityListBoxView/>-->

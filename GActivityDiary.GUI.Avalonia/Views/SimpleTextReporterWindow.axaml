@@ -1,0 +1,54 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:converters="clr-namespace:GActivityDiary.GUI.Avalonia.Converters;assembly=GActivityDiary.GUI.Avalonia"
+        mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="450"
+        Width="400" Height="500"
+        MinWidth="400"
+        x:Class="GActivityDiary.GUI.Avalonia.Views.SimpleTextReporterWindow"
+        Icon="/Assets/gactivitydiary.ico"
+        Title="Simple text reporter">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <WrapPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Start date:"
+                           VerticalAlignment="Center"
+                           Margin="5"/>
+                <DatePicker SelectedDate="{Binding StartDate}"
+                            Margin="5"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="End date:"
+                           VerticalAlignment="Center"
+                           Margin="5"/>
+                <DatePicker SelectedDate="{Binding EndDate}"
+                            Margin="5"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Grouping:"
+                           VerticalAlignment="Center"
+                           Margin="5"/>
+                <ComboBox SelectedItem="{Binding ReportGroupingType}"
+                      Items="{Binding Path=ReportGroupingType, Converter={converters:EnumToCollectionConverter}, Mode=OneTime}"
+                      Margin="5"/>
+            </StackPanel>
+            <Button Content="Generate"
+                    Command="{Binding GenerateCmd}"
+                    Margin="5"/>
+
+        </WrapPanel>
+        <TextBox Text="{Binding ReportText}"
+                 Grid.Row="1"
+                 Margin="5"
+                 IsReadOnly="True"/>
+        
+    </Grid>
+    
+</Window>
