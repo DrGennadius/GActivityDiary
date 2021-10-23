@@ -1,4 +1,5 @@
 ﻿using Avalonia.Controls.Selection;
+using GActivityDiary.Core.DataBase;
 using GActivityDiary.Core.Models;
 using ReactiveUI;
 using System;
@@ -20,12 +21,14 @@ namespace GActivityDiary.GUI.Avalonia.ViewModels
         protected CancellationTokenSource _tokenSource = new();
         protected Task? _updateTask = null;
 
-        public ActivityListBoxViewModelBase()
+        public ActivityListBoxViewModelBase(DbContext db)
         {
+            Db = db;
+
             CreateActivityCmd = ReactiveCommand.Create(() => CreateActivity());
             EditActivityCmd = ReactiveCommand.Create<Activity>(x => EditActivity(x));
 
-            SingleActivityContent = new CreateActivityViewModel(this);
+            SingleActivityContent = new CreateActivityViewModel(db, this);
 
             Selection = new SelectionModel<Activity>();
             Selection.SelectionChanged += SelectionChanged;
@@ -33,6 +36,9 @@ namespace GActivityDiary.GUI.Avalonia.ViewModels
             this.WhenAnyValue(x => x.Activities.Count)
                 .Subscribe(x => IsCollectionEmpty = x == 0);
         }
+
+        // Database context.
+        public DbContext Db { get; private set; }
 
         public ReactiveCommand<Unit, Unit> CreateActivityCmd { get; }
 
@@ -91,12 +97,12 @@ namespace GActivityDiary.GUI.Avalonia.ViewModels
 
         public void EditActivity(Activity activity)
         {
-            SingleActivityContent = new EditActivityViewModel(this, activity);
+            SingleActivityContent = new EditActivityViewModel(Db, this, activity);
         }
 
         public void CreateActivity()
         {
-            SingleActivityContent = new CreateActivityViewModel(this);
+            SingleActivityContent = new CreateActivityViewModel(Db, this);
         }
 
         public SelectionModel<Activity> Selection { get; }

@@ -1,4 +1,5 @@
-﻿using GActivityDiary.Core.Helpers;
+﻿using GActivityDiary.Core.DataBase;
+using GActivityDiary.Core.Helpers;
 using GActivityDiary.Core.Models;
 using ReactiveUI;
 using System;
@@ -12,8 +13,10 @@ namespace GActivityDiary.GUI.Avalonia.ViewModels
     {
         private string _name = "";
 
-        public CreateActivityViewModel(ActivityListBoxViewModelBase activityListBoxViewModel)
+        public CreateActivityViewModel(DbContext db, ActivityListBoxViewModelBase activityListBoxViewModel)
         {
+            Db = db;
+
             ActivityListBoxViewModel = activityListBoxViewModel;
 
             DateTime now = TimeRounderHelper.Floor(DateTime.Now);
@@ -30,6 +33,9 @@ namespace GActivityDiary.GUI.Avalonia.ViewModels
             CreateActivityCmd = ReactiveCommand.Create(() => CreateActivity(), canExecute);
             CancelCmd = ReactiveCommand.Create(() => Cancel());
         }
+
+        // Database context.
+        public DbContext Db { get; private set; }
 
         [Required]
         public string Name 
@@ -68,7 +74,7 @@ namespace GActivityDiary.GUI.Avalonia.ViewModels
             {
                 endAt = endAt.Value.Add(EndAtTime.Value);
             }
-            var tags = TagHelper.GetOrCreateTags(DB.Instance.Tags, Tags);
+            var tags = TagHelper.GetOrCreateTags(Db.Tags, Tags);
             Activity activity = new()
             {
                 Name = Name,
@@ -77,8 +83,8 @@ namespace GActivityDiary.GUI.Avalonia.ViewModels
                 EndAt = endAt,
                 Tags = new HashSet<Tag>(tags)
             };
-            var uid = DB.Instance.Activities.Save(activity);
-            DB.Instance.Commit();
+            var uid = Db.Activities.Save(activity);
+            Db.Commit();
             ActivityListBoxViewModel.Update(uid);
         }
 

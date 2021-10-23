@@ -1,3 +1,4 @@
+using GActivityDiary.Core.DataBase;
 using GActivityDiary.GUI.Avalonia.Views;
 using ReactiveUI;
 using System.Reactive;
@@ -9,8 +10,10 @@ namespace GActivityDiary.GUI.Avalonia.ViewModels
         private string _selectedViewMode = "All";
         private ActivityListBoxViewModelBase? _activityListBoxViewModel;
 
-        public MainWindowViewModel()
+        public MainWindowViewModel(DbContext db)
         {
+            Db = db;
+
             ViewModes = new string[]
             {
                 "Day",
@@ -22,6 +25,9 @@ namespace GActivityDiary.GUI.Avalonia.ViewModels
 
             SelectedViewMode = ViewModes[0];
         }
+
+        // Database context.
+        public DbContext Db { get; private set; }
 
         public ReactiveCommand<string, Unit> ToogleViewModeCmd { get; }
 
@@ -38,10 +44,10 @@ namespace GActivityDiary.GUI.Avalonia.ViewModels
                 switch (value)
                 {
                     case "Day":
-                        ActivityListBoxViewModel = new DayActivityListBoxViewModel();
+                        ActivityListBoxViewModel = new DayActivityListBoxViewModel(Db);
                         break;
                     case "All":
-                        ActivityListBoxViewModel = new ActivityListBoxViewModel();
+                        ActivityListBoxViewModel = new ActivityListBoxViewModel(Db);
                         break;
                     default:
                         break;

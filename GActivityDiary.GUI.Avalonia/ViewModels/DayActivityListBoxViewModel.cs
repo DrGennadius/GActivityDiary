@@ -1,4 +1,5 @@
 ﻿using Avalonia.Controls.Selection;
+using GActivityDiary.Core.DataBase;
 using GActivityDiary.Core.Models;
 using NHibernate.Linq;
 using ReactiveUI;
@@ -15,12 +16,12 @@ namespace GActivityDiary.GUI.Avalonia.ViewModels
 
         private int _collectionCount;
 
-        public DayActivityListBoxViewModel()
-            : base()
+        public DayActivityListBoxViewModel(DbContext db)
+            : base(db)
         {
             SelectedDate = DateTime.Now;
 
-            SingleActivityContent = new CreateActivityViewModel(this);
+            SingleActivityContent = new CreateActivityViewModel(db, this);
         }
 
         public DateTimeOffset? SelectedDate
@@ -55,17 +56,17 @@ namespace GActivityDiary.GUI.Avalonia.ViewModels
                 ? new DateTime(SelectedDate.Value.Year, SelectedDate.Value.Month, SelectedDate.Value.Day, 0, 0, 0)
                 : new DateTime(now.Year, now.Month, now.Day, 0, 0, 0);
             DateTime endAt = startAt.AddDays(1);
-            CollectionCount = DB.Instance.Activities.Query()
+            CollectionCount = Db.Activities.Query()
                 .Where(x => x.StartAt >= startAt && x.EndAt < endAt)
                 .Count();
             Activities.Clear();
-            var activities = await DB.Instance.Activities.Query()
+            var activities = await Db.Activities.Query()
                 .Where(x => x.StartAt >= startAt && x.EndAt < endAt)
                 .ToListAsync();
             Activities = new ObservableCollection<Activity>(activities);
             if (targetActivityId.HasValue)
             {
-                var targetActivty = DB.Instance.Activities.GetById(targetActivityId.Value);
+                var targetActivty = Db.Activities.GetById(targetActivityId.Value);
                 SelectedActivity = targetActivty;
             }
         }

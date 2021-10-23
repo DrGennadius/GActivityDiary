@@ -1,4 +1,5 @@
 ﻿using Avalonia.Controls.Selection;
+using GActivityDiary.Core.DataBase;
 using GActivityDiary.Core.Models;
 using ReactiveUI;
 using System;
@@ -23,8 +24,8 @@ namespace GActivityDiary.GUI.Avalonia.ViewModels
         private int _pageCount;
         private int _pageNumber = 1;
 
-        public ActivityListBoxViewModel()
-            : base()
+        public ActivityListBoxViewModel(DbContext db)
+            : base(db)
         {
             GoToFirstPageCmd = ReactiveCommand.Create(() => GoToFirstPage());
             GoToLastPageCmd = ReactiveCommand.Create(() => GoToLastPage());
@@ -91,7 +92,7 @@ namespace GActivityDiary.GUI.Avalonia.ViewModels
 
         public void GoToLastPageForce()
         {
-            CollectionCount = DB.Instance.Activities.Query().Count();
+            CollectionCount = Db.Activities.Query().Count();
             PageCount = (CollectionCount + PageSize - 1) / PageSize;
             PageNumber = PageCount;
         }
@@ -106,7 +107,7 @@ namespace GActivityDiary.GUI.Avalonia.ViewModels
 
         private void GoToLastPage()
         {
-            CollectionCount = DB.Instance.Activities.Query().Count();
+            CollectionCount = Db.Activities.Query().Count();
             PageCount = (CollectionCount + PageSize - 1) / PageSize;
             if (PageNumber != PageCount)
             {
@@ -117,15 +118,15 @@ namespace GActivityDiary.GUI.Avalonia.ViewModels
         private async void UpdateAsync(int pageIndex, int pageSize, Guid? targetActivityId = null)
         {
             IsProgressBarEnable = true;
-            CollectionCount = DB.Instance.Activities.Query().Count();
+            CollectionCount = Db.Activities.Query().Count();
             PageCount = (CollectionCount + PageSize - 1) / PageSize;
             IsProgressBarIndeterminate = true;
             Activities.Clear();
-            var activities = await DB.Instance.Activities.GetAllAsync(pageIndex, pageSize);
+            var activities = await Db.Activities.GetAllAsync(pageIndex, pageSize);
             Activities = new ObservableCollection<Activity>(activities);
             if (targetActivityId.HasValue)
             {
-                var targetActivty = DB.Instance.Activities.GetById(targetActivityId.Value);
+                var targetActivty = Db.Activities.GetById(targetActivityId.Value);
                 SelectedActivity = targetActivty;
             }
             IsProgressBarIndeterminate = false;

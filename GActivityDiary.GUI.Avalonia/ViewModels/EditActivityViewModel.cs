@@ -1,4 +1,5 @@
-﻿using GActivityDiary.Core.Helpers;
+﻿using GActivityDiary.Core.DataBase;
+using GActivityDiary.Core.Helpers;
 using GActivityDiary.Core.Models;
 using ReactiveUI;
 using System;
@@ -14,8 +15,10 @@ namespace GActivityDiary.GUI.Avalonia.ViewModels
         private string _name = "";
         private Activity _activity;
 
-        public EditActivityViewModel(ActivityListBoxViewModelBase activityListBoxViewModel, Activity activity)
+        public EditActivityViewModel(DbContext db, ActivityListBoxViewModelBase activityListBoxViewModel, Activity activity)
         {
+            Db = db;
+
             ActivityListBoxViewModel = activityListBoxViewModel;
 
             _activity = activity;
@@ -35,6 +38,9 @@ namespace GActivityDiary.GUI.Avalonia.ViewModels
             DeleteActivityCmd = ReactiveCommand.Create(() => DeleteActivity());
             CancelCmd = ReactiveCommand.Create(() => Cancel());
         }
+
+        // Database context.
+        public DbContext Db { get; private set; }
 
         [Required]
         public string Name
@@ -79,15 +85,15 @@ namespace GActivityDiary.GUI.Avalonia.ViewModels
             _activity.Description = Description;
             _activity.StartAt = startAt;
             _activity.EndAt = endAt;
-            var tags = TagHelper.GetOrCreateTags(DB.Instance.Tags, Tags);
+            var tags = TagHelper.GetOrCreateTags(Db.Tags, Tags);
             _activity.Tags = new HashSet<Tag>(tags);
-            DB.Instance.Activities.Save(_activity);
+            Db.Activities.Save(_activity);
             ActivityListBoxViewModel.Update(_activity.Id);
         }
 
         private void DeleteActivity()
         {
-            DB.Instance.Activities.Delete(_activity);
+            Db.Activities.Delete(_activity);
             ActivityListBoxViewModel.Update();
             ActivityListBoxViewModel.CreateActivity();
         }
