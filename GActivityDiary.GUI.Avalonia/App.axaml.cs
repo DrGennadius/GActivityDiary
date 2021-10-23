@@ -37,9 +37,12 @@ namespace GActivityDiary.GUI.Avalonia
         private void MainWindow_Closing(object? sender, System.ComponentModel.CancelEventArgs e)
         {
             var window = sender as MainWindow;
-            window!.WindowState = WindowState.Minimized;
-            window!.ShowInTaskbar = false;
-            e.Cancel = true;
+            if (window != null && window.WindowState != WindowState.Minimized)
+            {
+                window!.WindowState = WindowState.Minimized;
+                window!.ShowInTaskbar = false;
+                e.Cancel = true;
+            }
         }
     }
 }
