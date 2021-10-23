@@ -1,6 +1,7 @@
 ﻿using GActiveDiary.Tests.Common.DataBaseUtils;
 using GActivityDiary.Core.Common;
 using GActivityDiary.Core.DataBase;
+using GActivityDiary.Core.Extensions;
 using GActivityDiary.Core.Models;
 using GActivityDiary.Core.Reports.Text;
 using NUnit.Framework;
@@ -67,14 +68,7 @@ namespace GActivityDiary.Core.Tests.Reports
             LanguageProfile languageProfile = LanguageProfile.GetDefaultEng();
             SimpleTextReporter simpleTextReporter = new(_db, languageProfile);
 
-            var dateTime = DateTime.Now.AddDays(-7);
-            int dayOfWeek = (int)dateTime.DayOfWeek;
-            dateTime = dateTime.AddDays( - dayOfWeek + 1);
-            DateTime beginDateTime = new(dateTime.Year, dateTime.Month, dateTime.Day);
-            DateTime endDateTime = beginDateTime.AddDays(7)
-                                                .AddMilliseconds(-1);
-            string weeklyReport = simpleTextReporter.GetReport(beginDateTime,
-                                                               endDateTime);
+            string weeklyReport = simpleTextReporter.GetReport(DateTime.Now.AddDays(-7).GetWeekInterval());
             Assert.IsNotEmpty(weeklyReport);
 
             Assert.Pass();
@@ -89,29 +83,24 @@ namespace GActivityDiary.Core.Tests.Reports
         }
 
         [Test]
+        public void MonthlyTest()
+        {
+            LanguageProfile languageProfile = LanguageProfile.GetDefaultEng();
+            SimpleTextReporter simpleTextReporter = new(_db, languageProfile);
+
+            string monthlyReport = simpleTextReporter.GetReport(DateTime.Now.AddMonths(-1).GetMonthInterval());
+            Assert.IsNotEmpty(monthlyReport);
+
+            Assert.Pass();
+        }
+
+        [Test]
         public void QuarterlyTest()
         {
             LanguageProfile languageProfile = LanguageProfile.GetDefaultEng();
             SimpleTextReporter simpleTextReporter = new(_db, languageProfile);
 
-            var dateTime = DateTime.Now.AddDays(-1);
-            int year = dateTime.Year;
-            int month = dateTime.Month;
-            int quarter = (month + 2) / 3;
-            if (quarter == 1)
-            {
-                year--;
-                month = 10;
-            }
-            else
-            {
-                month = (quarter - 1) * 3 - 2;
-            }
-            DateTime beginDateTime = new(year, month, 1);
-            DateTime endDateTime = beginDateTime.AddMonths(3)
-                                                .AddMilliseconds(-1);
-            string quarterlyReport = simpleTextReporter.GetReport(beginDateTime,
-                                                                  endDateTime);
+            string quarterlyReport = simpleTextReporter.GetReport(DateTime.Now.AddMonths(-3).GetQuarterInterval());
             Assert.IsNotEmpty(quarterlyReport);
 
             Assert.Pass();
@@ -123,12 +112,7 @@ namespace GActivityDiary.Core.Tests.Reports
             LanguageProfile languageProfile = LanguageProfile.GetDefaultEng();
             SimpleTextReporter simpleTextReporter = new(_db, languageProfile);
 
-            int year = DateTime.Now.Year - 1;
-            DateTime beginDateTime = new(year, 1, 1);
-            DateTime endDateTime = beginDateTime.AddYears(1)
-                                                .AddMilliseconds(-1);
-            string annualReport = simpleTextReporter.GetReport(beginDateTime,
-                                                               endDateTime);
+            string annualReport = simpleTextReporter.GetReport(DateTime.Now.AddYears(-1).GetYearInterval());
             Assert.IsNotEmpty(annualReport);
 
             Assert.Pass();

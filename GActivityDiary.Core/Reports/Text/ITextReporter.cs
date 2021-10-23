@@ -1,4 +1,5 @@
-﻿using GActivityDiary.Core.Models;
+﻿using GActivityDiary.Core.Common;
+using GActivityDiary.Core.Models;
 using System;
 using System.Collections.Generic;
 
@@ -15,6 +16,13 @@ namespace GActivityDiary.Core.Reports.Text
         /// <param name="dateTime">Day.</param>
         /// <returns></returns>
         string GetReport(DateTime dateTime);
+
+        /// <summary>
+        /// Create a report by <see cref="DateTimeInterval"/>.
+        /// </summary>
+        /// <param name="dateTimeInterval"></param>
+        /// <returns></returns>
+        string GetReport(DateTimeInterval dateTimeInterval);
 
         /// <summary>
         /// Create a report starting from a specified date for a specific period of time.

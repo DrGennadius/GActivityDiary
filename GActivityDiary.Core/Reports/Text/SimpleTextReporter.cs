@@ -32,10 +32,12 @@ namespace GActivityDiary.Core.Reports.Text
 
         public string GetReport(DateTime dateTime)
         {
-            return GetReport(
-                new DateTime(dateTime.Year, dateTime.Month, dateTime.Day),
-                new DateTime(dateTime.Year, dateTime.Month, dateTime.Day).AddDays(1)
-                                                                         .AddMilliseconds(-1));
+            return GetReport(new DateTimeInterval(dateTime));
+        }
+
+        public string GetReport(DateTimeInterval dateTimeInterval)
+        {
+            return GetReport(dateTimeInterval.Start, dateTimeInterval.End);
         }
 
         public string GetReport(DateTime beginDateTime, TimeSpan timeSpan)
