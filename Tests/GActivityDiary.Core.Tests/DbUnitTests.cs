@@ -344,7 +344,7 @@ namespace GActivityDiary.Core.Tests
         [Test]
         public void MassiveDBTest()
         {
-            DbContext db = DataBaseGenerator.Generate(_testDBFilePath, 1000000, 100000);
+            DbContext db = DataBaseGenerator.SimpleGenerate(_testDBFilePath, 1000000, 100000);
 
             Assert.IsNotNull(db);
 
@@ -359,7 +359,7 @@ namespace GActivityDiary.Core.Tests
             int pageSize = 10;
             int pageCount = activityCount / pageSize;
 
-            DbContext db = DataBaseGenerator.Generate(_testDBFilePath, activityCount);
+            DbContext db = DataBaseGenerator.SimpleGenerate(_testDBFilePath, activityCount);
 
             Assert.IsNotNull(db);
 

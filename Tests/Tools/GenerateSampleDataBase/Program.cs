@@ -7,7 +7,7 @@ namespace GenerateSampleDataBase
     {
         static void Main(string[] args)
         {
-            var dbContext = DataBaseGenerator.Generate();
+            var dbContext = DataBaseGenerator.SimpleGenerate();
             dbContext.Dispose();
 
             Console.WriteLine("Generated!");
