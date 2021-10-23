@@ -9,7 +9,7 @@
         MinWidth="600"
         x:Class="GActivityDiary.GUI.Avalonia.Views.MainWindow"
         Icon="/Assets/gactivitydiary.ico"
-        Title="GActivityDiary.GUI.Avalonia">
+        Title="GActivityDiary">
 
     <Window.Resources>
         <converters:StringRadioButtonConverter x:Key="StringRadioButtonConverter"/>
