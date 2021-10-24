@@ -1,16 +1,32 @@
 ﻿using GActivityDiary.Core.DataBase;
 using GActivityDiary.Core.Models;
+using NHibernate.Criterion;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace GActivityDiary.Core.Helpers
 {
-    public class TagHelper
+    /// <summary>
+    /// <see cref="Tag"/> helper.
+    /// </summary>
+    public static class TagHelper
     {
-        public static IEnumerable<Tag> GetOrCreateTags(IRepository<Tag> repository, string tagsString)
+        /// <summary>
+        /// Get or create tags by a text sequence of tags.
+        /// </summary>
+        /// <param name="dbContext"></param>
+        /// <param name="tagsString"></param>
+        /// <returns></returns>
+        public static async Task<IEnumerable<Tag>> GetOrCreateTagsAsync(DbContext dbContext, string tagsString)
         {
+            if (dbContext is null)
+            {
+                throw new ArgumentNullException(nameof(dbContext));
+            }
+
             List<Tag> tags = new();
 
             if (string.IsNullOrWhiteSpace(tagsString))
@@ -19,29 +35,125 @@ namespace GActivityDiary.Core.Helpers
             }
 
             var tagStrings = Regex.Split(tagsString.ToLower(), @"\W+");
-            var existsTags = repository.Find(x => tagStrings.Contains(x.Name)).ToList();
+            var existsTags = await GetTagsAsync(dbContext, tagStrings);
 
-            var result = repository.DbContext.GetCurrentTransactionOrCreateNew();
+            var (transaction, isNew) = dbContext.GetCurrentTransactionOrCreateNew();
             foreach (var tagString in tagStrings)
             {
                 if (string.IsNullOrEmpty(tagString))
                 {
                     continue;
                 }
-                Tag tag = existsTags.Find(x => x.Name == tagString);
+                Tag tag = existsTags.FirstOrDefault(x => x.Name == tagString);
                 if (tag == null)
                 {
                     tag = new(tagString);
-                    tag.Id = repository.Save(tag);
+                    tag.Id = dbContext.Tags.Save(tag);
                 }
                 tags.Add(tag);
             }
-            if (result.Item2)
+            if (isNew)
             {
-                result.Item1.Commit();
+                transaction.Commit();
             }
 
-            return tags;
+            return tags.AsEnumerable();
+        }
+
+        /// <summary>
+        /// Get tags by a text sequence of tags.
+        /// </summary>
+        /// <param name="dbContext"></param>
+        /// <param name="tagsString"></param>
+        /// <returns></returns>
+        public static async Task<IEnumerable<Tag>> GetTagsAsync(DbContext dbContext, string tagsString)
+        {
+            if (dbContext is null)
+            {
+                throw new ArgumentNullException(nameof(dbContext));
+            }
+
+            if (string.IsNullOrWhiteSpace(tagsString))
+            {
+                return new List<Tag>();
+            }
+
+            var tagStrings = Regex.Split(tagsString.ToLower(), @"\W+");
+            var existsTags = await dbContext.Tags.FindAsync(x => tagStrings.Contains(x.Name));
+            return existsTags.AsEnumerable();
+        }
+
+        /// <summary>
+        /// Get tags by a text tag array.
+        /// </summary>
+        /// <param name="dbContext"></param>
+        /// <param name="tags"></param>
+        /// <returns></returns>
+        public static async Task<IEnumerable<Tag>> GetTagsAsync(DbContext dbContext, string[] tags)
+        {
+            if (dbContext is null)
+            {
+                throw new ArgumentNullException(nameof(dbContext));
+            }
+
+            if (tags.Length == 0)
+            {
+                return new List<Tag>();
+            }
+
+            var existsTags = await dbContext.Tags.FindAsync(x => tags.Contains(x.Name));
+            return existsTags.AsEnumerable();
+        }
+
+        /// <summary>
+        /// Get tag ids by a text sequence of tags.
+        /// </summary>
+        /// <param name="dbContext"></param>
+        /// <param name="tagsString"></param>
+        /// <returns></returns>
+        public static async Task<IEnumerable<Guid>> GetTagIdsAsync(DbContext dbContext, string tagsString)
+        {
+            if (dbContext is null)
+            {
+                throw new ArgumentNullException(nameof(dbContext));
+            }
+
+            if (string.IsNullOrWhiteSpace(tagsString))
+            {
+                return new List<Guid>();
+            }
+
+            var tagStrings = Regex.Split(tagsString.ToLower(), @"\W+");
+            var ids = await dbContext.Session.CreateCriteria(typeof(Tag))
+                                             .Add(Restrictions.In("Name", tagStrings))
+                                             .SetProjection(Projections.Property("Id"))
+                                             .ListAsync<Guid>();
+            return ids.AsEnumerable();
+        }
+
+        /// <summary>
+        /// Get tag ids by a text tag array.
+        /// </summary>
+        /// <param name="dbContext"></param>
+        /// <param name="tags"></param>
+        /// <returns></returns>
+        public static async Task<IEnumerable<Guid>> GetTagIdsAsync(DbContext dbContext, string[] tags)
+        {
+            if (dbContext is null)
+            {
+                throw new ArgumentNullException(nameof(dbContext));
+            }
+
+            if (tags.Length == 0)
+            {
+                return new List<Guid>();
+            }
+
+            var ids = await dbContext.Session.CreateCriteria(typeof(Tag))
+                                             .Add(Restrictions.In("Name", tags))
+                                             .SetProjection(Projections.Property("Id"))
+                                             .ListAsync<Guid>();
+            return ids.AsEnumerable();
         }
     }
 }

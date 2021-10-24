@@ -1,5 +1,6 @@
 ﻿using Avalonia.Controls.Selection;
 using GActivityDiary.Core.DataBase;
+using GActivityDiary.Core.Helpers;
 using GActivityDiary.Core.Models;
 using ReactiveUI;
 using System;
@@ -23,6 +24,8 @@ namespace GActivityDiary.GUI.Avalonia.ViewModels
         private int _pageSize;
         private int _pageCount;
         private int _pageNumber = 1;
+
+        private string _tagsSearchText = "";
 
         public ActivityListBoxViewModel(DbContext db)
             : base(db)
@@ -82,19 +85,40 @@ namespace GActivityDiary.GUI.Avalonia.ViewModels
             }
         }
 
+        public string TagsSearchText
+        {
+            get => _tagsSearchText;
+            set
+            {
+                this.RaiseAndSetIfChanged(ref _tagsSearchText, value);
+                Update();
+            }
+        }
+
         public List<int> PageSizeOptions => _pageSizes.ToList();
 
         public override void Update(Guid? targetActivityId = null)
         {
+            Stop();
             _tokenSource = new();
-            _updateTask = Task.Run(() => UpdateAsync(PageNumber - 1, PageSize, targetActivityId), _tokenSource.Token);
+            _updateTask = Task.Run(() => UpdateAsync(targetActivityId), _tokenSource.Token);
         }
 
         public void GoToLastPageForce()
         {
-            CollectionCount = Db.Activities.Query().Count();
-            PageCount = (CollectionCount + PageSize - 1) / PageSize;
+            Task.Run(CalcPageCountAsync);
+        }
+
+        public async Task GoToLastPageForceAsync()
+        {
+            await CalcPageCountAsync();
             PageNumber = PageCount;
+        }
+
+        private async Task CalcPageCountAsync()
+        {
+            CollectionCount = await ActivityHelper.GetCountByTagsAsync(DbContext, _tagsSearchText);
+            PageCount = (CollectionCount + PageSize - 1) / PageSize;
         }
 
         private void GoToFirstPage()
@@ -107,26 +131,29 @@ namespace GActivityDiary.GUI.Avalonia.ViewModels
 
         private void GoToLastPage()
         {
-            CollectionCount = Db.Activities.Query().Count();
-            PageCount = (CollectionCount + PageSize - 1) / PageSize;
+            Task.Run(GoToLastPageAsync);
+        }
+
+        private async Task GoToLastPageAsync()
+        {
+            await CalcPageCountAsync();
             if (PageNumber != PageCount)
             {
                 PageNumber = PageCount;
             }
         }
 
-        private async void UpdateAsync(int pageIndex, int pageSize, Guid? targetActivityId = null)
+        private async void UpdateAsync(Guid? targetActivityId = null)
         {
             IsProgressBarEnable = true;
-            CollectionCount = Db.Activities.Query().Count();
-            PageCount = (CollectionCount + PageSize - 1) / PageSize;
+            await CalcPageCountAsync();
             IsProgressBarIndeterminate = true;
             Activities.Clear();
-            var activities = await Db.Activities.GetAllAsync(pageIndex, pageSize);
+            var activities = await ActivityHelper.GetByTagsAsync(DbContext, _tagsSearchText, PageNumber - 1, PageSize);
             Activities = new ObservableCollection<Activity>(activities);
             if (targetActivityId.HasValue)
             {
-                var targetActivty = Db.Activities.GetById(targetActivityId.Value);
+                var targetActivty = DbContext.Activities.GetById(targetActivityId.Value);
                 SelectedActivity = targetActivty;
             }
             IsProgressBarIndeterminate = false;

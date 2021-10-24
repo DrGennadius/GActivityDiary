@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reactive;
+using System.Threading.Tasks;
 
 namespace GActivityDiary.GUI.Avalonia.ViewModels
 {
@@ -17,7 +18,7 @@ namespace GActivityDiary.GUI.Avalonia.ViewModels
 
         public EditActivityViewModel(DbContext db, ActivityListBoxViewModelBase activityListBoxViewModel, Activity activity)
         {
-            Db = db;
+            DbContext = db;
 
             ActivityListBoxViewModel = activityListBoxViewModel;
 
@@ -40,7 +41,7 @@ namespace GActivityDiary.GUI.Avalonia.ViewModels
         }
 
         // Database context.
-        public DbContext Db { get; private set; }
+        public DbContext DbContext { get; private set; }
 
         [Required]
         public string Name
@@ -71,6 +72,23 @@ namespace GActivityDiary.GUI.Avalonia.ViewModels
 
         public void SaveActivity()
         {
+            Task.Run(SaveActivityAsync);
+        }
+
+        private void DeleteActivity()
+        {
+            DbContext.Activities.Delete(_activity);
+            ActivityListBoxViewModel.Update();
+            ActivityListBoxViewModel.CreateActivity();
+        }
+
+        private void Cancel()
+        {
+            ActivityListBoxViewModel.ViewActivity(_activity);
+        }
+
+        private async Task SaveActivityAsync()
+        {
             DateTime? startAt = StartAtDate?.Date;
             if (startAt.HasValue && StartAtTime.HasValue)
             {
@@ -85,22 +103,10 @@ namespace GActivityDiary.GUI.Avalonia.ViewModels
             _activity.Description = Description;
             _activity.StartAt = startAt;
             _activity.EndAt = endAt;
-            var tags = TagHelper.GetOrCreateTags(Db.Tags, Tags);
+            var tags = await TagHelper.GetOrCreateTagsAsync(DbContext, Tags);
             _activity.Tags = new HashSet<Tag>(tags);
-            Db.Activities.Save(_activity);
+            DbContext.Activities.Save(_activity);
             ActivityListBoxViewModel.Update(_activity.Id);
-        }
-
-        private void DeleteActivity()
-        {
-            Db.Activities.Delete(_activity);
-            ActivityListBoxViewModel.Update();
-            ActivityListBoxViewModel.CreateActivity();
-        }
-
-        private void Cancel()
-        {
-            ActivityListBoxViewModel.ViewActivity(_activity);
         }
     }
 }

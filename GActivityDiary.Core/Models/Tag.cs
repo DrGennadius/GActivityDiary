@@ -7,6 +7,8 @@ namespace GActivityDiary.Core.Models
     /// </summary>
     public class Tag : IEntity
     {
+        private string _name;
+
         public Tag()
         {
         }
@@ -21,7 +23,7 @@ namespace GActivityDiary.Core.Models
         /// </summary>
         public virtual Guid Id { get; set; }
 
-        public virtual string Name { get; set; }
+        public virtual string Name { get => _name; set => _name = value.ToLower(); }
 
         // public virtual ICollection<Activity> Activities { get; set; } = new List<Activity>();
 

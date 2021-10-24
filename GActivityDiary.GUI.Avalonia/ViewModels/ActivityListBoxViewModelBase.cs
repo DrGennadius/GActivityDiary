@@ -23,7 +23,7 @@ namespace GActivityDiary.GUI.Avalonia.ViewModels
 
         public ActivityListBoxViewModelBase(DbContext db)
         {
-            Db = db;
+            DbContext = db;
 
             CreateActivityCmd = ReactiveCommand.Create(() => CreateActivity());
             EditActivityCmd = ReactiveCommand.Create<Activity>(x => EditActivity(x));
@@ -37,8 +37,10 @@ namespace GActivityDiary.GUI.Avalonia.ViewModels
                 .Subscribe(x => IsCollectionEmpty = x == 0);
         }
 
-        // Database context.
-        public DbContext Db { get; private set; }
+        /// <summary>
+        /// Database context.
+        /// </summary>
+        public DbContext DbContext { get; private set; }
 
         public ReactiveCommand<Unit, Unit> CreateActivityCmd { get; }
 
@@ -97,12 +99,12 @@ namespace GActivityDiary.GUI.Avalonia.ViewModels
 
         public void EditActivity(Activity activity)
         {
-            SingleActivityContent = new EditActivityViewModel(Db, this, activity);
+            SingleActivityContent = new EditActivityViewModel(DbContext, this, activity);
         }
 
         public void CreateActivity()
         {
-            SingleActivityContent = new CreateActivityViewModel(Db, this);
+            SingleActivityContent = new CreateActivityViewModel(DbContext, this);
         }
 
         public SelectionModel<Activity> Selection { get; }

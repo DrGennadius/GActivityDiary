@@ -21,6 +21,15 @@
 
             <WrapPanel>
                 <DockPanel>
+                    <TextBlock Text="Tags:"
+                               VerticalAlignment="Center"
+                               Margin="5"/>
+                    <TextBox Text="{Binding TagsSearchText}"
+                             VerticalAlignment="Center"
+                             MinWidth="133"
+                             Margin="5"/>
+                </DockPanel>
+                <DockPanel>
                     <TextBlock Text="Total items:"
                                VerticalAlignment="Center"
                                Margin="5"/>

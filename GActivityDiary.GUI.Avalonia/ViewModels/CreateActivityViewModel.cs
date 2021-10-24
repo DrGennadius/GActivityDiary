@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Reactive;
+using System.Threading.Tasks;
 
 namespace GActivityDiary.GUI.Avalonia.ViewModels
 {
@@ -15,7 +16,7 @@ namespace GActivityDiary.GUI.Avalonia.ViewModels
 
         public CreateActivityViewModel(DbContext db, ActivityListBoxViewModelBase activityListBoxViewModel)
         {
-            Db = db;
+            DbContext = db;
 
             ActivityListBoxViewModel = activityListBoxViewModel;
 
@@ -34,8 +35,10 @@ namespace GActivityDiary.GUI.Avalonia.ViewModels
             CancelCmd = ReactiveCommand.Create(() => Cancel());
         }
 
-        // Database context.
-        public DbContext Db { get; private set; }
+        /// <summary>
+        /// Database context.
+        /// </summary>
+        public DbContext DbContext { get; private set; }
 
         [Required]
         public string Name
@@ -64,28 +67,7 @@ namespace GActivityDiary.GUI.Avalonia.ViewModels
 
         public void CreateActivity()
         {
-            DateTime? startAt = StartAtDate?.Date;
-            if (startAt.HasValue && StartAtTime.HasValue)
-            {
-                startAt = startAt.Value.Add(StartAtTime.Value);
-            }
-            DateTime? endAt = EndAtDate?.Date;
-            if (endAt.HasValue && EndAtTime.HasValue)
-            {
-                endAt = endAt.Value.Add(EndAtTime.Value);
-            }
-            var tags = TagHelper.GetOrCreateTags(Db.Tags, Tags);
-            Activity activity = new()
-            {
-                Name = Name,
-                Description = Description,
-                StartAt = startAt,
-                EndAt = endAt,
-                Tags = new HashSet<Tag>(tags)
-            };
-            var uid = Db.Activities.Save(activity);
-            Db.Commit();
-            ActivityListBoxViewModel.Update(uid);
+            Task.Run(CreateActivityAsync);
         }
 
         private void Cancel()
@@ -98,6 +80,32 @@ namespace GActivityDiary.GUI.Avalonia.ViewModels
             {
                 ActivityListBoxViewModel.CreateActivity();
             }
+        }
+
+        public async Task CreateActivityAsync()
+        {
+            DateTime? startAt = StartAtDate?.Date;
+            if (startAt.HasValue && StartAtTime.HasValue)
+            {
+                startAt = startAt.Value.Add(StartAtTime.Value);
+            }
+            DateTime? endAt = EndAtDate?.Date;
+            if (endAt.HasValue && EndAtTime.HasValue)
+            {
+                endAt = endAt.Value.Add(EndAtTime.Value);
+            }
+            var tags = await TagHelper.GetOrCreateTagsAsync(DbContext, Tags);
+            Activity activity = new()
+            {
+                Name = Name,
+                Description = Description,
+                StartAt = startAt,
+                EndAt = endAt,
+                Tags = new HashSet<Tag>(tags)
+            };
+            var uid = DbContext.Activities.Save(activity);
+            DbContext.Commit();
+            ActivityListBoxViewModel.Update(uid);
         }
     }
 }

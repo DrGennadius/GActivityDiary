@@ -56,17 +56,17 @@ namespace GActivityDiary.GUI.Avalonia.ViewModels
                 ? new DateTime(SelectedDate.Value.Year, SelectedDate.Value.Month, SelectedDate.Value.Day, 0, 0, 0)
                 : new DateTime(now.Year, now.Month, now.Day, 0, 0, 0);
             DateTime endAt = startAt.AddDays(1);
-            CollectionCount = Db.Activities.Query()
+            CollectionCount = DbContext.Activities.Query()
                 .Where(x => x.StartAt >= startAt && x.EndAt < endAt)
                 .Count();
             Activities.Clear();
-            var activities = await Db.Activities.Query()
+            var activities = await DbContext.Activities.Query()
                 .Where(x => x.StartAt >= startAt && x.EndAt < endAt)
                 .ToListAsync();
             Activities = new ObservableCollection<Activity>(activities);
             if (targetActivityId.HasValue)
             {
-                var targetActivty = Db.Activities.GetById(targetActivityId.Value);
+                var targetActivty = DbContext.Activities.GetById(targetActivityId.Value);
                 SelectedActivity = targetActivty;
             }
         }

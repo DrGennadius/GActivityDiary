@@ -14,6 +14,16 @@ namespace GActivityDiary.Core.Models
         }
 
         /// <summary>
+        /// Create a new instance of Activity
+        /// </summary>
+        /// <param name="name"></param>
+        public Activity(string name)
+            : this()
+        {
+            Name = name;
+        }
+
+        /// <summary>
         /// UUID
         /// </summary>
         public virtual Guid Id { get; set; }
