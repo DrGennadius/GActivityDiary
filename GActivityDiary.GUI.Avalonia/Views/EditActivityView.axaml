@@ -2,7 +2,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             mc:Ignorable="d" d:DesignWidth="320" d:DesignHeight="600"
+             MinWidth="320"
              x:Class="GActivityDiary.GUI.Avalonia.Views.EditActivityView">
     
     <DockPanel>
@@ -63,37 +64,26 @@
                      AcceptsReturn="True"
                      Text="{Binding Description}"
                      Watermark="Enter description"/>
-            <Grid Grid.Row="4"
-                  Margin="5">
-                <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-                <Label Content="Start At:"
-                       Margin="5"/>
-                <Label Content="End At:"
-                       Grid.Column="1"
-                       Margin="5"/>
-                <DatePicker Grid.Row="1"
-                            Margin="5"
-                            SelectedDate="{Binding StartAtDate}"/>
-                <DatePicker Grid.Row="1"
-                            Grid.Column="1"
-                            Margin="5"
-                            SelectedDate="{Binding EndAtDate}"/>
-                <TimePicker Grid.Row="2"
-                            Margin="5"
-                            SelectedTime="{Binding StartAtTime}"/>
-                <TimePicker Grid.Row="2"
-                            Grid.Column="1"
-                            Margin="5"
-                            SelectedTime="{Binding EndAtTime}"/>
-            </Grid>
+            <WrapPanel Grid.Row="4">
+                <StackPanel>
+                    <Label Content="Start At:"
+                           Margin="5"/>
+                    <DatePicker SelectedDate="{Binding StartAtDate}"
+                                Margin="5"/>
+                    <TimePicker SelectedTime="{Binding StartAtTime}"
+                                HorizontalAlignment="Stretch"
+                                Margin="5"/>
+                </StackPanel>
+                <StackPanel>
+                    <Label Content="End At:"
+                           Margin="5"/>
+                    <DatePicker SelectedDate="{Binding EndAtDate}"
+                                Margin="5"/>
+                    <TimePicker SelectedTime="{Binding EndAtTime}"
+                                HorizontalAlignment="Stretch"
+                                Margin="5"/>
+                </StackPanel>
+            </WrapPanel>
             <Label Content="Tags:"
                    Grid.Row="5"
                    Margin="5"/>
