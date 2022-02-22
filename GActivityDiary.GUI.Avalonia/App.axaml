@@ -14,7 +14,8 @@
     <TrayIcon.Icons>
         <TrayIcons>
             <TrayIcon Icon="/Assets/gactivitydiary.ico" 
-                      ToolTipText="Avalonia Tray Icon ToolTip"
+                      ToolTipText="GActiveDiary"
+                      Clicked="TrayIconOnClicked"
                       >
                 <TrayIcon.Menu>
                     <NativeMenu>

@@ -12,7 +12,7 @@ namespace GActivityDiary.GUI.Avalonia.ViewModels
         {
             ExitCommand = ReactiveCommand.Create(() =>
             {
-                if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime lifetime)
+                if (Application.Current!.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime lifetime)
                 {
                     lifetime.Shutdown();
                 }
@@ -24,7 +24,7 @@ namespace GActivityDiary.GUI.Avalonia.ViewModels
 
             ShowCommand = ReactiveCommand.Create(() =>
             {
-                if (Application.Current.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime lifetime)
+                if (Application.Current!.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime lifetime)
                 {
                     lifetime.MainWindow.WindowState = WindowState.Normal;
                     lifetime.MainWindow.ShowInTaskbar = true;

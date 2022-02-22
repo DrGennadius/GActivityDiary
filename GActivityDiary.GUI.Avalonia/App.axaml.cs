@@ -5,11 +5,14 @@ using Avalonia.Markup.Xaml;
 using GActivityDiary.Core.DataBase;
 using GActivityDiary.GUI.Avalonia.ViewModels;
 using GActivityDiary.GUI.Avalonia.Views;
+using System;
 
 namespace GActivityDiary.GUI.Avalonia
 {
     public class App : Application
     {
+        private WindowState? _storedWindowState;
+
         public App()
         {
             DataContext = new ApplicationViewModel();
@@ -39,12 +42,25 @@ namespace GActivityDiary.GUI.Avalonia
 
         private void MainWindow_Closing(object? sender, System.ComponentModel.CancelEventArgs e)
         {
-            var window = sender as MainWindow;
-            if (window != null && window.WindowState != WindowState.Minimized)
+            if (sender is MainWindow window && window.WindowState != WindowState.Minimized)
             {
+                _storedWindowState = window!.WindowState;
                 window!.WindowState = WindowState.Minimized;
                 window!.ShowInTaskbar = false;
                 e.Cancel = true;
+            }
+        }
+
+        private void TrayIconOnClicked(object? sender, EventArgs e)
+        {
+            if (!_storedWindowState.HasValue)
+            {
+                return;
+            }
+            if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop && desktop.MainWindow.WindowState != _storedWindowState.Value)
+            {
+                desktop.MainWindow.WindowState = _storedWindowState.Value;
+                desktop.MainWindow.ShowInTaskbar = true;
             }
         }
     }
