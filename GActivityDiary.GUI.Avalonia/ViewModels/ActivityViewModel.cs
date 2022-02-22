@@ -15,6 +15,7 @@ namespace GActivityDiary.GUI.Avalonia.ViewModels
             ActivityListBoxViewModel = activityListBoxViewModel;
             _activity = activity;
             Name = activity.Name;
+            ActivityType = activity.ActivityType?.Name;
             Description = activity.Description;
             StartAt = activity.StartAt;
             EndAt = activity.EndAt;
@@ -24,6 +25,8 @@ namespace GActivityDiary.GUI.Avalonia.ViewModels
         }
 
         public string Name { get; set; } = "";
+
+        public string? ActivityType { get; set; }
 
         public string Description { get; set; }
 

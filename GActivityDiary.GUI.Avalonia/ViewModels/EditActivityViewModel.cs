@@ -15,6 +15,7 @@ namespace GActivityDiary.GUI.Avalonia.ViewModels
     {
         private string _name = "";
         private Activity _activity;
+        private ActivityType? _selectedActivityType;
 
         public EditActivityViewModel(DbContext db, ActivityListBoxViewModelBase activityListBoxViewModel, Activity activity)
         {
@@ -22,8 +23,11 @@ namespace GActivityDiary.GUI.Avalonia.ViewModels
 
             ActivityListBoxViewModel = activityListBoxViewModel;
 
+            ActivityTypes = db.ActivityTypes.GetAll();
+
             _activity = activity;
             Name = activity.Name;
+            SelectedActivityType = activity.ActivityType;
             Description = activity.Description;
             StartAtDate = activity.StartAt?.Date;
             StartAtTime = activity.StartAt?.TimeOfDay;
@@ -61,6 +65,14 @@ namespace GActivityDiary.GUI.Avalonia.ViewModels
         public TimeSpan? StartAtTime { get; set; }
 
         public TimeSpan? EndAtTime { get; set; }
+
+        public ActivityType? SelectedActivityType
+        {
+            get => _selectedActivityType;
+            set => this.RaiseAndSetIfChanged(ref _selectedActivityType, value);
+        }
+
+        public IEnumerable<ActivityType> ActivityTypes { get; set; }
 
         public ActivityListBoxViewModelBase ActivityListBoxViewModel { get; }
 
@@ -100,6 +112,7 @@ namespace GActivityDiary.GUI.Avalonia.ViewModels
                 endAt = endAt.Value.Add(EndAtTime.Value);
             }
             _activity.Name = Name;
+            _activity.ActivityType = SelectedActivityType;
             _activity.Description = Description;
             _activity.StartAt = startAt;
             _activity.EndAt = endAt;

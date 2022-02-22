@@ -15,15 +15,21 @@ namespace GActivityDiary.GUI.Avalonia.ViewModels
     {
         private string _name = "";
         private decimal _cost = 0;
+        private ActivityType? _activityType;
 
-        public ActivityTypeWindowViewModel(DbContext dbContext, ActivityTypeTableWindowViewModel activityTypeTableWindowViewModel)
+        public ActivityTypeWindowViewModel(DbContext dbContext, ActivityType? activityType)
         {
             DbContext = dbContext
                 ?? throw new ArgumentNullException(nameof(dbContext));
-            ActivityTypeTableWindowViewModel = activityTypeTableWindowViewModel
-                ?? throw new ArgumentNullException(nameof(activityTypeTableWindowViewModel));
 
-            SaveActivityTypeCmd = ReactiveCommand.Create(() => SaveActivityType());
+            _activityType = activityType;
+            if (_activityType != null)
+            {
+                Name = _activityType.Name;
+                Cost = _activityType.Cost;
+            }
+
+            SaveActivityTypeCmd = ReactiveCommand.CreateFromTask(() => SaveActivityTypeAsync());
             CancelCmd = ReactiveCommand.Create(() => Cancel());
         }
 
@@ -45,8 +51,6 @@ namespace GActivityDiary.GUI.Avalonia.ViewModels
         /// </summary>
         public DbContext DbContext { get; private set; }
 
-        public ActivityTypeTableWindowViewModel ActivityTypeTableWindowViewModel { get; }
-
         public ReactiveCommand<Unit, ActivityType?> SaveActivityTypeCmd { get; }
 
         public ReactiveCommand<Unit, ActivityType?> CancelCmd { get; }
@@ -56,12 +60,20 @@ namespace GActivityDiary.GUI.Avalonia.ViewModels
             return null;
         }
 
-        public ActivityType? SaveActivityType()
+        public async Task<ActivityType?> SaveActivityTypeAsync()
         {
-            ActivityType activityType = new(Name, Cost);
-            var uid = DbContext.ActivityTypes.Save(activityType);
-            activityType = DbContext.ActivityTypes.GetById(uid);
-            return activityType;
+            if (_activityType == null)
+            {
+                _activityType = new(Name, Cost);
+            }
+            else
+            {
+                _activityType.Name = Name;
+                _activityType.Cost = Cost;
+            }
+            var uid = await DbContext.ActivityTypes.SaveAsync(_activityType);
+            _activityType = await DbContext.ActivityTypes.GetByIdAsync(uid);
+            return _activityType;
         }
     }
 }

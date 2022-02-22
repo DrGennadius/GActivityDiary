@@ -19,6 +19,9 @@ namespace GActivityDiary.Core.Mapping
             HasManyToMany(x => x.Tags)
                 .Cascade.SaveUpdate()
                 .Not.LazyLoad();
+            References(x => x.ActivityType)
+                .Cascade.SaveUpdate()
+                .Not.LazyLoad();
         }
     }
 }

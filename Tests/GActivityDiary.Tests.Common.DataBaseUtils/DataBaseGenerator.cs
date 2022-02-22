@@ -76,6 +76,8 @@ namespace GActiveDiary.Tests.Common.DataBaseUtils
             Tag defaultTag = new("default");
             defaultTag.Id = db.Tags.Save(defaultTag);
 
+            ActivityType defaultActivityType = new("default");
+
             int n = 0;
             for (int d = 0; d < days; d++)
             {
@@ -86,6 +88,7 @@ namespace GActiveDiary.Tests.Common.DataBaseUtils
                     Activity activity = new()
                     {
                         Name = $"Test Activity {++n}",
+                        ActivityType = defaultActivityType,
                         CreatedAt = curentDateTime.Date + (currentActivityStartAt + currentActivityAndAt) / 2,
                         StartAt = curentDateTime.Date + currentActivityStartAt,
                         EndAt = curentDateTime.Date + currentActivityAndAt

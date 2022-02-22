@@ -251,22 +251,33 @@ namespace GActivityDiary.Core.Tests
                 new Tag("tag3")
             };
 
+            ActivityType[] activityTypes = new[]
+            {
+                new ActivityType(),
+                new ActivityType("type1"),
+                new ActivityType("type2", 0),
+                new ActivityType("type3", 199999.99m)
+            };
+
             DateTime now = DateTime.Now;
 
             Activity activity1 = new()
             {
                 Name = "Test Activity 1",
+                ActivityType = activityTypes[1],
                 CreatedAt = now
             };
             Activity activity2 = new()
             {
                 Name = "Test Activity 2",
+                ActivityType = activityTypes[2],
                 CreatedAt = now.AddHours(-1),
                 Tags = tags
             };
             Activity activity3 = new()
             {
                 Name = "Test Activity 3",
+                ActivityType = activityTypes[3],
                 CreatedAt = now.AddHours(1)
             };
 
@@ -326,7 +337,15 @@ namespace GActivityDiary.Core.Tests
             activitiesWithTestTag = db.Activities.Find(x => x.Tags.Any(x => x.Name == tags.ToArray()[0].Name)).ToList();
             Assert.AreEqual(activitiesWithTestTag.Count, 2);
 
-            // 6. Delete
+            // 6. Activity Types
+
+            foreach (var activityType in activityTypes)
+            {
+                var activity = db.Activities.Find(x => x.ActivityType!.Id == activityType.Id);
+                Assert.IsNotNull(activity);
+            }
+
+            // 7. Delete
 
             db.BeginTransaction();
             db.Activities.Delete(activities[0]);

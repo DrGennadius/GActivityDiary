@@ -3,7 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:GActivityDiary.GUI.Avalonia.ViewModels"
-             mc:Ignorable="d" d:DesignWidth="700" d:DesignHeight="600"
+             mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="600"
              x:Class="GActivityDiary.GUI.Avalonia.Views.ActivityView">
 
     <Grid Margin="5">
@@ -34,6 +34,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition/>
                 <RowDefinition/>
+                <RowDefinition/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
@@ -41,14 +42,21 @@
             </Grid.ColumnDefinitions>
             <Label Content="Start At:"
                    Margin="5"/>
-            <Label Content="End At:"
-                   Grid.Row="1"
-                   Margin="5"/>
             <Label Content="{Binding StartAt}"
                    Grid.Column="1"
                    Margin="5"/>
+            <Label Content="End At:"
+                   Grid.Row="1"
+                   Margin="5"/>
             <Label Content="{Binding EndAt}"
                    Grid.Row="1"
+                   Grid.Column="1"
+                   Margin="5"/>
+            <Label Content="Type:"
+                   Grid.Row="2"
+                   Margin="5"/>
+            <Label Content="{Binding ActivityType}"
+                   Grid.Row="2"
                    Grid.Column="1"
                    Margin="5"/>
         </Grid>

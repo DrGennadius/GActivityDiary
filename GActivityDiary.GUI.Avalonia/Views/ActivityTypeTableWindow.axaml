@@ -14,14 +14,23 @@
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <StackPanel>
+        <StackPanel Orientation="Horizontal">
             <Button Content="Add"
                     Command="{Binding AddActivityTypeCommand}"
+                    Margin="5"/>
+            <Button Content="Edit"
+                    Command="{Binding EditActivityTypeCommand}"
+                    Margin="5"/>
+            <Button Content="Delete"
+                    Command="{Binding RemoveActivityTypeCommand}"
                     Margin="5"/>
         </StackPanel>
         
         <DataGrid Items="{Binding ActivityTypes}"
                   AutoGenerateColumns="False"
+                  SelectionMode="Single"
+                  SelectedItem="{Binding SelectedActivityType}"
+                  IsReadOnly="True"
                   Grid.Row="1">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Name"

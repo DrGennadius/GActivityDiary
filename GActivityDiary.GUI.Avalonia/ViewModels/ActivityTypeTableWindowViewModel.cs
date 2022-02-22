@@ -31,12 +31,51 @@ namespace GActivityDiary.GUI.Avalonia.ViewModels
 
             AddActivityTypeCommand = ReactiveCommand.CreateFromTask(async () =>
             {
-                var input = new ActivityTypeWindowViewModel(dbContext, this);
+                var input = new ActivityTypeWindowViewModel(dbContext, null);
 
                 var result = await ShowDialog.Handle(input);
                 if (result != null)
                 {
                     ActivityTypes.Add(result);
+                }
+            });
+
+            EditActivityTypeCommand = ReactiveCommand.CreateFromTask(async () =>
+            {
+                if (SelectedActivityType == null)
+                {
+                    return;
+                }
+                var input = new ActivityTypeWindowViewModel(dbContext, SelectedActivityType);
+
+                var result = await ShowDialog.Handle(input);
+                if (result != null)
+                {
+                    var item = ActivityTypes.FirstOrDefault(x => x.Id == result.Id);
+                    if (item == null)
+                    {
+                        ActivityTypes.Add(result);
+                    }
+                    else
+                    {
+                        int index = ActivityTypes.IndexOf(item);
+                        ActivityTypes[index] = result;
+                        ActivityTypes = new ObservableCollection<ActivityType>(ActivityTypes);
+                    }
+                }
+            });
+
+            RemoveActivityTypeCommand = ReactiveCommand.CreateFromTask(async () =>
+            {
+                if (SelectedActivityType == null)
+                {
+                    return;
+                }
+                var item = await dbContext.ActivityTypes.GetByIdAsync(SelectedActivityType.Id);
+                if (item != null)
+                {
+                    ActivityTypes.Remove(SelectedActivityType);
+                    await dbContext.ActivityTypes.DeleteAsync(item);
                 }
             });
         }
@@ -47,7 +86,13 @@ namespace GActivityDiary.GUI.Avalonia.ViewModels
             set => this.RaiseAndSetIfChanged(ref _activityTypes, value);
         }
 
+        public ActivityType? SelectedActivityType { get; set; }
+
         public ICommand AddActivityTypeCommand { get; }
+
+        public ICommand RemoveActivityTypeCommand { get; }
+
+        public ICommand EditActivityTypeCommand { get; }
 
         public Interaction<ActivityTypeWindowViewModel, ActivityType?> ShowDialog { get; }
     }

@@ -20,6 +20,8 @@ namespace GActivityDiary.GUI.Avalonia.ViewModels
 
             ActivityListBoxViewModel = activityListBoxViewModel;
 
+            ActivityTypes = db.ActivityTypes.GetAll();
+
             DateTime now = TimeRounderHelper.Floor(DateTime.Now);
             DateTime inHour = now.AddHours(1);
             StartAtDate = now.Date;
@@ -58,6 +60,10 @@ namespace GActivityDiary.GUI.Avalonia.ViewModels
         public TimeSpan? StartAtTime { get; set; }
 
         public TimeSpan? EndAtTime { get; set; }
+
+        public ActivityType? SelectedActivityType { get; set; }
+
+        public IEnumerable<ActivityType> ActivityTypes { get; set; }
 
         public ActivityListBoxViewModelBase ActivityListBoxViewModel { get; }
 
@@ -98,6 +104,7 @@ namespace GActivityDiary.GUI.Avalonia.ViewModels
             Activity activity = new()
             {
                 Name = Name,
+                ActivityType = SelectedActivityType,
                 Description = Description,
                 StartAt = startAt,
                 EndAt = endAt,

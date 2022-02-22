@@ -7,16 +7,20 @@ namespace GActivityDiary.Core.Models
     /// </summary>
     public class ActivityType : IEntity
     {
-        public ActivityType()
-        {
-            Name = "Unknown Activity Type";
-            Cost = 0;
-        }
-
         public ActivityType(string name, decimal cost)
         {
             Name = name;
             Cost = cost;
+        }
+
+        public ActivityType(string name)
+            : this(name, 0)
+        {
+        }
+
+        public ActivityType()
+            : this("Unknown Activity Type")
+        {
         }
 
         /// <summary>
