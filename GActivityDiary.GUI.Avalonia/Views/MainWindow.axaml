@@ -39,6 +39,10 @@
                 <MenuItem Header="Time converter"
                           Command="{Binding OpenTimeConverterWindowCmd}"/>
             </MenuItem>
+            <MenuItem Header="_Data">
+                <MenuItem Header="Activity Types"
+                          Command="{Binding OpenActivityTypesWindowCmd}"/>
+            </MenuItem>
             <MenuItem Header="_Reports">
                 <MenuItem Header="Simple text"
                           Command="{Binding OpenSimpleTextReporterWindowCmd}"/>

@@ -27,6 +27,9 @@
     <Compile Update="Views\ActivityListBoxView.axaml.cs">
       <DependentUpon>ActivityListBoxView.axaml</DependentUpon>
     </Compile>
+    <Compile Update="Views\ActivityTypeTableWindow.axaml.cs">
+      <DependentUpon>ActivityTypeTableWindow.axaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\CreateActivityView.axaml.cs">
       <DependentUpon>CreateActivityView.axaml</DependentUpon>
     </Compile>

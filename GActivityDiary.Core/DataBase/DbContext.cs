@@ -19,6 +19,8 @@ namespace GActivityDiary.Core.DataBase
 
         public EntityRepository<Tag> Tags { get; private set; }
 
+        public EntityRepository<ActivityType> ActivityTypes { get; set; }
+
         //private readonly Dictionary<string, IRepository> _repositories;
 
         public DbContext(string dataBaseFilePath)
@@ -105,8 +107,10 @@ namespace GActivityDiary.Core.DataBase
             NHibernateSession nHibernateSession = new(nHibernateFactoryProxy);
             Session = nHibernateSession.OpenSession();
             Session.FlushMode = FlushMode.Auto;
+
             Activities = new EntityRepository<Activity>(this);
             Tags = new EntityRepository<Tag>(this);
+            ActivityTypes = new EntityRepository<ActivityType>(this);
         }
     }
 }

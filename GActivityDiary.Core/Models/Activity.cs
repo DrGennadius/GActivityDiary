@@ -38,6 +38,8 @@ namespace GActivityDiary.Core.Models
 
         public virtual string Description { get; set; }
 
+        public virtual ActivityType ActivityType { get; set; }
+
         /// <summary>
         /// List of tags for the activity.
         /// </summary>

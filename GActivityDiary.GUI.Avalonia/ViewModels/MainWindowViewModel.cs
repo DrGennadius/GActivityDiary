@@ -1,6 +1,7 @@
 using GActivityDiary.Core.DataBase;
 using GActivityDiary.GUI.Avalonia.Views;
 using ReactiveUI;
+using System;
 using System.Reactive;
 
 namespace GActivityDiary.GUI.Avalonia.ViewModels
@@ -23,6 +24,7 @@ namespace GActivityDiary.GUI.Avalonia.ViewModels
             ToogleViewModeCmd = ReactiveCommand.Create<string>((param) => ToogleViewMode(param));
             OpenTimeConverterWindowCmd = ReactiveCommand.Create(() => OpenTimeConverterWindow());
             OpenSimpleTextReporterWindowCmd = ReactiveCommand.Create(() => OpenSimpleTextReporterWindow());
+            OpenActivityTypesWindowCmd = ReactiveCommand.Create(() => OpenActivityTypesWindow());
 
             SelectedViewMode = ViewModes[0];
         }
@@ -35,6 +37,8 @@ namespace GActivityDiary.GUI.Avalonia.ViewModels
         public ReactiveCommand<Unit, Unit> OpenTimeConverterWindowCmd { get; }
 
         public ReactiveCommand<Unit, Unit> OpenSimpleTextReporterWindowCmd { get; }
+
+        public ReactiveCommand<Unit, Unit> OpenActivityTypesWindowCmd { get; }
 
         public string[] ViewModes { get; }
 
@@ -86,6 +90,15 @@ namespace GActivityDiary.GUI.Avalonia.ViewModels
                 DataContext = new SimpleTextReporterWindowViewModel(Db)
             };
             simpleTextReporterWindow.Show();
+        }
+
+        private void OpenActivityTypesWindow()
+        {
+            ActivityTypeTableWindow activityTypeTableWindow = new()
+            {
+                DataContext = new ActivityTypeTableWindowViewModel(Db)
+            };
+            activityTypeTableWindow.Show();
         }
     }
 }
