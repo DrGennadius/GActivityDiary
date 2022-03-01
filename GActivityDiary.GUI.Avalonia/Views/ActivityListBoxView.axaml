@@ -21,6 +21,24 @@
 
             <WrapPanel>
                 <DockPanel>
+                    <TextBlock Text="Type:"
+                               VerticalAlignment="Center"
+                               Margin="5"/>
+                    <ComboBox Items="{Binding ActivityTypes}"
+                              SelectedItem="{Binding SelectedActivityType}"
+                              Grid.Row="1"
+                              Grid.Column="1"
+                              Margin="5">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Background="Transparent">
+                                    <TextBlock Text="{Binding Name}"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </DockPanel>
+                <DockPanel>
                     <TextBlock Text="Tags:"
                                VerticalAlignment="Center"
                                Margin="5"/>

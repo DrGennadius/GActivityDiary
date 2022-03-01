@@ -2,6 +2,7 @@
 using GActivityDiary.Core.DataBase;
 using GActivityDiary.Core.Helpers;
 using GActivityDiary.Core.Models;
+using NHibernate.Criterion;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;
@@ -26,10 +27,13 @@ namespace GActivityDiary.GUI.Avalonia.ViewModels
         private int _pageNumber = 1;
 
         private string _tagsSearchText = "";
+        private ActivityType _selectedActivityType;
 
         public ActivityListBoxViewModel(DbContext db)
             : base(db)
         {
+            ActivityTypes = db.ActivityTypes.GetAll();
+
             GoToFirstPageCmd = ReactiveCommand.Create(() => GoToFirstPage());
             GoToLastPageCmd = ReactiveCommand.Create(() => GoToLastPage());
 
@@ -97,6 +101,18 @@ namespace GActivityDiary.GUI.Avalonia.ViewModels
 
         public List<int> PageSizeOptions => _pageSizes.ToList();
 
+        public ActivityType SelectedActivityType 
+        { 
+            get => _selectedActivityType; 
+            set
+            {
+                this.RaiseAndSetIfChanged(ref _selectedActivityType, value);
+                Update();
+            }
+        }
+
+        public IEnumerable<ActivityType> ActivityTypes { get; set; }
+
         public override void Update(Guid? targetActivityId = null)
         {
             Stop();
@@ -106,7 +122,7 @@ namespace GActivityDiary.GUI.Avalonia.ViewModels
 
         public void GoToLastPageForce()
         {
-            Task.Run(CalcPageCountAsync);
+            Task.Run(GoToLastPageForceAsync);
         }
 
         public async Task GoToLastPageForceAsync()
@@ -148,9 +164,7 @@ namespace GActivityDiary.GUI.Avalonia.ViewModels
             IsProgressBarEnable = true;
             await CalcPageCountAsync();
             IsProgressBarIndeterminate = true;
-            Activities.Clear();
-            var activities = await ActivityHelper.GetByTagsAsync(DbContext, _tagsSearchText, PageNumber - 1, PageSize);
-            Activities = new ObservableCollection<Activity>(activities);
+            UpdateActivities();
             if (targetActivityId.HasValue)
             {
                 var targetActivty = DbContext.Activities.GetById(targetActivityId.Value);
@@ -158,6 +172,27 @@ namespace GActivityDiary.GUI.Avalonia.ViewModels
             }
             IsProgressBarIndeterminate = false;
             IsProgressBarEnable = false;
+        }
+
+        private async void UpdateActivities()
+        {
+            Activities.Clear();
+            var activitiesCriteria = DbContext.Session.CreateCriteria<Activity>();
+            if (!string.IsNullOrWhiteSpace(_tagsSearchText))
+            {
+                var tagIds = await TagHelper.GetTagIdsAsync(DbContext, _tagsSearchText);
+                activitiesCriteria.CreateCriteria("Tags")
+                                  .Add(Restrictions.In("Id", tagIds.ToArray()));
+            }
+            if (_selectedActivityType != null)
+            {
+                activitiesCriteria.CreateCriteria("ActivityType")
+                                  .Add(Restrictions.Eq("Id", _selectedActivityType.Id));
+            }
+            var activities = await activitiesCriteria.SetFirstResult((_pageNumber - 1) * _pageSize)
+                                                     .SetMaxResults(_pageSize)
+                                                     .ListAsync<Activity>();
+            Activities = new ObservableCollection<Activity>(activities);
         }
 
         private void SelectionChanged(object? sender, SelectionModelSelectionChangedEventArgs<Activity> e)
