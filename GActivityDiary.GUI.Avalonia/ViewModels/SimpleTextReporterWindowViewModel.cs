@@ -1,16 +1,19 @@
-﻿using GActivityDiary.Core.Common;
+﻿using Avalonia.Controls;
+using GActivityDiary.Core.Common;
 using GActivityDiary.Core.DataBase;
 using GActivityDiary.Core.Reports;
 using GActivityDiary.Core.Reports.Text;
 using ReactiveUI;
 using System;
 using System.Reactive;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace GActivityDiary.GUI.Avalonia.ViewModels
 {
     public class SimpleTextReporterWindowViewModel : ViewModelBase
     {
-        private ReportGroupingType _reportGroupingType;
+        private ReportGroupingType _reportGroupingType = ReportGroupingType.Nothing;
         private string _reportText = "";
         private DateTimeOffset? _startDate;
         private DateTimeOffset? _endDate;

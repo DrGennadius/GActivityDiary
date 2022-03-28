@@ -35,9 +35,9 @@
                 <TextBlock Text="Grouping:"
                            VerticalAlignment="Center"
                            Margin="5"/>
-                <ComboBox SelectedItem="{Binding ReportGroupingType}"
-                      Items="{Binding Path=ReportGroupingType, Converter={converters:EnumToCollectionConverter}, Mode=OneTime}"
-                      Margin="5"/>
+                <ComboBox x:Name="ReportGroupingTypeDropDown"
+                          SelectedItem="{Binding ReportGroupingType, Mode=TwoWay}"
+                          Margin="5"/>
             </StackPanel>
             <Button Content="Generate"
                     Command="{Binding GenerateCmd}"
