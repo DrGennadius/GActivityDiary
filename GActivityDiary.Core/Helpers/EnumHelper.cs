@@ -46,5 +46,21 @@ namespace GActivityDiary.Core.Helpers
                        .Select((e) => new EnumValueDescription(e, e.GetDescription()))
                        .ToList();
         }
+
+        /// <summary>
+        /// Get all values of enum.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public static IEnumerable<Enum> GetAllValues(Type type)
+        {
+            if (!type.IsEnum)
+            {
+                throw new ArgumentException($"{nameof(type)} is not an enumeration.");
+            }
+
+            return Enum.GetValues(type)
+                       .Cast<Enum>();
+        }
     }
 }

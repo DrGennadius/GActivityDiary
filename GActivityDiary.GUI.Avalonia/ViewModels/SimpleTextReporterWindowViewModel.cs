@@ -1,13 +1,12 @@
-﻿using Avalonia.Controls;
-using GActivityDiary.Core.Common;
+﻿using GActivityDiary.Core.Common;
 using GActivityDiary.Core.DataBase;
+using GActivityDiary.Core.Models;
 using GActivityDiary.Core.Reports;
 using GActivityDiary.Core.Reports.Text;
 using ReactiveUI;
 using System;
+using System.Collections.Generic;
 using System.Reactive;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace GActivityDiary.GUI.Avalonia.ViewModels
 {
@@ -21,6 +20,11 @@ namespace GActivityDiary.GUI.Avalonia.ViewModels
         public SimpleTextReporterWindowViewModel(DbContext dbContext)
         {
             DbContext = dbContext;
+
+            ActivityTypes = dbContext.ActivityTypes.GetAll();
+
+            StartDate = DateTime.Now;
+            EndDate = DateTime.Now;
 
             GenerateCmd = ReactiveCommand.Create(() => Generate());
         }
@@ -56,6 +60,10 @@ namespace GActivityDiary.GUI.Avalonia.ViewModels
             set => this.RaiseAndSetIfChanged(ref _endDate, value);
         }
 
+        public ActivityType? SelectedActivityType { get; set; }
+
+        public IEnumerable<ActivityType> ActivityTypes { get; set; }
+
         private void Generate()
         {
             if (!_startDate.HasValue || !_endDate.HasValue)
@@ -66,8 +74,28 @@ namespace GActivityDiary.GUI.Avalonia.ViewModels
             LanguageProfile languageProfile = LanguageProfile.GetDefaultEng();
             SimpleTextReporter simpleTextReporter = new(DbContext, languageProfile);
             simpleTextReporter.GroupingType = _reportGroupingType;
+            if (_startDate.HasValue && EndDate.HasValue)
+            {
+                DateTime startDate = _startDate.Value.Date;
+                DateTime endDate = _endDate.Value.Date.AddDays(1);
+                if (SelectedActivityType != null)
+                {
+                    ReportText = simpleTextReporter.GetReport(x => x.ActivityType != null
+                                                                   && x.ActivityType.Id == SelectedActivityType.Id
+                                                                   && x.StartAt >= startDate
+                                                                   && x.EndAt < endDate);
+                }
+                else
+                {
+                    ReportText = simpleTextReporter.GetReport(x => x.StartAt >= startDate && x.EndAt < endDate);
+                }
+            }
+            else
+            {
+                ReportText = "Dont selected period";
+            }
             DateTimeInterval dateTimeInterval = new(_startDate.Value.Date, _endDate.Value.Date.AddDays(1).AddTicks(-1));
-            ReportText = simpleTextReporter.GetReport(dateTimeInterval);
+            
         }
     }
 }

@@ -5,6 +5,7 @@ using GActivityDiary.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace GActivityDiary.Core.Reports.Text
@@ -57,6 +58,14 @@ namespace GActivityDiary.Core.Reports.Text
             IQueryable<Activity> activities = DbContext.Activities.Query();
             return GetReport(
                 activities.Where(x => x.StartAt >= beginDateTime && x.EndAt <= endDateTime)
+                          .AsEnumerable());
+        }
+
+        public string GetReport(Expression<Func<Activity, bool>> predicate)
+        {
+            IQueryable<Activity> activities = DbContext.Activities.Query();
+            return GetReport(
+                activities.Where(predicate)
                           .AsEnumerable());
         }
 
