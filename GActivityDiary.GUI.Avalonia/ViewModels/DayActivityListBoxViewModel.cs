@@ -20,8 +20,6 @@ namespace GActivityDiary.GUI.Avalonia.ViewModels
             : base(db)
         {
             SelectedDate = DateTime.Now;
-
-            SingleActivityContent = new CreateActivityViewModel(db, this);
         }
 
         public DateTimeOffset? SelectedDate

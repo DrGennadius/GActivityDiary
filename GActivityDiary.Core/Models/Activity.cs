@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GActivityDiary.Core.Common;
+using System;
 using System.Collections.Generic;
 
 namespace GActivityDiary.Core.Models
@@ -44,5 +45,19 @@ namespace GActivityDiary.Core.Models
         /// List of tags for the activity.
         /// </summary>
         public virtual ISet<Tag> Tags { get; set; }
+
+        public virtual TimeSpan? GetDuration()
+        {
+            return StartAt.HasValue && EndAt.HasValue ? 
+                   EndAt.Value - StartAt.Value : 
+                   null;
+        }
+
+        public virtual DateTimeInterval? GetInterval()
+        {
+            return StartAt.HasValue && EndAt.HasValue ? 
+                   new DateTimeInterval(StartAt.Value, EndAt.Value) : 
+                   null;
+        }
     }
 }

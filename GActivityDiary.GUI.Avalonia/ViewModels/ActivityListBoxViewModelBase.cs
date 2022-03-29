@@ -28,7 +28,7 @@ namespace GActivityDiary.GUI.Avalonia.ViewModels
             CreateActivityCmd = ReactiveCommand.Create(() => CreateActivity());
             EditActivityCmd = ReactiveCommand.Create<Activity>(x => EditActivity(x));
 
-            SingleActivityContent = new CreateActivityViewModel(db, this);
+            SingleActivityContent = new SummaryViewModel(db);
 
             Selection = new SelectionModel<Activity>();
             Selection.SelectionChanged += SelectionChanged;

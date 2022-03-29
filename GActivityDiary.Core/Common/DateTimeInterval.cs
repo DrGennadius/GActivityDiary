@@ -11,8 +11,7 @@ namespace GActivityDiary.Core.Common
         public DateTime End;
 
         public DateTimeInterval(DateTime dateTime)
-            : this(dateTime.Date, dateTime.Date.AddDays(1)
-                                               .AddTicks(-1))
+            : this(dateTime.Date, dateTime.Date.AddDays(1))
         {
         }
 
@@ -53,6 +52,22 @@ namespace GActivityDiary.Core.Common
         public static implicit operator DateTimeInterval((DateTime, DateTime) value)
         {
             return new DateTimeInterval(value.Item1, value.Item2);
+        }
+
+        public bool IsWithin(DateTimeInterval other)
+        {
+            // !(x1 < y1 && x2 < y2) && !(x1 > y1 && x2 > y2)
+            return !(Start < other.Start && End < other.End)
+                && !(Start > other.Start && End > other.End);
+        }
+
+        public bool IsWithin(DateTimeInterval? other)
+        {
+            if (other is null)
+            {
+                return false;
+            }
+            return IsWithin(other.Value);
         }
     }
 }

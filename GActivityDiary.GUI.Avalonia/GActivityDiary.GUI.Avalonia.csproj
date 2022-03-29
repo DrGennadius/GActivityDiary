@@ -4,9 +4,7 @@
     <TargetFramework>net5.0</TargetFramework>
     <Nullable>enable</Nullable>
     <Authors>Gennady Zykov (Gennadius)</Authors>
-    <AssemblyVersion>0.1.4.0</AssemblyVersion>
-    <FileVersion>0.1.4.0</FileVersion>
-    <Version>0.1.4-alpha</Version>
+    <Version>0.1.5-alpha</Version>
     <ApplicationIcon>Assets\gactivitydiary.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>

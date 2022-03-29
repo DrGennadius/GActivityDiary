@@ -1,0 +1,63 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="320" d:DesignHeight="600"
+             x:Class="GActivityDiary.GUI.Avalonia.Views.SummaryView">
+
+    <Grid Margin="5"
+          VerticalAlignment="Top"
+          HorizontalAlignment="Left">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Label Content="Summary"
+               Grid.Row="0"
+               Margin="5"
+               FontSize="24"
+               FontWeight="Bold"/>
+
+        <Label Content="Day activity hours:"
+               Grid.Row="1"
+               Margin="5"/>
+        <Label Content="{Binding DayActivityHours}"
+               Grid.Row="1"
+               Grid.Column="1"
+               Margin="5"/>
+
+        <Label Content="Day activity cost:"
+               Grid.Row="2"
+               Margin="5"/>
+        <Label Content="{Binding DayActivityCost}"
+               Grid.Row="2"
+               Grid.Column="1"
+               Margin="5"/>
+
+        <Label Content="This month activity hours:"
+               Grid.Row="3"
+               Margin="5"/>
+        <Label Content="{Binding ThisMonthActivityHours}"
+               Grid.Row="3"
+               Grid.Column="1"
+               Margin="5"/>
+
+        <Label Content="This month activity cost:"
+               Grid.Row="4"
+               Margin="5"/>
+        <Label Content="{Binding ThisMonthActivityCost}"
+               Grid.Row="4"
+               Grid.Column="1"
+               Margin="5"/>
+        
+    </Grid>
+    
+</UserControl>
