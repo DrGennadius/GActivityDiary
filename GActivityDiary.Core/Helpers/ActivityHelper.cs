@@ -246,7 +246,28 @@ namespace GActivityDiary.Core.Helpers
         {
             return GetTotalHours(activities, new DateTimeInterval(day));
         }
-        
+
+        public static decimal GetTotalCost(List<Activity> activities)
+        {
+            decimal cost = 0;
+
+            foreach (var item in activities)
+            {
+                if (item.ActivityType == null || item.ActivityType.Cost == 0)
+                {
+                    continue;
+                }
+                var duration = item.GetDuration();
+                if (duration is null)
+                {
+                    continue;
+                }
+                cost += item.ActivityType.Cost * (decimal)duration.Value.TotalHours;
+            }
+
+            return cost;
+        }
+
         public static decimal GetTotalCost(IEnumerable<Activity> activities, DateTimeInterval interval)
         {
             decimal cost = 0;
@@ -254,6 +275,10 @@ namespace GActivityDiary.Core.Helpers
             foreach (var item in activities)
             {
                 if (item.ActivityType == null || item.ActivityType.Cost == 0)
+                {
+                    continue;
+                }
+                if (!IsIntersected(item, interval))
                 {
                     continue;
                 }

@@ -99,12 +99,7 @@ namespace GActivityDiary.Core.Tests
         public async Task MultipleTotalHoursTestAsync()
         {
             DateTime firstDay = DateTime.Today.AddDays(-6);
-            List<Activity> activities = GenerateActivities(firstDay);
-
-            foreach (var activity in activities)
-            {
-                await _db.Activities.SaveAsync(activity);
-            }
+            List<Activity> activities = await GenerateActivitiesAsync(firstDay);
 
             // Total Hours for all activities.
             double hours = ActivityHelper.GetTotalHours(activities);
@@ -136,14 +131,42 @@ namespace GActivityDiary.Core.Tests
 
             // Check total hours for the last 2 activity for 10 days from first day.
             hours = ActivityHelper.GetTotalHours(activities, new DateTimeInterval(activities[^2].StartAt.Value, firstDay.AddDays(10)));
-            Assert.AreEqual(hours, (activities[^1].EndAt.Value - activities[^2].StartAt.Value).TotalHours);
+            Assert.AreEqual((activities[^1].EndAt.Value - activities[^2].StartAt.Value).TotalHours, hours);
 
             Assert.Pass();
         }
 
-        private static List<Activity> GenerateActivities(DateTime firstDay)
+        [Test]
+        public async Task CostTestAsync()
         {
-            return new()
+            DateTime firstDay = DateTime.Today.AddDays(-6);
+            List<Activity> activities = await GenerateActivitiesAsync(firstDay);
+            await SetTypeForActivitiesAsync(activities);
+
+            // Total cost for all activities.
+            decimal cost = ActivityHelper.GetTotalCost(activities);
+            int i = 0;
+            decimal expectedCost = (decimal)activities.Sum(x => (x.EndAt - x.StartAt).Value.TotalHours * 100 * ++i);
+            Assert.AreEqual(expectedCost, cost);
+
+            // Total cost for the first day.
+            cost = ActivityHelper.GetTotalCost(activities, firstDay);
+            Assert.AreEqual(4 * 100 + 4 * 200, cost);
+
+            // Check total cost for the last 2 activity for 10 days from first day.
+            cost = ActivityHelper.GetTotalCost(activities, new DateTimeInterval(activities[^2].StartAt.Value, firstDay.AddDays(10)));
+            expectedCost = activities[^1].ActivityType.Cost
+                           * (decimal)activities[^1].GetDuration().Value.TotalHours
+                           + activities[^2].ActivityType.Cost
+                           * (decimal)activities[^2].GetDuration().Value.TotalHours;
+            Assert.AreEqual(expectedCost, cost);
+
+            Assert.Pass();
+        }
+
+        private async Task<List<Activity>> GenerateActivitiesAsync(DateTime firstDay)
+        {
+            List<Activity> activities = new()
             {
                 new Activity("Test1")
                 {
@@ -181,12 +204,24 @@ namespace GActivityDiary.Core.Tests
                     EndAt = firstDay.AddDays(7).AddHours(8)
                 }
             };
+
+            foreach (var activity in activities)
+            {
+                await _db.Activities.SaveAsync(activity);
+            }
+
+            return activities;
         }
 
-        [Test]
-        public async Task CostTestAsync()
+        private async Task SetTypeForActivitiesAsync(List<Activity> activities)
         {
-            Assert.Pass();
+            int i = 0;
+            foreach (var acitivity in activities)
+            {
+                i++;
+                acitivity.ActivityType = new($"Type{i}", i * 100);
+                await _db.Activities.SaveAsync(acitivity);
+            }
         }
     }
 }
