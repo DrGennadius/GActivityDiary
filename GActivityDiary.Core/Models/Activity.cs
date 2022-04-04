@@ -59,5 +59,10 @@ namespace GActivityDiary.Core.Models
                    new DateTimeInterval(StartAt.Value, EndAt.Value) : 
                    null;
         }
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }

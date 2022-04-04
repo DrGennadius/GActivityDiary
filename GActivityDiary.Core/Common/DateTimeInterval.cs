@@ -54,11 +54,28 @@ namespace GActivityDiary.Core.Common
             return new DateTimeInterval(value.Item1, value.Item2);
         }
 
+        public bool IsIntersected(DateTimeInterval other)
+        {
+            // (x1 < y2) && (x2 < y1)
+            return Start < other.End && other.Start < End;
+        }
+
+        public bool IsIntersected(DateTimeInterval? other)
+        {
+            if (other is null)
+            {
+                return false;
+            }
+            return IsIntersected(other.Value);
+        }
+
         public bool IsWithin(DateTimeInterval other)
         {
-            // !(x1 < y1 && x2 < y2) && !(x1 > y1 && x2 > y2)
-            return !(Start < other.Start && End < other.End)
-                && !(Start > other.Start && End > other.End);
+            // (x1 >= x2) && (y1 <= y2) && (x1 < y2) && (x2 < y1)
+            return Start >= other.Start
+                   && End <= other.End
+                   && Start < other.End
+                   && other.Start < End;
         }
 
         public bool IsWithin(DateTimeInterval? other)
@@ -68,6 +85,16 @@ namespace GActivityDiary.Core.Common
                 return false;
             }
             return IsWithin(other.Value);
+        }
+
+        public static DateTimeInterval CreateFromDays(DateTime dayFrom, DateTime dayTo)
+        {
+            return new DateTimeInterval(dayFrom, dayTo.AddDays(1));
+        }
+
+        public override string ToString()
+        {
+            return $"({Start}, {End})";
         }
     }
 }

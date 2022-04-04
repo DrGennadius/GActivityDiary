@@ -153,7 +153,7 @@ namespace GActivityDiary.Core.Helpers
             {
                 throw new ArgumentNullException(nameof(activity));
             }
-            if (!IsWithin(activity, interval))
+            if (!IsIntersected(activity, interval))
             {
                 return 0;
             }
@@ -204,7 +204,7 @@ namespace GActivityDiary.Core.Helpers
                 {
                     continue;
                 }
-                if (!IsWithin(item, interval))
+                if (!IsIntersected(item, interval))
                 {
                     continue;
                 }
@@ -215,7 +215,7 @@ namespace GActivityDiary.Core.Helpers
             return hours;
         }
 
-        public static bool IsWithin(Activity activity, DateTimeInterval interval)
+        public static bool IsIntersected(Activity activity, DateTimeInterval interval)
         {
             if (activity is null)
             {
@@ -226,7 +226,7 @@ namespace GActivityDiary.Core.Helpers
             {
                 return false;
             }
-            return interval.IsWithin(activityInterval!);
+            return interval.IsIntersected(activityInterval);
         }
 
         private static TimeSpan GetDuration(Activity activity, DateTimeInterval interval)
