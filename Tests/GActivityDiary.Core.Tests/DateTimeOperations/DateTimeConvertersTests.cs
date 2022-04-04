@@ -39,10 +39,10 @@ namespace GActivityDiary.Core.Tests.DateTimeOperations
             foreach (var item in timeSpanAndTextDict)
             {
                 string text = converter.ToText(item.Key);
-                Assert.AreEqual(text, item.Value);
+                Assert.AreEqual(item.Value, text);
 
                 TimeSpan timeSpan = converter.FromText(item.Value);
-                Assert.AreEqual(timeSpan, item.Key);
+                Assert.AreEqual(item.Key, timeSpan);
             }
 
             Assert.Pass();
@@ -51,10 +51,10 @@ namespace GActivityDiary.Core.Tests.DateTimeOperations
         [Test]
         public void TimeConverterTest()
         {
-            Assert.AreEqual(TimeConverter.GetHours(1, 30), 1.5);
-            Assert.AreEqual(TimeConverter.GetMinutes(1, 30), 90);
-            Assert.AreEqual(TimeConverter.GetHoursAndMinutesFromHours(1.5), (1, 30));
-            Assert.AreEqual(TimeConverter.GetHoursAndMinutes(90), (1, 30));
+            Assert.AreEqual(1.5, TimeConverter.GetHours(1, 30));
+            Assert.AreEqual(90, TimeConverter.GetMinutes(1, 30));
+            Assert.AreEqual((1, 30), TimeConverter.GetHoursAndMinutesFromHours(1.5));
+            Assert.AreEqual((1, 30), TimeConverter.GetHoursAndMinutes(90));
 
             Assert.Pass();
         }

@@ -64,13 +64,13 @@ namespace GActivityDiary.Core.Tests.Searching
             transaction.Commit();
 
             var activities = await ActivityHelper.GetByTagsAsync(_db, "tag3");
-            Assert.AreEqual(activities.Count(), 1);
+            Assert.AreEqual(1, activities.Count());
 
             activities = await ActivityHelper.GetByTagsAsync(_db, "tag2");
-            Assert.AreEqual(activities.Count(), 2);
+            Assert.AreEqual(2, activities.Count());
 
             activities = await ActivityHelper.GetByTagsAsync(_db, "tag1");
-            Assert.AreEqual(activities.Count(), 3);
+            Assert.AreEqual(3, activities.Count());
 
             Assert.Pass();
         }

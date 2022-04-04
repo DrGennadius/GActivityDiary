@@ -16,22 +16,22 @@ namespace GActivityDiary.Core.Tests.DateTimeOperations
             TimeSpan timeSpan4 = new(23, 30, 0);
 
             // Round
-            Assert.AreEqual(TimeRounderHelper.Round(timeSpan1), new TimeSpan(1, 0, 0));
-            Assert.AreEqual(TimeRounderHelper.Round(timeSpan2), new TimeSpan(4, 0, 0));
-            Assert.AreEqual(TimeRounderHelper.Round(timeSpan3), new TimeSpan(9, 0, 0));
-            Assert.AreEqual(TimeRounderHelper.Round(timeSpan4), new TimeSpan(23, 59, 0));
+            Assert.AreEqual(new TimeSpan(1, 0, 0), TimeRounderHelper.Round(timeSpan1));
+            Assert.AreEqual(new TimeSpan(4, 0, 0), TimeRounderHelper.Round(timeSpan2));
+            Assert.AreEqual(new TimeSpan(9, 0, 0), TimeRounderHelper.Round(timeSpan3));
+            Assert.AreEqual(new TimeSpan(23, 59, 0), TimeRounderHelper.Round(timeSpan4));
 
             // Floor
-            Assert.AreEqual(TimeRounderHelper.Floor(timeSpan1), new TimeSpan(1, 0, 0));
-            Assert.AreEqual(TimeRounderHelper.Floor(timeSpan2), new TimeSpan(4, 0, 0));
-            Assert.AreEqual(TimeRounderHelper.Floor(timeSpan3), new TimeSpan(8, 0, 0));
-            Assert.AreEqual(TimeRounderHelper.Floor(timeSpan4), new TimeSpan(23, 00, 0));
+            Assert.AreEqual(new TimeSpan(1, 0, 0), TimeRounderHelper.Floor(timeSpan1));
+            Assert.AreEqual(new TimeSpan(4, 0, 0), TimeRounderHelper.Floor(timeSpan2));
+            Assert.AreEqual(new TimeSpan(8, 0, 0), TimeRounderHelper.Floor(timeSpan3));
+            Assert.AreEqual(new TimeSpan(23, 00, 0), TimeRounderHelper.Floor(timeSpan4));
 
             // Ceiling
-            Assert.AreEqual(TimeRounderHelper.Ceiling(timeSpan1), new TimeSpan(1, 0, 0));
-            Assert.AreEqual(TimeRounderHelper.Ceiling(timeSpan2), new TimeSpan(5, 0, 0));
-            Assert.AreEqual(TimeRounderHelper.Ceiling(timeSpan3), new TimeSpan(9, 0, 0));
-            Assert.AreEqual(TimeRounderHelper.Ceiling(timeSpan4), new TimeSpan(23, 59, 0));
+            Assert.AreEqual(new TimeSpan(1, 0, 0), TimeRounderHelper.Ceiling(timeSpan1));
+            Assert.AreEqual(new TimeSpan(5, 0, 0), TimeRounderHelper.Ceiling(timeSpan2));
+            Assert.AreEqual(new TimeSpan(9, 0, 0), TimeRounderHelper.Ceiling(timeSpan3));
+            Assert.AreEqual(new TimeSpan(23, 59, 0), TimeRounderHelper.Ceiling(timeSpan4));
 
             Assert.Pass();
         }
@@ -70,11 +70,11 @@ namespace GActivityDiary.Core.Tests.DateTimeOperations
             // Round
             TimeRounderHelper.Round(activity1);
             Assert.IsNull(activity1.EndAt);
-            Assert.AreEqual(activity1.StartAt, new DateTime(2021, 10, 16, 16, 0, 0));
+            Assert.AreEqual(new DateTime(2021, 10, 16, 16, 0, 0), activity1.StartAt);
 
             TimeRounderHelper.Round(activity2);
             Assert.IsNull(activity2.StartAt);
-            Assert.AreEqual(activity2.EndAt, new DateTime(2021, 10, 16, 16, 0, 0));
+            Assert.AreEqual(new DateTime(2021, 10, 16, 16, 0, 0), activity2.EndAt);
 
             TimeRounderHelper.Round(activity3);
             Assert.IsNotNull(activity3.StartAt);
@@ -89,11 +89,11 @@ namespace GActivityDiary.Core.Tests.DateTimeOperations
             // Floor
             TimeRounderHelper.Floor(activity1);
             Assert.IsNull(activity1.EndAt);
-            Assert.AreEqual(activity1.StartAt, new DateTime(2021, 10, 16, 15, 0, 0));
+            Assert.AreEqual(new DateTime(2021, 10, 16, 15, 0, 0), activity1.StartAt);
 
             TimeRounderHelper.Floor(activity2);
             Assert.IsNull(activity2.StartAt);
-            Assert.AreEqual(activity2.EndAt, new DateTime(2021, 10, 16, 16, 0, 0));
+            Assert.AreEqual(new DateTime(2021, 10, 16, 16, 0, 0), activity2.EndAt);
 
             TimeRounderHelper.Floor(activity3);
             Assert.IsNotNull(activity3.StartAt);
@@ -108,11 +108,11 @@ namespace GActivityDiary.Core.Tests.DateTimeOperations
             // Ceiling
             TimeRounderHelper.Ceiling(activity1);
             Assert.IsNull(activity1.EndAt);
-            Assert.AreEqual(activity1.StartAt, new DateTime(2021, 10, 16, 16, 0, 0));
+            Assert.AreEqual(new DateTime(2021, 10, 16, 16, 0, 0), activity1.StartAt);
 
             TimeRounderHelper.Ceiling(activity2);
             Assert.IsNull(activity2.StartAt);
-            Assert.AreEqual(activity2.EndAt, new DateTime(2021, 10, 16, 17, 0, 0));
+            Assert.AreEqual(new DateTime(2021, 10, 16, 17, 0, 0), activity2.EndAt);
 
             TimeRounderHelper.Ceiling(activity3);
             Assert.IsNotNull(activity3.StartAt);

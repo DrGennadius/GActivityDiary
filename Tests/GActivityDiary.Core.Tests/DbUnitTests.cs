@@ -42,7 +42,7 @@ namespace GActivityDiary.Core.Tests
             // 1. Read all
 
             var activities = activityRepository.GetAll();
-            Assert.AreEqual(activities.Count, 0);
+            Assert.AreEqual(0, activities.Count);
 
             // 2. Create / Insert
 
@@ -57,7 +57,7 @@ namespace GActivityDiary.Core.Tests
             transaction.Commit();
 
             activities = activityRepository.GetAll();
-            Assert.AreEqual(activities.Count, 1);
+            Assert.AreEqual(1, activities.Count);
 
             var firstActivity = activities[0];
 
@@ -70,7 +70,7 @@ namespace GActivityDiary.Core.Tests
             transaction.Commit();
 
             activities = activityRepository.GetAll();
-            Assert.AreEqual(activities.Count, 1);
+            Assert.AreEqual(1, activities.Count);
 
             firstActivity = activityRepository.GetById(firstActivity.Id);
             Assert.IsNotNull(firstActivity);
@@ -83,7 +83,7 @@ namespace GActivityDiary.Core.Tests
             transaction.Commit();
 
             activities = activityRepository.GetAll();
-            Assert.AreEqual(activities.Count, 0);
+            Assert.AreEqual(0, activities.Count);
 
             session.Close();
 
@@ -99,7 +99,7 @@ namespace GActivityDiary.Core.Tests
             // 1. Read all
 
             var activities = db.Activities.GetAll();
-            Assert.AreEqual(activities.Count, 0);
+            Assert.AreEqual(0, activities.Count);
 
             // 2. Create / Insert
 
@@ -112,7 +112,7 @@ namespace GActivityDiary.Core.Tests
             db.Activities.Save(activity1);
 
             activities = db.Activities.GetAll();
-            Assert.AreEqual(activities.Count, 1);
+            Assert.AreEqual(1, activities.Count);
 
             // 3. Update and read by Id
 
@@ -122,7 +122,7 @@ namespace GActivityDiary.Core.Tests
             db.Activities.Save(firstActivity);
 
             activities = db.Activities.GetAll();
-            Assert.AreEqual(activities.Count, 1);
+            Assert.AreEqual(1, activities.Count);
 
             firstActivity = db.Activities.GetById(firstActivity.Id);
             Assert.IsNotNull(firstActivity);
@@ -133,7 +133,7 @@ namespace GActivityDiary.Core.Tests
             db.Activities.Delete(firstActivity);
 
             activities = db.Activities.GetAll();
-            Assert.AreEqual(activities.Count, 0);
+            Assert.AreEqual(0, activities.Count);
 
             Assert.Pass();
         }
@@ -147,7 +147,7 @@ namespace GActivityDiary.Core.Tests
             // 1. Read all
 
             var activities = db.Activities.GetAll();
-            Assert.AreEqual(activities.Count, 0);
+            Assert.AreEqual(0, activities.Count);
 
             // 2. Create / Insert transaction
 
@@ -167,12 +167,12 @@ namespace GActivityDiary.Core.Tests
             db.Activities.Save(activity2);
 
             activities = db.Activities.GetAll();
-            Assert.AreEqual(activities.Count, 2);
+            Assert.AreEqual(2, activities.Count);
 
             transaction.Rollback();
 
             activities = db.Activities.GetAll();
-            Assert.AreEqual(activities.Count, 0);
+            Assert.AreEqual(0, activities.Count);
 
             Activity activity3 = new()
             {
@@ -191,7 +191,7 @@ namespace GActivityDiary.Core.Tests
             db.Commit();
 
             activities = db.Activities.GetAll();
-            Assert.AreEqual(activities.Count, 2);
+            Assert.AreEqual(2, activities.Count);
             Assert.True(transaction.WasCommitted, "Transaction was not committed");
 
             // 3. Update and read by Id
@@ -215,19 +215,19 @@ namespace GActivityDiary.Core.Tests
             db.Activities.Delete(activities[1]);
 
             activities = db.Activities.GetAll();
-            Assert.AreEqual(activities.Count, 0);
+            Assert.AreEqual(0, activities.Count);
 
             transaction.Rollback();
 
             activities = db.Activities.GetAll();
-            Assert.AreEqual(activities.Count, 2);
+            Assert.AreEqual(2, activities.Count);
 
             db.Activities.Delete(activities[0]);
             db.Activities.Delete(activities[1]);
             db.Commit();
 
             activities = db.Activities.GetAll();
-            Assert.AreEqual(activities.Count, 0);
+            Assert.AreEqual(0, activities.Count);
 
             Assert.Pass();
         }
@@ -240,7 +240,7 @@ namespace GActivityDiary.Core.Tests
             // 1. Read all
 
             var activities = db.Activities.GetAll();
-            Assert.AreEqual(activities.Count, 0);
+            Assert.AreEqual(0, activities.Count);
 
             // 2. Create / Insert
 
@@ -291,7 +291,7 @@ namespace GActivityDiary.Core.Tests
             db.Commit();
 
             activities = db.Activities.GetAll();
-            Assert.AreEqual(activities.Count, 3);
+            Assert.AreEqual(3, activities.Count);
 
             // 3. Find by criterion (eq)
 
@@ -299,20 +299,20 @@ namespace GActivityDiary.Core.Tests
             var queryActivities1 = query.Where(x => x.CreatedAt == now).ToList();
             var foundActivities2 = db.Activities.Find(x => x.CreatedAt == now);
 
-            Assert.AreEqual(queryActivities1.Count, 1);
-            Assert.AreEqual(foundActivities2.Count, 1);
+            Assert.AreEqual(1, queryActivities1.Count);
+            Assert.AreEqual(1, foundActivities2.Count);
 
-            Assert.AreEqual(activities[0], queryActivities1[0]);
-            Assert.AreEqual(activities[0], foundActivities2[0]);
+            Assert.AreEqual(queryActivities1[0], activities[0]);
+            Assert.AreEqual(foundActivities2[0], activities[0]);
 
             queryActivities1 = query.Where(x => x.Tags.Contains(tags.ToArray()[1])).ToList();
             foundActivities2 = db.Activities.Find(x => x.Tags.Contains(tags.ToArray()[1]));
 
-            Assert.AreEqual(queryActivities1.Count, 1);
-            Assert.AreEqual(foundActivities2.Count, 1);
+            Assert.AreEqual(1, queryActivities1.Count);
+            Assert.AreEqual(1, foundActivities2.Count);
 
-            Assert.AreEqual(activities[1], queryActivities1[0]);
-            Assert.AreEqual(activities[1], foundActivities2[0]);
+            Assert.AreEqual(queryActivities1[0], activities[1]);
+            Assert.AreEqual(foundActivities2[0], activities[1]);
 
             // 4. Find by criterion (last month)
 
@@ -323,19 +323,19 @@ namespace GActivityDiary.Core.Tests
             queryActivities1 = query.Where(x => x.CreatedAt >= beginDate && x.CreatedAt <= endDate).ToList();
             foundActivities2 = db.Activities.Find(x => x.CreatedAt >= beginDate && x.CreatedAt <= endDate);
 
-            Assert.AreEqual(queryActivities1.Count, 2);
-            Assert.AreEqual(foundActivities2.Count, 2);
+            Assert.AreEqual(2, queryActivities1.Count);
+            Assert.AreEqual(2, foundActivities2.Count);
 
             // 5. Tags
 
             var foundTags = db.Tags.Query().Where(x => x.Name == tags.ToArray()[0].Name).ToList();
-            Assert.AreEqual(foundTags.Count, 1);
+            Assert.AreEqual(1, foundTags.Count);
 
             var activitiesWithTestTag = db.Activities.Find(x => x.Tags.Any(x => x.Name == "test")).ToList();
-            Assert.AreEqual(activitiesWithTestTag.Count, 1);
+            Assert.AreEqual(1, activitiesWithTestTag.Count);
 
             activitiesWithTestTag = db.Activities.Find(x => x.Tags.Any(x => x.Name == tags.ToArray()[0].Name)).ToList();
-            Assert.AreEqual(activitiesWithTestTag.Count, 2);
+            Assert.AreEqual(2, activitiesWithTestTag.Count);
 
             // 6. Activity Types
 
@@ -354,7 +354,7 @@ namespace GActivityDiary.Core.Tests
             db.Commit();
 
             activities = db.Activities.GetAll();
-            Assert.AreEqual(activities.Count, 0);
+            Assert.AreEqual(0, activities.Count);
 
             Assert.Pass();
         }

@@ -52,13 +52,13 @@ namespace GActivityDiary.Core.Tests
             await _db.Activities.SaveAsync(activity);
 
             double hours = ActivityHelper.GetTotalHours(activity);
-            Assert.AreEqual(hours, 3);
+            Assert.AreEqual(3, hours);
 
             hours = ActivityHelper.GetTotalHours(activity, new DateTimeInterval(firstDay.AddHours(8), firstDay.AddHours(9)));
-            Assert.AreEqual(hours, 1);
+            Assert.AreEqual(1, hours);
 
             hours = ActivityHelper.GetTotalHours(activity, firstDay);
-            Assert.AreEqual(hours, 3);
+            Assert.AreEqual(3, hours);
 
             Assert.Pass();
         }
@@ -80,13 +80,13 @@ namespace GActivityDiary.Core.Tests
             await _db.Activities.SaveAsync(activity);
 
             double hours = ActivityHelper.GetTotalHours(activity);
-            Assert.AreEqual(hours, 24 * 3);
+            Assert.AreEqual(24 * 3, hours);
 
             hours = ActivityHelper.GetTotalHours(activity, new DateTimeInterval(firstDay.AddHours(8), firstDay.AddHours(9)));
-            Assert.AreEqual(hours, 1);
+            Assert.AreEqual(1, hours);
 
             hours = ActivityHelper.GetTotalHours(activity, firstDay);
-            Assert.AreEqual(hours, 24);
+            Assert.AreEqual(24, hours);
 
             Assert.Pass();
         }
@@ -108,31 +108,31 @@ namespace GActivityDiary.Core.Tests
 
             // Total Hours for all activities.
             double hours = ActivityHelper.GetTotalHours(activities);
-            Assert.AreEqual(hours, activities.Sum(x => (x.EndAt - x.StartAt).Value.TotalHours));
+            Assert.AreEqual(activities.Sum(x => (x.EndAt - x.StartAt).Value.TotalHours), hours);
 
             // Total hours from first day for 1 year.
             hours = ActivityHelper.GetTotalHours(activities, new DateTimeInterval(firstDay, firstDay.AddYears(1)));
-            Assert.AreEqual(hours, activities.Sum(x => (x.EndAt - x.StartAt).Value.TotalHours));
+            Assert.AreEqual(activities.Sum(x => (x.EndAt - x.StartAt).Value.TotalHours), hours);
 
             // Total hours from first day for 7 days.
             hours = ActivityHelper.GetTotalHours(activities, new DateTimeInterval(firstDay, firstDay.AddDays(7)));
-            Assert.AreEqual(hours, activities.Sum(x => (x.EndAt - x.StartAt).Value.TotalHours) - 8);
+            Assert.AreEqual(activities.Sum(x => (x.EndAt - x.StartAt).Value.TotalHours) - 8, hours);
 
             // Total hours for the first day.
             hours = ActivityHelper.GetTotalHours(activities, firstDay);
-            Assert.AreEqual(hours, 8);
+            Assert.AreEqual(8, hours);
 
             // Check total hours for the empty day (3).
             hours = ActivityHelper.GetTotalHours(activities, firstDay.AddDays(3));
-            Assert.AreEqual(hours, 0);
+            Assert.AreEqual(0, hours);
 
             // Check total hours for the 4th day.
             hours = ActivityHelper.GetTotalHours(activities, firstDay.AddDays(4));
-            Assert.AreEqual(hours, 24 - 8);
+            Assert.AreEqual(24 - 8, hours);
 
             // Check total hours for the 5th day.
             hours = ActivityHelper.GetTotalHours(activities, firstDay.AddDays(5));
-            Assert.AreEqual(hours, 24);
+            Assert.AreEqual(24, hours);
 
             // Check total hours for the last 2 activity for 10 days from first day.
             hours = ActivityHelper.GetTotalHours(activities, new DateTimeInterval(activities[^2].StartAt.Value, firstDay.AddDays(10)));

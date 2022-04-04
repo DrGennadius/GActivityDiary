@@ -46,12 +46,12 @@ namespace GActivityDiary.Core.Tests.Searching
             transaction.Commit();
 
             var tags = await TagHelper.GetTagsAsync(_db, "tag55");
-            Assert.AreEqual(tags.Count(), 1);
+            Assert.AreEqual(1, tags.Count());
 
             var tagIds = await TagHelper.GetTagIdsAsync(_db, "tag55");
-            Assert.AreEqual(tags.Count(), 1);
+            Assert.AreEqual(1, tags.Count());
 
-            Assert.AreEqual(tags.First().Id, tagIds.First());
+            Assert.AreEqual(tagIds.First(), tags.First().Id);
 
             Assert.Pass();
         }
