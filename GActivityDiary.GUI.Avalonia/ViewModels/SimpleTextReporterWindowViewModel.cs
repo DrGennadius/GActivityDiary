@@ -80,14 +80,15 @@ namespace GActivityDiary.GUI.Avalonia.ViewModels
                 DateTime endDate = _endDate.Value.Date.AddDays(1);
                 if (SelectedActivityType != null)
                 {
-                    ReportText = simpleTextReporter.GetReport(x => x.ActivityType != null
-                                                                   && x.ActivityType.Id == SelectedActivityType.Id
-                                                                   && x.StartAt >= startDate
-                                                                   && x.EndAt < endDate);
+                    var activities = DbContext.Activities.Find(x => x.ActivityType != null
+                                                                    && x.ActivityType.Id == SelectedActivityType.Id
+                                                                    && x.StartAt >= startDate
+                                                                    && x.EndAt < endDate);
+                    ReportText = simpleTextReporter.GetReport(activities, startDate, endDate);
                 }
                 else
                 {
-                    ReportText = simpleTextReporter.GetReport(x => x.StartAt >= startDate && x.EndAt < endDate);
+                    ReportText = simpleTextReporter.GetReport(startDate, endDate);
                 }
             }
             else

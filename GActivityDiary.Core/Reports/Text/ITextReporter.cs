@@ -48,6 +48,23 @@ namespace GActivityDiary.Core.Reports.Text
         string GetReport(IEnumerable<Activity> activities);
 
         /// <summary>
+        /// Create a report for multiple activities by the date time interval (<see cref="DateTimeInterval"/>).
+        /// </summary>
+        /// <param name="activities"></param>
+        /// <param name="dateTimeInterval"></param>
+        /// <returns></returns>
+        string GetReport(IEnumerable<Activity> activities, DateTimeInterval dateTimeInterval);
+
+        /// <summary>
+        /// Create a report for multiple activities by the date time interval (from begin to end).
+        /// </summary>
+        /// <param name="activities"></param>
+        /// <param name="beginDateTime"></param>
+        /// <param name="endDateTime"></param>
+        /// <returns></returns>
+        string GetReport(IEnumerable<Activity> activities, DateTime beginDateTime, DateTime endDateTime);
+
+        /// <summary>
         /// Create a report for an activity.
         /// </summary>
         /// <param name="activity"></param>
